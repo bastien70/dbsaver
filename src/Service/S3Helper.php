@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Service;
 
@@ -17,7 +18,7 @@ class S3Helper
     /**
      * @throws \Exception
      */
-    public function generatePresignedUri(Backup $backup, $expires = '+ 30 minutes')
+    public function generatePresignedUri(Backup $backup, string $expires = '+ 30 minutes'): string
     {
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,

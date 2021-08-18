@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\Backup;
@@ -11,15 +13,13 @@ use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\UploaderBundle\Handler\DownloadHandler;
 
 class BackupService
 {
     public const MAX_ROWS = 30;
 
-    /**
-     * @throws \Exception
-     */
     public function __construct(
         private EntityManagerInterface $manager,
         private BackupRepository $backupRepository,
@@ -29,7 +29,7 @@ class BackupService
         private DownloadHandler $downloadHandler,
     ){}
 
-    public function backup(Database $database, string $context)
+    public function backup(Database $database, string $context): void
     {
         // Define mysqldump object
         $mysqldump = $this->defineMysqlDumpObject($database);
@@ -72,7 +72,7 @@ class BackupService
         $fileSystem->remove($filepath);
     }
 
-    public function clean(Database $database)
+    public function clean(Database $database): void
     {
         $maxBackups = $database->getMaxBackups();
         $backups = $database->getBackups();
@@ -123,7 +123,7 @@ class BackupService
     /**
      * @throws \Exception
      */
-    public function downloadBackupFile(Backup $backup)
+    public function downloadBackupFile(Backup $backup): StreamedResponse
     {
         return $this->downloadHandler->downloadObject($backup, 'backupFile');
     }
@@ -131,12 +131,15 @@ class BackupService
     /**
      * @return Backup[]
      */
-    public function getBackups()
+    public function getBackups(): array
     {
         return $this->backupRepository->findAll();
     }
 
-    public function getDatabases()
+    /**
+     * @return Database[]
+     */
+    public function getDatabases(): array
     {
         return $this->databaseRepository->findAll();
     }

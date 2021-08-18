@@ -75,7 +75,7 @@ class BackupCrudController extends AbstractCrudController
     /**
      * @throws \Exception
      */
-    public function downloadBackupAction(AdminContext $context)
+    public function downloadBackupAction(AdminContext $context): Response
     {
         /** @var Backup $backup */
         $backup = $context->getEntity()->getInstance();

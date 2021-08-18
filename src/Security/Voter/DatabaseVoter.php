@@ -1,16 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Voter;
 
 use App\Entity\Database;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class DatabaseVoter extends Voter
 {
     public const CAN_SHOW_DATABASE = 'can_show_database';
 
+    /**
+     * @var string[]
+     */
     protected array $attributes = [
         self::CAN_SHOW_DATABASE,
     ];
@@ -27,7 +32,7 @@ class DatabaseVoter extends Voter
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return false;
         }
 
@@ -38,6 +43,5 @@ class DatabaseVoter extends Voter
             self::CAN_SHOW_DATABASE => $subject->getUser()->getId() === $user->getId(),
             default => false,
         };
-
     }
 }

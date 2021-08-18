@@ -26,6 +26,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method User|null getUser()
@@ -67,7 +68,7 @@ class DatabaseCrudController extends AbstractCrudController
         return $qb;
     }
 
-    public function launchBackupAction(AdminContext $context, EntityManagerInterface $manager)
+    public function launchBackupAction(AdminContext $context): Response
     {
         $database = $context->getEntity()->getInstance();
         $this->backupService->backup($database, 'Backup manuel');
@@ -81,7 +82,7 @@ class DatabaseCrudController extends AbstractCrudController
         return $this->redirect($context->getReferrer());
     }
 
-    public function showDatabaseBackupsAction(AdminContext $context)
+    public function showDatabaseBackupsAction(AdminContext $context): Response
     {
         /** @var Database $database */
         $database = $context->getEntity()->getInstance();

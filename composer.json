@@ -50,6 +50,12 @@
         "vich/uploader-bundle": "^1.18"
     },
     "require-dev": {
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^0.12.94",
+        "phpstan/phpstan-deprecation-rules": "^0.12.6",
+        "phpstan/phpstan-doctrine": "^0.12.42",
+        "phpstan/phpstan-phpunit": "^0.12.22",
+        "phpstan/phpstan-symfony": "^0.12.42",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "^5.3",
         "symfony/css-selector": "^5.3",
@@ -92,7 +98,15 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "ci": [
+            "symfony console doctrine:schema:validate",
+            "@phpstan",
+            "symfony console lint:container",
+            "symfony console lint:twig templates",
+            "symfony console lint:yaml config translations"
+        ],
+        "phpstan": "vendor/bin/phpstan analyse"
     },
     "conflict": {
         "symfony/symfony": "*"

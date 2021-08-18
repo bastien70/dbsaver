@@ -1,0 +1,11 @@
+parameters:
+    paths:
+        - bin/console
+        - config
+        - migrations
+        - public/index.php
+        - src
+        - tests
+    level: 5
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
