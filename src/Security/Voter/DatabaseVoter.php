@@ -24,7 +24,7 @@ class DatabaseVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, $this->attributes, true)
+        return \in_array($attribute, $this->attributes, true)
             && $subject instanceof Database;
     }
 
@@ -36,7 +36,7 @@ class DatabaseVoter extends Voter
             return false;
         }
 
-        /** @var Database $subject */
+        /* @var Database $subject */
 
         // ... (check conditions and return true to grant permission) ...
         return match ($attribute) {

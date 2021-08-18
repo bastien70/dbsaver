@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Backup;
@@ -24,7 +26,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -37,7 +38,8 @@ class BackupCrudController extends AbstractCrudController
         private S3Helper $s3Helper,
         private BackupService $backupService,
         private int $backupOnLocal
-    ){}
+    ) {
+    }
 
     public static function getEntityFqcn(): string
     {
@@ -52,7 +54,7 @@ class BackupCrudController extends AbstractCrudController
             ->add(ChoiceFilter::new('context', 'Contexte')->setChoices(
                 [
                     'Backup quotidien' => 'Backup quotidien',
-                    'Backup manuel' => 'Backup manuel'
+                    'Backup manuel' => 'Backup manuel',
                 ]
             ))
             ->add(TextFilter::new('backupFileName', 'Nom du fichier'));
@@ -80,8 +82,7 @@ class BackupCrudController extends AbstractCrudController
         /** @var Backup $backup */
         $backup = $context->getEntity()->getInstance();
 
-        if((bool)$this->backupOnLocal === true)
-        {
+        if (true === (bool) $this->backupOnLocal) {
             return $this->backupService->downloadBackupFile($backup);
         }
 

@@ -29,14 +29,13 @@ final class BackupCommand extends Command
 
         try {
             $databases = $this->backupService->getDatabases();
-            $databasesCount = count($databases);
+            $databasesCount = \count($databases);
 
             if ($databasesCount > 0) {
                 $io->section('Starting backups');
                 $io->progressStart($databasesCount);
 
-                foreach($databases as $database)
-                {
+                foreach ($databases as $database) {
                     $this->backupService->backup($database, 'Backup quotidien');
                     $io->progressAdvance();
                 }
@@ -46,17 +45,16 @@ final class BackupCommand extends Command
                 $io->section('Cleaning old backups');
                 $io->progressStart($databasesCount);
 
-                foreach($databases as $database)
-                {
+                foreach ($databases as $database) {
                     $this->backupService->clean($database);
                     $io->progressAdvance();
                 }
 
                 $io->progressFinish();
             }
-
         } catch (\Exception $e) {
             dump($e->getMessage());
+
             return Command::INVALID;
         }
 

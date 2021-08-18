@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\BackupRepository;
@@ -14,7 +16,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: BackupRepository::class)]
 class Backup
 {
-
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
     private ?int $id = null;
 
@@ -29,7 +30,6 @@ class Backup
      *     mimeType="mimeType",
      *     originalName="originalName",
      * )
-     * @var File
      */
     private File $backupFile;
 
@@ -77,10 +77,7 @@ class Backup
         return $this;
     }
 
-    /**
-     * @param File|null $backupFile
-     */
-    public function setBackupFile(File $backupFile = null): Backup
+    public function setBackupFile(File $backupFile = null): self
     {
         $this->backupFile = $backupFile;
 

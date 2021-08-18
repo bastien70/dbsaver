@@ -17,7 +17,8 @@ class DatabaseSubscriber implements EventSubscriberInterface
     public function __construct(
         private Encryptor $encryptor,
         private Security $security,
-    ){}
+    ) {
+    }
 
     public static function getSubscribedEvents(): array
     {
@@ -38,7 +39,7 @@ class DatabaseSubscriber implements EventSubscriberInterface
         $this->handleDatabasePasswordChange($entity);
 
         $user = $this->security->getUser();
-        assert($user instanceof User);
+        \assert($user instanceof User);
         $entity->setUser($user);
     }
 

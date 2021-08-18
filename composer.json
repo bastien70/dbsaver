@@ -50,6 +50,7 @@
         "vich/uploader-bundle": "^1.18"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12.94",
         "phpstan/phpstan-deprecation-rules": "^0.12.6",
@@ -101,11 +102,14 @@
         ],
         "ci": [
             "symfony console doctrine:schema:validate",
+            "@cs:dry",
             "@phpstan",
             "symfony console lint:container",
             "symfony console lint:twig templates",
             "symfony console lint:yaml config translations"
         ],
+        "cs:dry": "php-cs-fixer fix --diff --dry-run --no-interaction",
+        "cs:fix": "php-cs-fixer fix",
         "phpstan": "vendor/bin/phpstan analyse"
     },
     "conflict": {

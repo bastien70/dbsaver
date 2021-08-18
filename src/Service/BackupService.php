@@ -27,7 +27,8 @@ class BackupService
         private string $projectDir,
         private Encryptor $encryptor,
         private DownloadHandler $downloadHandler,
-    ){}
+    ) {
+    }
 
     public function backup(Database $database, string $context): void
     {
@@ -39,7 +40,7 @@ class BackupService
             '%s/backup_%s_hash_%s.sql',
             $this->projectDir,
             (new \DateTime())->format('d_m_y'),
-            random_int(1000,99999999),
+            random_int(1000, 99999999),
         );
 
         // Launch backup
@@ -77,47 +78,14 @@ class BackupService
         $maxBackups = $database->getMaxBackups();
         $backups = $database->getBackups();
 
-        if(count($backups) > $maxBackups)
-        {
-            for($i=$maxBackups, $iMax = count($backups); $i < $iMax; $i++)
-            {
+        if (\count($backups) > $maxBackups) {
+            for ($i = $maxBackups, $iMax = \count($backups); $i < $iMax; ++$i) {
                 $deleteBackup = $backups[$i];
                 $this->manager->remove($deleteBackup);
             }
         }
 
         $this->manager->flush();
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function defineMysqlDumpObject(Database $database): Mysqldump
-    {
-        if($database->getPort())
-        {
-            $dsn = sprintf(
-                'mysql:host=%s;dbname=%s',
-                $database->getHost(),
-                $database->getDbName()
-            );
-        } else {
-            $dsn = sprintf(
-                'mysql:host=%s:%s;dbname=%s',
-                $database->getHost(),
-                $database->getPort(),
-                $database->getDbName()
-            );
-        }
-
-        return new Mysqldump(
-            $dsn,
-            $database->getDbUser(),
-            $this->encryptor->decrypt($database->getDbPassword()),
-            [
-                'add-drop-table' => true
-            ]
-        );
     }
 
     /**
@@ -142,5 +110,35 @@ class BackupService
     public function getDatabases(): array
     {
         return $this->databaseRepository->findAll();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function defineMysqlDumpObject(Database $database): Mysqldump
+    {
+        if ($database->getPort()) {
+            $dsn = sprintf(
+                'mysql:host=%s;dbname=%s',
+                $database->getHost(),
+                $database->getDbName()
+            );
+        } else {
+            $dsn = sprintf(
+                'mysql:host=%s:%s;dbname=%s',
+                $database->getHost(),
+                $database->getPort(),
+                $database->getDbName()
+            );
+        }
+
+        return new Mysqldump(
+            $dsn,
+            $database->getDbUser(),
+            $this->encryptor->decrypt($database->getDbPassword()),
+            [
+                'add-drop-table' => true,
+            ]
+        );
     }
 }

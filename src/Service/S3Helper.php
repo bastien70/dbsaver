@@ -13,7 +13,8 @@ class S3Helper
     public function __construct(
         private S3Client $s3Client,
         private string $s3BucketName,
-    ){}
+    ) {
+    }
 
     /**
      * @throws \Exception
@@ -29,7 +30,7 @@ class S3Helper
             'Bucket' => $this->s3BucketName,
             'Key' => sprintf('backups/%s', $backup->getBackupFileName()),
             'ResponseContentType' => $backup->getMimeType(),
-            'ResponseContentDisposition' => $disposition
+            'ResponseContentDisposition' => $disposition,
         ]);
 
         $request = $this->s3Client->createPresignedRequest($cmd, $expires);

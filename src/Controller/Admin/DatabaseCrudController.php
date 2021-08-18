@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Database;
 use App\Entity\User;
 use App\Service\BackupService;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -36,7 +37,8 @@ class DatabaseCrudController extends AbstractCrudController
     public function __construct(
         private BackupService $backupService,
         private AdminUrlGenerator $adminUrlGenerator
-    ){}
+    ) {
+    }
 
     public static function getEntityFqcn(): string
     {
@@ -93,10 +95,11 @@ class DatabaseCrudController extends AbstractCrudController
             ->set('filters', [
                 'db' => [
                     'comparison' => '=',
-                    'value' => (string) $database->getId()
-                ]
+                    'value' => (string) $database->getId(),
+                ],
             ])
             ->generateUrl();
+
         return $this->redirect($url);
     }
 
