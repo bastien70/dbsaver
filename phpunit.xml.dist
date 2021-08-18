@@ -27,6 +27,9 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <file>./src/Kernel.php</file>
+        </exclude>
     </coverage>
 
     <listeners>
