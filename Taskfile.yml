@@ -1,0 +1,61 @@
+version: '3'
+
+tasks:
+    fixtures:
+        desc: Generate fixtures for dev environment
+        cmds:
+            - symfony console d:d:d --force --if-exists --quiet
+            - symfony console d:d:c --quiet
+            - symfony console d:s:u --force --quiet
+            - symfony console d:m:sync-metadata-storage --quiet
+            - symfony console d:m:v --add --all --quiet
+            - symfony console h:f:l --no-interaction --quiet --no-bundles
+
+    composer:
+        desc: Install PHP vendors
+        cmds:
+            - symfony composer install
+        sources:
+            - composer.lock
+        generates:
+            - vendor/**/*
+
+    start:
+        desc: Start Symfony server
+        cmds:
+            - symfony serve -d
+
+    stop:
+        desc: Stop Symfony server
+        cmds:
+            - symfony server:stop
+
+    test:
+        desc: Run tests
+        cmds:
+            - task: setup_tests
+            - symfony php vendor/bin/phpunit
+
+    coverage:
+        desc: Run tests with coverage
+        cmds:
+            - task: setup_tests
+            - symfony php -dpcov.enabled=1 vendor/bin/phpunit --coverage-html=public/coverage
+    
+    setup_tests:
+        cmds:
+            - rm -rf var/cache/test/*
+            - symfony console d:d:d --force --if-exists --quiet --env=test
+            - symfony console d:d:c --quiet --env=test
+            - symfony console d:s:u --force --quiet --env=test
+            - symfony console h:f:l --no-interaction --quiet --env=test --no-bundles
+
+    ci:
+        desc: Check code style, static analysis...
+        cmds:
+            - symfony composer ci
+
+    cs-fix:
+        desc: Fix code style
+        cmds:
+            - symfony composer cs:fix

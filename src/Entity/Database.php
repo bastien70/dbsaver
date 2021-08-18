@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\DatabaseRepository;
@@ -49,6 +51,11 @@ class Database
     {
         $this->backups = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
+    }
+
+    public function __toString()
+    {
+        return $this->db_name;
     }
 
     public function getId(): ?int
@@ -168,11 +175,6 @@ class Database
         $this->db_plain_password = $db_plain_password;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->db_name;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

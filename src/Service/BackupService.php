@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\Backup;
@@ -11,15 +13,13 @@ use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\UploaderBundle\Handler\DownloadHandler;
 
 class BackupService
 {
     public const MAX_ROWS = 30;
 
-    /**
-     * @throws \Exception
-     */
     public function __construct(
         private EntityManagerInterface $manager,
         private BackupRepository $backupRepository,
@@ -27,9 +27,10 @@ class BackupService
         private string $projectDir,
         private Encryptor $encryptor,
         private DownloadHandler $downloadHandler,
-    ){}
+    ) {
+    }
 
-    public function backup(Database $database, string $context)
+    public function backup(Database $database, string $context): void
     {
         // Define mysqldump object
         $mysqldump = $this->defineMysqlDumpObject($database);
@@ -39,7 +40,7 @@ class BackupService
             '%s/backup_%s_hash_%s.sql',
             $this->projectDir,
             (new \DateTime())->format('d_m_y'),
-            random_int(1000,99999999),
+            random_int(1000, 99999999),
         );
 
         // Launch backup
@@ -72,15 +73,13 @@ class BackupService
         $fileSystem->remove($filepath);
     }
 
-    public function clean(Database $database)
+    public function clean(Database $database): void
     {
         $maxBackups = $database->getMaxBackups();
         $backups = $database->getBackups();
 
-        if(count($backups) > $maxBackups)
-        {
-            for($i=$maxBackups, $iMax = count($backups); $i < $iMax; $i++)
-            {
+        if (\count($backups) > $maxBackups) {
+            for ($i = $maxBackups, $iMax = \count($backups); $i < $iMax; ++$i) {
                 $deleteBackup = $backups[$i];
                 $this->manager->remove($deleteBackup);
             }
@@ -92,10 +91,33 @@ class BackupService
     /**
      * @throws \Exception
      */
+    public function downloadBackupFile(Backup $backup): StreamedResponse
+    {
+        return $this->downloadHandler->downloadObject($backup, 'backupFile');
+    }
+
+    /**
+     * @return Backup[]
+     */
+    public function getBackups(): array
+    {
+        return $this->backupRepository->findAll();
+    }
+
+    /**
+     * @return Database[]
+     */
+    public function getDatabases(): array
+    {
+        return $this->databaseRepository->findAll();
+    }
+
+    /**
+     * @throws \Exception
+     */
     private function defineMysqlDumpObject(Database $database): Mysqldump
     {
-        if($database->getPort())
-        {
+        if ($database->getPort()) {
             $dsn = sprintf(
                 'mysql:host=%s;dbname=%s',
                 $database->getHost(),
@@ -115,29 +137,8 @@ class BackupService
             $database->getDbUser(),
             $this->encryptor->decrypt($database->getDbPassword()),
             [
-                'add-drop-table' => true
+                'add-drop-table' => true,
             ]
         );
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function downloadBackupFile(Backup $backup)
-    {
-        return $this->downloadHandler->downloadObject($backup, 'backupFile');
-    }
-
-    /**
-     * @return Backup[]
-     */
-    public function getBackups()
-    {
-        return $this->backupRepository->findAll();
-    }
-
-    public function getDatabases()
-    {
-        return $this->databaseRepository->findAll();
     }
 }

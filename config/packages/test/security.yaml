@@ -1,0 +1,3 @@
+security:
+    password_hashers:
+        App\Entity\User: plaintext

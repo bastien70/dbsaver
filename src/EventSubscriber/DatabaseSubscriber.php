@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventSubscriber;
 
 use App\Entity\Database;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
@@ -13,10 +16,11 @@ class DatabaseSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private Encryptor $encryptor,
-        private Security $security
-    ){}
+        private Security $security,
+    ) {
+    }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             BeforeEntityPersistedEvent::class => 'beforePersistedEvent',
@@ -24,38 +28,37 @@ class DatabaseSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function beforePersistedEvent(BeforeEntityPersistedEvent $event)
+    public function beforePersistedEvent(BeforeEntityPersistedEvent $event): void
     {
         $entity = $event->getEntityInstance();
 
-        if(!($entity instanceof Database))
-        {
+        if (!$entity instanceof Database) {
             return;
         }
 
-        $entity->setDbPassword($this->encryptPassword($entity->getDbPlainPassword()))
-            ->setDbPlainPassword(null)
-            ->setUser($this->security->getUser());
+        $this->handleDatabasePasswordChange($entity);
+
+        $user = $this->security->getUser();
+        \assert($user instanceof User);
+        $entity->setUser($user);
     }
 
-    public function beforeUpdatedEvent(BeforeEntityUpdatedEvent $event)
+    public function beforeUpdatedEvent(BeforeEntityUpdatedEvent $event): void
     {
         $entity = $event->getEntityInstance();
 
-        if(!($entity instanceof Database))
-        {
+        if (!$entity instanceof Database) {
             return;
         }
 
-        if($entity->getDbPlainPassword())
-        {
-            $entity->setDbPassword($this->encryptPassword($entity->getDbPlainPassword()))
+        $this->handleDatabasePasswordChange($entity);
+    }
+
+    private function handleDatabasePasswordChange(Database $database): void
+    {
+        if (null !== $database->getDbPlainPassword()) {
+            $database->setDbPassword($this->encryptor->encrypt($database->getDbPlainPassword()))
                 ->setDbPlainPassword(null);
         }
-    }
-
-    private function encryptPassword(string $plainPassword)
-    {
-        return $this->encryptor->encrypt($plainPassword);
     }
 }

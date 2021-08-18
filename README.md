@@ -21,6 +21,7 @@ Ceux-ci peuvent être sauvegardés en <b>local</b> ou sur le cloud d'Amazon <b>A
     2. [AWS S3](#backupAws)
 5. [Utiliser l'application](#app)
 6. [Licence](#licence)
+7. [Contribuer](#contribute)
     
     
 ## Pré-requis <a name="preRequis"></a>
@@ -37,7 +38,7 @@ Ceux-ci peuvent être sauvegardés en <b>local</b> ou sur le cloud d'Amazon <b>A
 3. `composer install` (installation des dépendances)
 4. `php bin/console app:regenerate-app-secret` (régénération de la clé secrète permettant de crypter les mots de passes de vos bases de données)
 5. `php bin/console d:d:c` (création de la base de données)
-6. `php bin/console d:s:u -f` (migration des tables)
+6. `php bin/console d:m:m -n` (migration des tables)
 7. `php bin/console app:make-user` (création de votre compte d'accès)
 
 ## Configuration de la tâche CRON <a name="cron"></a>
@@ -161,3 +162,11 @@ Vous aurez la possibilité de supprimer ou télécharger un Backup.
 ## Licence <a name="licence"></a>
 
 Cette application est protégée par une licence MIT : [LICENCE](LICENSE)
+
+## Contribuer <a name="contribute"></a>
+
+Avant de faire une pull request, n'oubliez pas de lancer les vérifications d'usage:
+
+```bash
+composer ci
+```
