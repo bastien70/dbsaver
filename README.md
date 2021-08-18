@@ -14,14 +14,15 @@ Ceux-ci peuvent être sauvegardés en <b>local</b> ou sur le cloud d'Amazon <b>A
 # Table des matières
 
 1. [Pré-requis](#preRequis)
-2. [Installation](#installation)
-3. [Configuration de la tâche CRON](#cron)
-4. [Backups en local ou sur AWS S3](#backups)
+1. [Installation manuelle](#manual-install)
+1. [Installation avec Task](#task-install)
+1. [Configuration de la tâche CRON](#cron)
+1. [Backups en local ou sur AWS S3](#backups)
     1. [Local](#backupLocal)
-    2. [AWS S3](#backupAws)
-5. [Utiliser l'application](#app)
-6. [Licence](#licence)
-7. [Contribuer](#contribute)
+    1. [AWS S3](#backupAws)
+1. [Utiliser l'application](#app)
+1. [Licence](#licence)
+1. [Contribuer](#contribute)
     
     
 ## Pré-requis <a name="preRequis"></a>
@@ -30,16 +31,25 @@ Ceux-ci peuvent être sauvegardés en <b>local</b> ou sur le cloud d'Amazon <b>A
 * Composer
 * Symfony CLI (si vous souhaitez lancer le projet en local)
 
-## Installation <a name="installation"></a>
+## Installation manuelle <a name="manual-install"></a>
 
-1. `git clone git@github.com:bastien70/dbsaver.git`
-2. `cd dbsaver`
-3. Configurez la variable d'environnement dans le fichier `.env` : `DATABASE_URL`.
-3. `composer install` (installation des dépendances)
-4. `php bin/console app:regenerate-app-secret` (régénération de la clé secrète permettant de crypter les mots de passes de vos bases de données)
-5. `php bin/console d:d:c` (création de la base de données)
-6. `php bin/console d:m:m -n` (migration des tables)
-7. `php bin/console app:make-user` (création de votre compte d'accès)
+1. `git clone https://github.com/bastien70/dbsaver.git`
+1. `cd dbsaver`
+1. Configurez la variable d'environnement dans un fichier `.env.local` : `DATABASE_URL` (regardez dans le fichier `.env` pour voir la structure de la variable).
+1. `composer install` (installation des dépendances)
+1. `php bin/console app:regenerate-app-secret` (régénération de la clé secrète permettant de crypter les mots de passes de vos bases de données)
+1. `php bin/console d:d:c` (création de la base de données)
+1. `php bin/console d:m:m -n` (migration des tables)
+1. `php bin/console app:make-user` (création de votre compte d'accès)
+
+## Installation avec Task <a name="task-install"></a>
+
+Requiert [Symfony CLI](https://symfony.com/download) et [Task](https://taskfile.dev/) installés.
+
+1. `git clone https://github.com/bastien70/dbsaver.git`
+1. `cd dbsaver`
+1. Configurez la variable d'environnement dans un fichier `.env.local` : `DATABASE_URL` (regardez dans le fichier `.env` pour voir la structure de la variable).
+1. `task install`
 
 ## Configuration de la tâche CRON <a name="cron"></a>
 

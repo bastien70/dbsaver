@@ -59,3 +59,19 @@ tasks:
         desc: Fix code style
         cmds:
             - symfony composer cs:fix
+
+    install:
+        desc: Install project
+        cmds:
+            - task: composer
+            - symfony console app:regenerate-app-secret
+            - symfony console doctrine:database:create
+            - symfony console doctrine:migrations:migrate --no-interaction
+            - symfony console app:make-user
+
+    update:
+        desc: Update project
+        cmds:
+            - git pull --rebase
+            - task: composer
+            - symfony console doctrine:migrations:migrate --no-interaction
