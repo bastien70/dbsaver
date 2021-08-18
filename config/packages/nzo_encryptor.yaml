@@ -1,0 +1,2 @@
+nzo_encryptor:
+    secret_key: "%env(APP_SECRET)%"

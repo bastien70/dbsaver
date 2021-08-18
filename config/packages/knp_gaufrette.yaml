@@ -1,0 +1,14 @@
+knp_gaufrette:
+    stream_wrapper: ~
+    adapters:
+        backup_adapter:
+            aws_s3:
+                service_id: Aws\S3\S3Client
+                bucket_name: '%env(AWS_S3_BUCKET_NAME)%'
+                detect_content_type: true
+                options:
+                    create: true
+                    directory: backups
+    filesystems:
+        backup_fs:
+            adapter:    backup_adapter
