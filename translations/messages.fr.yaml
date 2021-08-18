@@ -1,0 +1,5 @@
+content_admin:
+    flash_message:
+        create: Le contenu "%name%" a été créé avec succès.
+        update: Le contenu "%name%" a été mis à jour avec succès.
+        delete: Le contenu "%name%" a été supprimé avec succès.

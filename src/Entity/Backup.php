@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @Vich\Uploadable
  */
 #[ORM\Entity(repositoryClass: BackupRepository::class)]
-class Backup
+class Backup implements \Stringable
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
     private ?int $id = null;
@@ -58,6 +58,11 @@ class Backup
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->db->getDbName() . ' - ' . $this->createdAt->format('d/m/Y H:i:s');
     }
 
     public function getId(): ?int
