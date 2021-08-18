@@ -1,35 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Service\BackupService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'app:backup')]
-class BackupCommand extends Command
+#[AsCommand(
+    name: 'app:backup',
+    description: 'Make a database backup',
+)]
+final class BackupCommand extends Command
 {
-    /**
-     * @throws \Exception
-     */
     public function __construct(
-        string $name = null,
         private BackupService $backupService,
-        private EntityManagerInterface $manager
-    )
-    {
-        parent::__construct($name);
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setDescription('Make a database backup')
-        ;
+    ) {
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -40,9 +31,8 @@ class BackupCommand extends Command
             $databases = $this->backupService->getDatabases();
             $databasesCount = count($databases);
 
-            if($databasesCount > 0)
-            {
-                $io->section('Démarrage des backups');
+            if ($databasesCount > 0) {
+                $io->section('Starting backups');
                 $io->progressStart($databasesCount);
 
                 foreach($databases as $database)
@@ -53,7 +43,7 @@ class BackupCommand extends Command
 
                 $io->progressFinish();
 
-                $io->section('Nettoyage des anciennes sauvegardes');
+                $io->section('Cleaning old backups');
                 $io->progressStart($databasesCount);
 
                 foreach($databases as $database)
@@ -65,8 +55,7 @@ class BackupCommand extends Command
                 $io->progressFinish();
             }
 
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             dump($e->getMessage());
             return Command::INVALID;
         }

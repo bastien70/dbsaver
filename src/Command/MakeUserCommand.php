@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Entity\User;
@@ -17,30 +19,21 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
     name: 'app:make-user',
     description: 'Create user',
 )]
-class MakeUserCommand extends Command
+final class MakeUserCommand extends Command
 {
     public function __construct(
-        string $name = null,
         private UserPasswordHasherInterface $hasher,
         private EntityManagerInterface $manager,
-    )
-    {
-        parent::__construct($name);
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->setDescription('Create user')
-        ;
+    ) {
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $email = $io->ask('Adresse email');
-        $plainPassword = $io->askHidden('Mot de passe');
+        $email = $io->ask('Email address');
+        $plainPassword = $io->askHidden('Password');
 
         $user = new User();
         $user->setEmail($email)
@@ -50,7 +43,7 @@ class MakeUserCommand extends Command
         $this->manager->flush();
 
         $io->success(
-            sprintf("L'utilisateur %s a bien été créé ! Vous pouvez désormais vous connecter", $email)
+            sprintf('User %s has been successfully created! You can now log in.', $email)
         );
 
         return Command::SUCCESS;
