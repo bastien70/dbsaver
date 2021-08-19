@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ea9027b592655ae0eb80861346c81a4",
+    "content-hash": "dff82a66d8af1ab76a8aa58246ed8702",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.190.3",
+            "version": "3.190.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4e641e25cc8f4d04002404afe050e25035fad0f3"
+                "reference": "c2063c78310b45e378f1bdad9fe6e9191f36439c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4e641e25cc8f4d04002404afe050e25035fad0f3",
-                "reference": "4e641e25cc8f4d04002404afe050e25035fad0f3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c2063c78310b45e378f1bdad9fe6e9191f36439c",
+                "reference": "c2063c78310b45e378f1bdad9fe6e9191f36439c",
                 "shasum": ""
             },
             "require": {
@@ -92,9 +92,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.190.3"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.190.5"
             },
-            "time": "2021-08-16T18:13:42+00:00"
+            "time": "2021-08-18T18:24:08+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -1530,16 +1530,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v3.5.6",
+            "version": "v3.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "263cf54119497f5ea32f02af1dba2e4999a002ae"
+                "reference": "3499d3e954f95f3e12bebafbdafb71289f1a1435"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/263cf54119497f5ea32f02af1dba2e4999a002ae",
-                "reference": "263cf54119497f5ea32f02af1dba2e4999a002ae",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/3499d3e954f95f3e12bebafbdafb71289f1a1435",
+                "reference": "3499d3e954f95f3e12bebafbdafb71289f1a1435",
                 "shasum": ""
             },
             "require": {
@@ -1613,7 +1613,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v3.5.6"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v3.5.7"
             },
             "funding": [
                 {
@@ -1621,7 +1621,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-08-11T18:47:50+00:00"
+            "time": "2021-08-17T10:36:05+00:00"
         },
         {
             "name": "egulias/email-validator",
