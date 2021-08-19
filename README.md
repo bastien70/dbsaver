@@ -1,5 +1,10 @@
 # DbSaver
 
+[![Package version](https://img.shields.io/github/v/release/bastien70/dbsaver.svg?style=flat-square)](https://github.com/bastien70/dbsaver/releases)
+[![Build Status](https://img.shields.io/github/workflow/status/bastien70/dbsaver/Continuous%20Integration/main?style=flat-square)](https://github.com/bastien70/dbsaver/actions?query=workflow%3A"Continuous+Integration"+branch%3Amain)
+[![License](https://img.shields.io/badge/license-MIT-red.svg?style=flat-square)](LICENSE)
+[![Code coverage](https://img.shields.io/codecov/c/github/bastien70/dbsaver?style=flat-square)](https://codecov.io/gh/bastien70/dbsaver/branch/main)
+
 ![Alt text](./public/images/liste_bases.png?raw=true "Liste des bases de données")
 
 DbSaver est une application réalisée par <b>Bastien LOUGHIN</b>, vous permettant de réaliser des backups quotidiens automatiques (et manuels) pour vos bases de données MySQL.
