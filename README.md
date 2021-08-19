@@ -56,7 +56,7 @@ Requiert [Symfony CLI](https://symfony.com/download) et [Task](https://taskfile.
 1. Configurez la variable d'environnement dans un fichier `.env.local` : `DATABASE_URL` (regardez dans le fichier `.env` pour voir la structure de la variable).
 1. `task install`
 
-## Configuration de la tâche CRON <a name="cron"></a>
+## Configuration de l'application <a name="app-config"></a>
 
 ### Locale
 
