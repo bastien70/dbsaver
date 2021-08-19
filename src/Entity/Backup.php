@@ -16,6 +16,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: BackupRepository::class)]
 class Backup implements \Stringable
 {
+    public const CONTEXT_MANUAL = 'manual';
+    public const CONTEXT_AUTOMATIC = 'automatic';
+
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
     private ?int $id = null;
 

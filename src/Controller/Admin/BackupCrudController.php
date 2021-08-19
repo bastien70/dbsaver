@@ -28,16 +28,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @method User|null getUser()
  */
-class BackupCrudController extends AbstractCrudController
+final class BackupCrudController extends AbstractCrudController
 {
     public function __construct(
         private S3Helper $s3Helper,
         private BackupService $backupService,
-        private int $backupOnLocal
+        private int $backupOnLocal,
     ) {
     }
 
@@ -49,34 +50,27 @@ class BackupCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(EntityFilter::new('db', 'Base de données'))
-            ->add(DateTimeFilter::new('createdAt', 'Date de création'))
-            ->add(ChoiceFilter::new('context', 'Contexte')->setChoices(
+            ->add(EntityFilter::new('db', 'backup.field.database'))
+            ->add(DateTimeFilter::new('createdAt', 'backup.field.created_at'))
+            ->add(ChoiceFilter::new('context', 'backup.field.context')->setChoices(
                 [
-                    'Backup quotidien' => 'Backup quotidien',
-                    'Backup manuel' => 'Backup manuel',
+                    'backup.choices.context.manual' => Backup::CONTEXT_MANUAL,
+                    'backup.choices.context.automatic' => Backup::CONTEXT_AUTOMATIC,
                 ]
-            ))
-            ->add(TextFilter::new('backupFileName', 'Nom du fichier'));
+            )->setFormTypeOption('translation_domain', 'messages'))
+            ->add(TextFilter::new('backupFileName', 'backup.field.filename'));
     }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        $qb = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-
-        $qb
+        return $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
             ->join('entity.db', 'db')
             ->join('db.user', 'u')
             ->andWhere('u.id = :user')
             ->setParameter('user', $this->getUser()->getId())
             ->orderBy('entity.createdAt', 'DESC');
-
-        return $qb;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function downloadBackupAction(AdminContext $context): Response
     {
         /** @var Backup $backup */
@@ -91,7 +85,7 @@ class BackupCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $downloadBackupAction = Action::new('downloadBackup', 'Télécharger')
+        $downloadBackupAction = Action::new('downloadBackup', 'backup.action.download')
             ->linkToCrudAction('downloadBackupAction');
 
         return $actions
@@ -105,16 +99,27 @@ class BackupCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_INDEX, 'Liste des backups')
-            ;
+            ->setPageTitle(Crud::PAGE_INDEX, 'backup.index.title')
+            ->setEntityLabelInPlural('backup.admin_label.plural')
+            ->setEntityLabelInSingular('backup.admin_label.singular')
+        ;
     }
 
     public function configureFields(string $pageName): iterable
     {
-        yield DateTimeField::new('createdAt', 'Créé le')
+        yield DateTimeField::new('createdAt', 'backup.field.created_at')
             ->setFormat('dd-MM-Y HH:mm');
-        yield TextField::new('db.db_name', 'Base de données');
-        yield TextField::new('context', 'Contexte');
-        yield TextField::new('backupFileName', 'Nom du fichier');
+        yield TextField::new('db.db_name', 'backup.field.database');
+        yield TextField::new('context', 'backup.field.context')->formatValue(function (string $context): string {
+            return $this->get(TranslatorInterface::class)->trans('backup.choices.context.' . $context);
+        });
+        yield TextField::new('backupFileName', 'backup.field.filename');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            TranslatorInterface::class => '?' . TranslatorInterface::class,
+        ];
     }
 }

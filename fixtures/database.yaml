@@ -1,0 +1,8 @@
+App\Entity\Database:
+    database__{1..10}:
+        host: localhost
+        db_user: <userName()>
+        db_password: <word()>
+        db_name: <word()>
+        max_backups: <numberBetween(5, 20)>
+        user: '@user__*'

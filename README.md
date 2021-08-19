@@ -21,7 +21,7 @@ Ceux-ci peuvent être sauvegardés en <b>local</b> ou sur le cloud d'Amazon <b>A
 1. [Pré-requis](#preRequis)
 1. [Installation manuelle](#manual-install)
 1. [Installation avec Task](#task-install)
-1. [Configuration de la tâche CRON](#cron)
+1. [Configuration de l'application](#app-config)
 1. [Backups en local ou sur AWS S3](#backups)
     1. [Local](#backupLocal)
     1. [AWS S3](#backupAws)
@@ -57,6 +57,16 @@ Requiert [Symfony CLI](https://symfony.com/download) et [Task](https://taskfile.
 1. `task install`
 
 ## Configuration de la tâche CRON <a name="cron"></a>
+
+### Locale
+
+Vous pouvez configurer la locale de l'application en indiquant dans votre fichier `.env.local` :
+
+```shell
+DEFAULT_LOCALE=fr # Choisissez entre "en" et "fr", la valeur par défaut est "en"
+```
+
+### Configuration de la tâche CRON
 
 Configurer une tâche CRON vous servira à lancer automatiquement et à la fréquence désirée, un backup de toutes vos bases de données.
 
@@ -99,12 +109,12 @@ vich_uploader:
 #            upload_destination: backup_fs
 ```
 
-Modifiez également la variable d'environnement `BACKUP_LOCAL` dans le fichier `.env` comme ceci :
+Modifiez également la variable d'environnement `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
 `BACKUP_LOCAL=1`
 
 ### AWS S3 <a name="backupAws"></a>
 
-Modifiez dans le fichier `.env` les variables d'environnement suivantes pour les faire correspondre à ceux renseignés par AWS S3.
+Modifiez dans le fichier `.env.local` les variables d'environnement suivantes pour les faire correspondre à ceux renseignés par AWS S3.
 
 ```
 ###> AWS_S3 ###

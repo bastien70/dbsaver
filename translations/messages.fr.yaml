@@ -1,5 +1,75 @@
+backup:
+    index:
+        title: Liste des sauvegardes
+    action:
+        download: Télécharger
+    field:
+        database: Base de données
+        context: Contexte
+        created_at: Date de création
+        filename: Nom du fichier
+    admin_label:
+        singular: Sauvegarde
+        plural: Sauvegardes
+    choices:
+        context:
+            manual: Sauvegarde manuelle
+            automatic: Sauvegarde automatique
+
 content_admin:
     flash_message:
         create: Le contenu "%name%" a été créé avec succès.
         update: Le contenu "%name%" a été mis à jour avec succès.
         delete: Le contenu "%name%" a été supprimé avec succès.
+
+dashboard:
+    title: Bienvenue sur DbSaver !
+    how_it_works:
+        title: Fonctionnement
+        intro: Cette application vous sert à réaliser des sauvegardes quotidiennes automatiques (et manuelles) pour vos bases de données MySQL.
+        how_to: Vous n'avez qu'à renseigner les identifiants pour accéder aux différentes bases de données, configurer une tâche CRON... et c'est fini. Les mots de passe seront automatiquement cryptés.
+        backups: |
+            Vous pourrez ensuite grâce à DbSaver accéder aux différentes sauvegardes de vos bases de données en vous rendant sur l'onglet <b>Sauvegardes</b>.
+            Celles-ci peuvent être sauvegardées en <b>local</b> ou sur le cloud d'Amazon <b>AWS S3</b>.
+            Par défaut, l'application va enregistrer les fichiers en local.
+            Pour utiliser AWS S3, veuillez vous référer à la section ci-dessous.
+        docs: 'Documentation : <a href="%docs_link%">%docs_link%</a>'
+    author:
+        title: Auteur
+        description: Cette application a été développée par <b>%author%</b>.
+
+database:
+    index:
+        title: Liste des bases de données
+    new:
+        title: Nouvelle base de données
+    edit:
+        title: Modifier les paramètres de la base de données
+    action:
+        new: Ajouter une base de données
+        launch_backup: Lancer une sauvegarde
+        show_database_backups: Voir les sauvegardes
+    field:
+        host: Hôte
+        user: Utilisateur
+        password: Mot de passe
+        port: Port
+        name: Nom de la base de données
+        max_backups: Nombre de sauvegardes à conserver
+        created_at: Ajoutée le
+        backups: Sauvegardes
+    help:
+        password: Les mots de passe seront cryptés et n'apparaîtront pas en clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour lancer les sauvegardes. Vous devez renseigner ce champ à chaque modification.
+    admin_label:
+        singular: Base de données
+        plural: Bases de données
+    launch_backup:
+        manual_backup: Sauvegarde manuelle
+        flash_success: La sauvegarde a bien été créée !
+        flash_error: 'Une erreur est survenue lors de la sauvegarde : "%message%".'
+
+menu:
+    home: Accueil
+    databases: Bases de données
+    backups: Sauvegardes
+    switch_locale: Langue
