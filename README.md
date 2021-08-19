@@ -40,8 +40,8 @@ Ceux-ci peuvent être sauvegardés en <b>local</b> ou sur le cloud d'Amazon <b>A
 
 1. `git clone https://github.com/bastien70/dbsaver.git`
 1. `cd dbsaver`
-1. Configurez la variable d'environnement dans un fichier `.env.local` : `DATABASE_URL` (regardez dans le fichier `.env` pour voir la structure de la variable).
 1. `composer install` (installation des dépendances)
+1. `php bin/console app:post-install` (configuration du projet)
 1. `php bin/console app:regenerate-app-secret` (régénération de la clé secrète permettant de crypter les mots de passes de vos bases de données)
 1. `php bin/console d:d:c` (création de la base de données)
 1. `php bin/console d:m:m -n` (migration des tables)

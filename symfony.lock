@@ -342,6 +342,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "sixlive/dotenv-editor": {
+        "version": "v1.3.0"
+    },
     "symfony/asset": {
         "version": "v5.3.4"
     },
