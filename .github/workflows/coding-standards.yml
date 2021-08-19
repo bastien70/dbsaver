@@ -1,4 +1,4 @@
-name: Static Analysis
+name: Coding Standards
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  phpstan:
-    name: PHPStan (PHP ${{ matrix.php-version }})
+  php-cs-fixer:
+    name: PHP CS Fixer (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-20.04
 
     strategy:
@@ -32,5 +32,5 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v1
 
-      - name: Run PHPStan
-        run: 'vendor/bin/phpstan analyse --error-format=checkstyle | cs2pr'
+      - name: Run PHP CS Fixer
+        run: 'vendor/bin/php-cs-fixer fix --dry-run --format=checkstyle | cs2pr'
