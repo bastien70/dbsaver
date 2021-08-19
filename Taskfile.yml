@@ -64,6 +64,7 @@ tasks:
         desc: Install project
         cmds:
             - task: composer
+            - symfony console app:post-install
             - symfony console app:regenerate-app-secret
             - symfony console doctrine:database:create
             - symfony console doctrine:migrations:migrate --no-interaction

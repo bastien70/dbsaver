@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use sixlive\DotenvEditor\DotenvEditor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +27,15 @@ final class RegenerateAppSecretCommand extends Command
             $secret .= $a[random_int(0, 15)];
         }
 
-        shell_exec('sed -i -E "s/^APP_SECRET=.{32}$/APP_SECRET=' . $secret . '/" .env');
+        $filePath = __DIR__ . '/../../.env.local';
+        if (!file_exists($filePath)) {
+            touch($filePath);
+        }
+
+        $editor = new DotenvEditor();
+        $editor->load($filePath);
+        $editor->set('APP_SECRET', $secret);
+        $editor->save();
 
         $io->success('The new APP_SECRET env var has been regenerated!');
 
