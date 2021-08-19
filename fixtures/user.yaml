@@ -2,3 +2,4 @@ App\Entity\User:
     user__{1..2}:
         email: <generateEmailAddressForUser(<current()>)>
         password: <encodePassword(@self, 'test')>
+        role: <randomElement(['ROLE_USER', 'ROLE_ADMIN'])>
