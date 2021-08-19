@@ -1,41 +1,22 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title 'Bienvenue sur DbSaver !' %}
+{% block page_title 'dashboard.title'|trans %}
 
 {% block page_content %}
     <style>
         p { max-width: 600px; }
     </style>
 
-    <h3 class="mt-3">Fonctionnement</h3>
+    <h3 class="mt-3">{{ 'dashboard.how_it_works.title'|trans }}</h3>
 
-    <p>
-        Cette application vous sert à réaliser des backups quotidiens automatiques (et manuels)
-        pour vos bases de données MySQL.
-    </p>
+    <p>{{ 'dashboard.how_it_works.intro'|trans }}</p>
+    <p>{{ 'dashboard.how_it_works.how_to'|trans }}</p>
+    <p>{{ 'dashboard.how_it_works.backups'|trans|raw }}</p>
+    <p>{{ 'dashboard.how_it_works.docs'|trans({ '%docs_link%': 'https://github.com/bastien70/dbsaver' })|raw }}</p>
 
-    <p>
-        Vous n'avez qu'à renseigner les identifiants pour accéder aux différentes
-        bases de données, configurer une tâche CRON... et c'est fini.
-        Les mots de passe seront automatiquement cryptés.
-    </p>
-
-    <p>
-        Vous pourrez ensuite grâce à DbSaver accéder aux différents backups de vos bases de données
-        en vous rendant sur l'onglet <b>Backups</b>. Ceux-ci peuvent être sauvegardés en
-        <b>local</b> ou sur le cloud d'Amazon <b>AWS S3</b>. Par défaut, l'application va
-        enregistrer les fichiers en local. Pour utiliser AWS S3, veuillez vous référer à la section ci-dessous.
-    </p>
-
-    <p>
-        Documentation : <a href="https://github.com/bastien70/dbsaver">https://github.com/bastien70/dbsaver</a>
-    </p>
-
-    <h3 class="mt-5">Auteur</h3>
-    <p>
-        Cette application a été développée par <b>Bastien LOUGHIN</b>
-    </p>
+    <h3 class="mt-5">{{ 'dashboard.author.title'|trans }}</h3>
+    <p>{{ 'dashboard.author.description'|trans({ '%author%': 'Bastien LOUGHIN' })|raw }}</p>
 
     <ul>
         <li><a href="https://www.linkedin.com/in/bastien-loughin/">Linkedin</a></li>

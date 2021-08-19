@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\Backup;
 use App\Entity\Database;
 use App\Entity\User;
 use App\Service\BackupService;
@@ -28,15 +29,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 
 /**
  * @method User|null getUser()
  */
-class DatabaseCrudController extends AbstractCrudController
+final class DatabaseCrudController extends AbstractCrudController
 {
     public function __construct(
         private BackupService $backupService,
-        private AdminUrlGenerator $adminUrlGenerator
+        private AdminUrlGenerator $adminUrlGenerator,
     ) {
     }
 
@@ -48,38 +50,36 @@ class DatabaseCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(TextFilter::new('db_name', 'Nom'))
-            ->add(TextFilter::new('host', 'Host'))
-            ->add(NumericFilter::new('port', 'Port'))
-            ->add(TextFilter::new('db_user', 'Utilisateur'))
-            ->add(NumericFilter::new('max_backups', 'Nombre maximal de backups'))
-            ->add(DateTimeFilter::new('createdAt', 'Ajouté le'))
-            ;
+            ->add(TextFilter::new('db_name', 'database.field.name'))
+            ->add(TextFilter::new('host', 'database.field.host'))
+            ->add(NumericFilter::new('port', 'database.field.port'))
+            ->add(TextFilter::new('db_user', 'database.field.user'))
+            ->add(NumericFilter::new('max_backups', 'database.field.max_backups'))
+            ->add(DateTimeFilter::new('createdAt', 'database.field.created_at'))
+        ;
     }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        $qb = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-
-        $qb
+        return $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
             ->join('entity.user', 'u')
             ->andWhere('u.id = :user')
             ->setParameter('user', $this->getUser()->getId())
             ->orderBy('entity.createdAt', 'DESC');
-
-        return $qb;
     }
 
     public function launchBackupAction(AdminContext $context): Response
     {
         $database = $context->getEntity()->getInstance();
-        $this->backupService->backup($database, 'Backup manuel');
-        $this->backupService->clean($database);
 
-        $this->addFlash(
-            'success',
-            'Le backup a bien été créé !'
-        );
+        try {
+            $this->backupService->backup($database, Backup::CONTEXT_MANUAL);
+            $this->backupService->clean($database);
+
+            $this->addFlash('success', new TranslatableMessage('database.launch_backup.flash_success'));
+        } catch (\Exception $e) {
+            $this->addFlash('danger', new TranslatableMessage('database.launch_backup.flash_error', ['%message%' => $e->getMessage()]));
+        }
 
         return $this->redirect($context->getReferrer());
     }
@@ -105,10 +105,10 @@ class DatabaseCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $launchBackupAction = Action::new('launchBackup', 'Lancer un backup')
+        $launchBackupAction = Action::new('launchBackup', 'database.action.launch_backup')
             ->linkToCrudAction('launchBackupAction');
 
-        $showDatabaseBackupsAction = Action::new('showDatabaseBackups', 'Voir les backups')
+        $showDatabaseBackupsAction = Action::new('showDatabaseBackups', 'database.action.show_database_backups')
             ->linkToCrudAction('showDatabaseBackupsAction');
 
         return $actions
@@ -118,42 +118,41 @@ class DatabaseCrudController extends AbstractCrudController
             ->setPermission('showDatabaseBackups', 'can_show_database')
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
-                return $action->setLabel('Ajouter une base de données');
+                return $action->setLabel('database.action.new');
             })
             ->add(Crud::PAGE_NEW, Action::INDEX)
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
-            ;
+        ;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_INDEX, 'Liste des bases de données')
-            ->setPageTitle(Crud::PAGE_EDIT, 'Modifier les paramètres de la base de données')
-            ->setPageTitle(Crud::PAGE_NEW, 'Nouvelle base de données')
-            ;
+            ->setPageTitle(Crud::PAGE_INDEX, 'database.index.title')
+            ->setPageTitle(Crud::PAGE_EDIT, 'database.edit.title')
+            ->setPageTitle(Crud::PAGE_NEW, 'database.new.title')
+            ->setEntityLabelInPlural('database.admin_label.plural')
+            ->setEntityLabelInSingular('database.admin_label.singular')
+        ;
     }
 
     public function configureFields(string $pageName): iterable
     {
-        yield TextField::new('db_name', 'Nom de la base de données');
-        yield TextField::new('host', 'Host');
-        yield NumberField::new('port', 'Port');
-        yield TextField::new('db_user', 'Utilisateur');
-        yield TextField::new('db_plain_password', 'Mot de passe')
-            ->setHelp("Les mots de passes seront cryptés et n'apparaîtront pas en
-                clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour
-                lancer les backups. Vous devrez renseigner ce champs à chaque modification."
-            )
+        yield TextField::new('db_name', 'database.field.name');
+        yield TextField::new('host', 'database.field.host');
+        yield NumberField::new('port', 'database.field.port');
+        yield TextField::new('db_user', 'database.field.user');
+        yield TextField::new('db_plain_password', 'database.field.password')
+            ->setHelp('database.help.password')
             ->onlyOnForms()
             ->setRequired(true);
-        yield NumberField::new('max_backups', 'Nombre de backups à mémoriser');
+        yield NumberField::new('max_backups', 'database.field.max_backups');
 
-        yield CollectionField::new('backups')
+        yield CollectionField::new('backups', 'database.field.backups')
             ->hideOnForm();
 
-        yield DateTimeField::new('createdAt', 'Ajouté le')
+        yield DateTimeField::new('createdAt', 'database.field.created_at')
             ->setFormat('dd-MM-Y HH:mm')
             ->hideOnForm();
     }

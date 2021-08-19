@@ -1,0 +1,75 @@
+backup:
+    index:
+        title: Backup list
+    action:
+        download: Download
+    field:
+        database: Database
+        context: Context
+        created_at: Creation date
+        filename: File name
+    admin_label:
+        singular: Backup
+        plural: Backups
+    choices:
+        context:
+            manual: Manual backup
+            automatic: Automatic backup
+
+content_admin:
+    flash_message:
+        create: Content "%name%" was successfully created.
+        update: Content "%name%" was successfully updated.
+        delete: Content "%name%" was successfully deleted.
+
+dashboard:
+    title: Welcome on DbSaver!
+    how_it_works:
+        title: How it works
+        intro: This application can make automatic daily backups (and manual backups) for your MySQL databases.
+        how_to: All you have to do is fill the credentials to access the databases, configure a CRON job... and it's done. Passwords will be automatically hashed.
+        backups: |
+            Then, using DbSaver, you can access your databases backups by browsing the <b>Backups</b> tab.
+            Backups can be saved <b>locally</b> or on Amazon's cloud <b>AWS S3</b>.
+            By default the app will save files locally.
+            To use AWS S3 please refer to the next section.
+        docs: 'Docs: <a href="%docs_link%">%docs_link%</a>'
+    author:
+        title: Author
+        description: This application has been developed by <b>%author%</b>.
+
+database:
+    index:
+        title: Database list
+    new:
+        title: New database
+    edit:
+        title: Edit database settings
+    action:
+        new: Add a database
+        launch_backup: Launch backup
+        show_database_backups: View backups
+    field:
+        host: Host
+        user: User
+        password: Password
+        port: Port
+        name: Database name
+        max_backups: How many backups to keep
+        created_at: Created at
+        backups: Backups
+    help:
+        password: Passwords are hashed and aren't displayed unhashed. They will be unhashed only when necessary to launch backups. You have to fill this field at each update.
+    admin_label:
+        singular: Database
+        plural: Databases
+    launch_backup:
+        manual_backup: Manual backup
+        flash_success: Backup successfully created!
+        flash_error: 'An error happened during the backup: "%message%".'
+
+menu:
+    home: Home
+    databases: Databases
+    backups: Backups
+    switch_locale: Locale

@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     uploads_base_url: 'https://%env(AWS_S3_BUCKET_NAME)%.s3.%env(AWS_S3_REGION)%.amazonaws.com'
+    enabled_locales:
+        - en
+        - fr
 
 services:
     # default configuration for services in *this* file
@@ -16,6 +19,8 @@ services:
             $projectDir: '%kernel.project_dir%'
             $s3BucketName: '%env(AWS_S3_BUCKET_NAME)%'
             $backupOnLocal: '%env(BACKUP_LOCAL)%'
+            string $defaultLocale: '%env(DEFAULT_LOCALE)%'
+            array $enabledLocales: '%enabled_locales%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
