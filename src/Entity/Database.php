@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DatabaseRepository::class)]
 #[ORM\Table(name: '`database`')]
-class Database
+class Database implements \Stringable
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
     private ?int $id = null;
@@ -53,9 +53,9 @@ class Database
         $this->createdAt = new DateTimeImmutable();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->db_name;
+        return (string) $this->db_name;
     }
 
     public function getId(): ?int

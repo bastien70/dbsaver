@@ -7,3 +7,5 @@ parameters:
         - src
         - tests
     level: 5
+    ignoreErrors:
+        - '#Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface::getFlashBag\(\).#'
