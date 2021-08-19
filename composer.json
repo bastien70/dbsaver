@@ -1,4 +1,6 @@
 {
+    "name": "bastien70/dbsaver",
+    "description": "Automate MySQL databases backups.",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -8,7 +10,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "aws/aws-sdk-php": "^3.190",
-        "composer/package-versions-deprecated": "1.11.99.2",
+        "composer/package-versions-deprecated": "^1.11.99.2",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-migrations-bundle": "^3.1",
