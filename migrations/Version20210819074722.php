@@ -24,4 +24,9 @@ final class Version20210819074722 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE user ADD roles LONGTEXT CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci` COMMENT \'(DC2Type:json)\', DROP role');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

@@ -63,7 +63,7 @@ class BackupService
 
         $backup->setContext($context)
             ->setBackupFile($uploadedFile)
-            ->setDb($database);
+            ->setDatabase($database);
 
         $this->manager->persist($backup);
         $this->manager->flush();
@@ -121,21 +121,21 @@ class BackupService
             $dsn = sprintf(
                 'mysql:host=%s;dbname=%s',
                 $database->getHost(),
-                $database->getDbName()
+                $database->getName()
             );
         } else {
             $dsn = sprintf(
                 'mysql:host=%s:%s;dbname=%s',
                 $database->getHost(),
                 $database->getPort(),
-                $database->getDbName()
+                $database->getName()
             );
         }
 
         return new Mysqldump(
             $dsn,
-            $database->getDbUser(),
-            $this->encryptor->decrypt($database->getDbPassword()),
+            $database->getUser(),
+            $this->encryptor->decrypt($database->getPassword()),
             [
                 'add-drop-table' => true,
             ]

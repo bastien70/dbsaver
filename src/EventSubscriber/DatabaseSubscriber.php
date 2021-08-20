@@ -40,7 +40,7 @@ class DatabaseSubscriber implements EventSubscriberInterface
 
         $user = $this->security->getUser();
         \assert($user instanceof User);
-        $entity->setUser($user);
+        $entity->setOwner($user);
     }
 
     public function beforeUpdatedEvent(BeforeEntityUpdatedEvent $event): void
@@ -56,9 +56,9 @@ class DatabaseSubscriber implements EventSubscriberInterface
 
     private function handleDatabasePasswordChange(Database $database): void
     {
-        if (null !== $database->getDbPlainPassword()) {
-            $database->setDbPassword($this->encryptor->encrypt($database->getDbPlainPassword()))
-                ->setDbPlainPassword(null);
+        if (null !== $database->getPlainPassword()) {
+            $database->setPassword($this->encryptor->encrypt($database->getPlainPassword()))
+                ->setPlainPassword(null);
         }
     }
 }

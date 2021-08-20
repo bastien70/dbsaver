@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\DatabaseRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,8 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`database`')]
 class Database implements \Stringable
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $host;
@@ -24,28 +24,28 @@ class Database implements \Stringable
     private ?int $port = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $db_user;
+    private string $user;
 
-    private ?string $db_plain_password = null;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $db_password;
+    private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $db_name;
+    private string $password;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $name;
 
     #[ORM\Column(type: 'integer')]
-    private int $max_backups;
+    private int $maxBackups;
 
-    #[ORM\OneToMany(mappedBy: 'db', targetEntity: Backup::class, cascade: ['remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'database', targetEntity: Backup::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $backups;
 
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $createdAt;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'dbases')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'databases')]
     #[ORM\JoinColumn(nullable: false)]
-    private User $user;
+    private User $owner;
 
     public function __construct()
     {
@@ -55,12 +55,7 @@ class Database implements \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->db_name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        return (string) $this->name;
     }
 
     public function getHost(): ?string
@@ -87,50 +82,50 @@ class Database implements \Stringable
         return $this;
     }
 
-    public function getDbUser(): ?string
+    public function getUser(): ?string
     {
-        return $this->db_user;
+        return $this->user;
     }
 
-    public function setDbUser(string $db_user): self
+    public function setUser(string $user): self
     {
-        $this->db_user = $db_user;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getDbPassword(): ?string
+    public function getPassword(): ?string
     {
-        return $this->db_password;
+        return $this->password;
     }
 
-    public function setDbPassword(string $db_password): self
+    public function setPassword(string $password): self
     {
-        $this->db_password = $db_password;
+        $this->password = $password;
 
         return $this;
     }
 
-    public function getDbName(): ?string
+    public function getName(): ?string
     {
-        return $this->db_name;
+        return $this->name;
     }
 
-    public function setDbName(string $db_name): self
+    public function setName(string $name): self
     {
-        $this->db_name = $db_name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getMaxBackups(): ?int
     {
-        return $this->max_backups;
+        return $this->maxBackups;
     }
 
-    public function setMaxBackups(int $max_backups): self
+    public function setMaxBackups(int $maxBackups): self
     {
-        $this->max_backups = $max_backups;
+        $this->maxBackups = $maxBackups;
 
         return $this;
     }
@@ -147,7 +142,7 @@ class Database implements \Stringable
     {
         if (!$this->backups->contains($backup)) {
             $this->backups[] = $backup;
-            $backup->setDb($this);
+            $backup->setDatabase($this);
         }
 
         return $this;
@@ -155,24 +150,21 @@ class Database implements \Stringable
 
     public function removeBackup(Backup $backup): self
     {
-        if ($this->backups->removeElement($backup)) {
-            // set the owning side to null (unless already changed)
-            if ($backup->getDb() === $this) {
-                $backup->setDb(null);
-            }
+        if ($this->backups->removeElement($backup) && $backup->getDatabase() === $this) {
+            $backup->setDatabase(null);
         }
 
         return $this;
     }
 
-    public function getDbPlainPassword(): ?string
+    public function getPlainPassword(): ?string
     {
-        return $this->db_plain_password;
+        return $this->plainPassword;
     }
 
-    public function setDbPlainPassword(?string $db_plain_password): self
+    public function setPlainPassword(?string $plainPassword): self
     {
-        $this->db_plain_password = $db_plain_password;
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
@@ -189,14 +181,14 @@ class Database implements \Stringable
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getOwner(): ?User
     {
-        return $this->user;
+        return $this->owner;
     }
 
-    public function setUser(?User $user): self
+    public function setOwner(?User $owner): self
     {
-        $this->user = $user;
+        $this->owner = $owner;
 
         return $this;
     }

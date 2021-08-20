@@ -40,7 +40,7 @@ class BackupVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         return match ($attribute) {
-            self::CAN_SHOW_BACKUP => $subject->getDb()->getUser()->getId() === $user->getId(),
+            self::CAN_SHOW_BACKUP => $subject->getDatabase()->getOwner()->getId() === $user->getId(),
             default => false,
         };
     }
