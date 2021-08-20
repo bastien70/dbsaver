@@ -22,7 +22,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->login(1);
     }
 
-    private function login(int $userId): void
+    protected function login(int $userId): void
     {
         $user = self::$client->getContainer()->get('doctrine.orm.entity_manager')
             ->getRepository(User::class)->find($userId);

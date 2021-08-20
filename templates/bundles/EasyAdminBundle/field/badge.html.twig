@@ -1,0 +1,22 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% set styles = '' %}
+
+{% if field.customOptions.get('badge_background_color') != null %}
+    {% set styles = styles ~ 'background-color:' ~ field.customOptions.get('badge_background_color') ~ ';' %}
+{% endif %}
+
+{% if field.customOptions.get('badge_font_size') != null %}
+    {% set styles = styles ~ 'font-size:' ~ field.customOptions.get('badge_font_size') ~ ';'  %}
+{% endif %}
+
+<span
+        class="badge
+            {% if field.customOptions.get('badge_rounded') %} badge-pill {% endif %}
+            {% if field.customOptions.get('badge_rounded') %} text-{{ field.customOptions.get('badge_text_class') }} {% endif %}
+            badge-{{ field.customOptions.get('badge_class') }}"
+        style="{{ styles }}">
+    {{ field.formattedValue }}
+</span>

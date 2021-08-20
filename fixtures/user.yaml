@@ -3,3 +3,7 @@ App\Entity\User:
         email: <generateEmailAddressForUser(<current()>)>
         password: <encodePassword(@self, 'test')>
         role: <randomElement(['ROLE_USER', 'ROLE_ADMIN'])>
+    user__{3..4}:
+        email: <generateEmailAddressForUser(<current()>)>
+        password: <encodePassword(@self, 'test')>
+        role: 'ROLE_USER'

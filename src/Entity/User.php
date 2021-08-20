@@ -33,6 +33,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\Column(type: 'string')]
     private string $password;
 
+    private ?string $plainPassword = null;
+
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Database::class, orphanRemoval: true)]
     private Collection $databases;
 
@@ -128,7 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     /**
@@ -161,5 +163,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     public static function getAvailableRoles(): array
     {
         return [self::ROLE_USER, self::ROLE_ADMIN];
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getDatabasesCount(): int
+    {
+        return \count($this->databases);
     }
 }

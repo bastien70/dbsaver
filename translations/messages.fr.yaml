@@ -78,15 +78,24 @@ menu:
 user:
     index:
         title: Liste des utilisateurs
+    edit:
+        title: Modifier un utilisateur
+    new:
+        title: Nouvel utilisateur
+    action:
+        new: Ajouter un utilisateur
+        edit: Modifier
+        delete: Supprimer
     admin_label:
         singular: Utilisateur
         plural: Utilisateurs
     field:
         email: Adresse email
         password: Mot de passe
-        roles: Rôles
+        role: Rôle
+        databases: Bases de données
     choices:
-        roles:
+        role:
             user: Utilisateur
             admin: Administrateur
 
