@@ -73,3 +73,18 @@ menu:
     databases: Databases
     backups: Backups
     switch_locale: Locale
+
+user:
+    index:
+        title: Users list
+    admin_label:
+        singular: User
+        plural: Users
+    field:
+        email: Email address
+        password: Password
+        roles: Roles
+    choices:
+        roles:
+            user: User
+            admin: Admin

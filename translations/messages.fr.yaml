@@ -72,4 +72,21 @@ menu:
     home: Accueil
     databases: Bases de données
     backups: Sauvegardes
+    users: Utilisateurs
     switch_locale: Langue
+
+user:
+    index:
+        title: Liste des utilisateurs
+    admin_label:
+        singular: Utilisateur
+        plural: Utilisateurs
+    field:
+        email: Adresse email
+        password: Mot de passe
+        roles: Rôles
+    choices:
+        roles:
+            user: Utilisateur
+            admin: Administrateur
+
