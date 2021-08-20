@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,11 +16,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable
 {
+    use PrimaryKeyTrait;
+
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
-
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: Types::INTEGER)]
-    private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private string $email;
@@ -33,22 +33,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\Column(type: 'string')]
     private string $password;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Database::class, orphanRemoval: true)]
-    private Collection $dbases;
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Database::class, orphanRemoval: true)]
+    private Collection $databases;
 
     public function __construct()
     {
-        $this->dbases = new ArrayCollection();
+        $this->databases = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         return (string) $this->email;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEmail(): ?string
@@ -130,7 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -139,28 +134,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     /**
      * @return Collection|Database[]
      */
-    public function getDbases(): Collection
+    public function getDatabases(): Collection
     {
-        return $this->dbases;
+        return $this->databases;
     }
 
-    public function addDbase(Database $dbase): self
+    public function addDatabase(Database $database): self
     {
-        if (!$this->dbases->contains($dbase)) {
-            $this->dbases[] = $dbase;
-            $dbase->setUser($this);
+        if (!$this->databases->contains($database)) {
+            $this->databases[] = $database;
+            $database->setOwner($this);
         }
 
         return $this;
     }
 
-    public function removeDbase(Database $dbase): self
+    public function removeDatabase(Database $database): self
     {
-        if ($this->dbases->removeElement($dbase)) {
-            // set the owning side to null (unless already changed)
-            if ($dbase->getUser() === $this) {
-                $dbase->setUser(null);
-            }
+        if ($this->databases->removeElement($database) && $database->getOwner() === $this) {
+            $database->setOwner(null);
         }
 
         return $this;

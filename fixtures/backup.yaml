@@ -2,4 +2,4 @@ App\Entity\Backup:
     backup__{1..30}:
         context: <randomElement(['manual', 'automatic'])>
         backupFile: <getSqlFile()>
-        db: '@database__*'
+        database: '@database__*'

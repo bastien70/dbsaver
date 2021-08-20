@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\BackupRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,11 +17,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: BackupRepository::class)]
 class Backup implements \Stringable
 {
+    use PrimaryKeyTrait;
+
     public const CONTEXT_MANUAL = 'manual';
     public const CONTEXT_AUTOMATIC = 'automatic';
-
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
-    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $backupFileName = null;
@@ -56,7 +56,7 @@ class Backup implements \Stringable
 
     #[ORM\ManyToOne(targetEntity: Database::class, inversedBy: 'backups')]
     #[ORM\JoinColumn(nullable: false)]
-    private Database $db;
+    private Database $database;
 
     public function __construct()
     {
@@ -65,12 +65,7 @@ class Backup implements \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->db->getDbName() . ' - ' . $this->createdAt->format('d/m/Y H:i:s');
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        return (string) $this->database->getName() . ' - ' . $this->createdAt->format('d/m/Y H:i:s');
     }
 
     public function getBackupFileName(): ?string
@@ -193,14 +188,14 @@ class Backup implements \Stringable
         return $this;
     }
 
-    public function getDb(): ?Database
+    public function getDatabase(): ?Database
     {
-        return $this->db;
+        return $this->database;
     }
 
-    public function setDb(?Database $db): self
+    public function setDatabase(?Database $database): self
     {
-        $this->db = $db;
+        $this->database = $database;
 
         return $this;
     }
