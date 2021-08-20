@@ -40,7 +40,7 @@ class DatabaseVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         return match ($attribute) {
-            self::CAN_SHOW_DATABASE => $subject->getUser()->getId() === $user->getId(),
+            self::CAN_SHOW_DATABASE => $subject->getOwner()->getId() === $user->getId(),
             default => false,
         };
     }

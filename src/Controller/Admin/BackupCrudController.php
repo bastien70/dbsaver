@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Backup;
 use App\Entity\User;
+use App\Security\Voter\BackupVoter;
 use App\Service\BackupService;
 use App\Service\S3Helper;
 use Doctrine\ORM\QueryBuilder;
@@ -50,7 +51,7 @@ final class BackupCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(EntityFilter::new('db', 'backup.field.database'))
+            ->add(EntityFilter::new('database', 'backup.field.database'))
             ->add(DateTimeFilter::new('createdAt', 'backup.field.created_at'))
             ->add(ChoiceFilter::new('context', 'backup.field.context')->setChoices(
                 [
@@ -64,9 +65,9 @@ final class BackupCrudController extends AbstractCrudController
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         return $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
-            ->join('entity.db', 'db')
-            ->join('db.user', 'u')
-            ->andWhere('u.id = :user')
+            ->join('entity.database', 'database')
+            ->join('database.owner', 'owner')
+            ->andWhere('owner.id = :user')
             ->setParameter('user', $this->getUser()->getId())
             ->orderBy('entity.createdAt', 'DESC');
     }
@@ -90,7 +91,7 @@ final class BackupCrudController extends AbstractCrudController
 
         return $actions
             ->add(Crud::PAGE_INDEX, $downloadBackupAction)
-            ->setPermission('downloadBackup', 'can_show_backup')
+            ->setPermission('downloadBackup', BackupVoter::CAN_SHOW_BACKUP)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ->remove(Crud::PAGE_INDEX, Action::EDIT)
         ;
@@ -109,7 +110,7 @@ final class BackupCrudController extends AbstractCrudController
     {
         yield DateTimeField::new('createdAt', 'backup.field.created_at')
             ->setFormat('dd-MM-Y HH:mm');
-        yield TextField::new('db.db_name', 'backup.field.database');
+        yield TextField::new('database.name', 'backup.field.database');
         yield TextField::new('context', 'backup.field.context')->formatValue(function (string $context): string {
             return $this->get(TranslatorInterface::class)->trans('backup.choices.context.' . $context);
         });

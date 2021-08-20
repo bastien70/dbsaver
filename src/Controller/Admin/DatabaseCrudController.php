@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Backup;
 use App\Entity\Database;
 use App\Entity\User;
+use App\Security\Voter\DatabaseVoter;
 use App\Service\BackupService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -50,11 +51,11 @@ final class DatabaseCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(TextFilter::new('db_name', 'database.field.name'))
+            ->add(TextFilter::new('name', 'database.field.name'))
             ->add(TextFilter::new('host', 'database.field.host'))
             ->add(NumericFilter::new('port', 'database.field.port'))
-            ->add(TextFilter::new('db_user', 'database.field.user'))
-            ->add(NumericFilter::new('max_backups', 'database.field.max_backups'))
+            ->add(TextFilter::new('user', 'database.field.user'))
+            ->add(NumericFilter::new('maxBackups', 'database.field.max_backups'))
             ->add(DateTimeFilter::new('createdAt', 'database.field.created_at'))
         ;
     }
@@ -62,8 +63,8 @@ final class DatabaseCrudController extends AbstractCrudController
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         return $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
-            ->join('entity.user', 'u')
-            ->andWhere('u.id = :user')
+            ->join('entity.owner', 'owner')
+            ->andWhere('owner.id = :user')
             ->setParameter('user', $this->getUser()->getId())
             ->orderBy('entity.createdAt', 'DESC');
     }
@@ -93,7 +94,7 @@ final class DatabaseCrudController extends AbstractCrudController
             ->setAction(Action::INDEX)
             ->setEntityId(null)
             ->set('filters', [
-                'db' => [
+                'database' => [
                     'comparison' => '=',
                     'value' => (string) $database->getId(),
                 ],
@@ -114,8 +115,8 @@ final class DatabaseCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, $launchBackupAction)
             ->add(Crud::PAGE_INDEX, $showDatabaseBackupsAction)
-            ->setPermission('launchBackup', 'can_show_database')
-            ->setPermission('showDatabaseBackups', 'can_show_database')
+            ->setPermission('launchBackup', DatabaseVoter::CAN_SHOW_DATABASE)
+            ->setPermission('showDatabaseBackups', DatabaseVoter::CAN_SHOW_DATABASE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
                 return $action->setLabel('database.action.new');
@@ -139,15 +140,15 @@ final class DatabaseCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield TextField::new('db_name', 'database.field.name');
+        yield TextField::new('name', 'database.field.name');
         yield TextField::new('host', 'database.field.host');
         yield NumberField::new('port', 'database.field.port');
-        yield TextField::new('db_user', 'database.field.user');
-        yield TextField::new('db_plain_password', 'database.field.password')
+        yield TextField::new('user', 'database.field.user');
+        yield TextField::new('plainPassword', 'database.field.password')
             ->setHelp('database.help.password')
             ->onlyOnForms()
             ->setRequired(true);
-        yield NumberField::new('max_backups', 'database.field.max_backups');
+        yield NumberField::new('maxBackups', 'database.field.max_backups');
 
         yield CollectionField::new('backups', 'database.field.backups')
             ->hideOnForm();
