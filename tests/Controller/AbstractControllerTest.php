@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractControllerTest extends WebTestCase
 {
+    public const USER_ROLE_USER = 1;
+    public const USER_ROLE_ADMIN = 2;
     protected static KernelBrowser $client;
 
     protected function setUp(): void
@@ -17,12 +19,17 @@ abstract class AbstractControllerTest extends WebTestCase
         static::$client = static::createClient();
     }
 
-    protected function loginAsUser1(): void
+    protected function loginAsUser(): void
     {
-        $this->login(1);
+        $this->login(self::USER_ROLE_USER);
     }
 
-    protected function login(int $userId): void
+    protected function loginAsAdmin(): void
+    {
+        $this->login(self::USER_ROLE_ADMIN);
+    }
+
+    private function login(int $userId): void
     {
         $user = self::$client->getContainer()->get('doctrine.orm.entity_manager')
             ->getRepository(User::class)->find($userId);

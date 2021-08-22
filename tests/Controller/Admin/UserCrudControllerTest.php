@@ -18,7 +18,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         self::assertResponseRedirects('/');
 
         // Simple user with ROLE_USER
-        $this->login(3);
+        $this->loginAsUser();
         self::$client->request('GET', $url);
         self::assertResponseStatusCodeSame(
             Response::HTTP_FORBIDDEN,
@@ -28,13 +28,13 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
 
     public function testEditWithSimpleUser(): void
     {
-        $url = $this->getActionUrl(Action::EDIT, 1);
+        $url = $this->getActionUrl(Action::EDIT, self::USER_ROLE_ADMIN);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/');
 
         // Simple user with ROLE_USER
-        $this->login(3);
+        $this->loginAsUser();
         self::$client->request('GET', $url);
         self::assertResponseStatusCodeSame(
             Response::HTTP_FORBIDDEN,
@@ -44,13 +44,13 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
 
     public function testEditWithAdminUser(): void
     {
-        $url = $this->getActionUrl(Action::EDIT, 3);
+        $url = $this->getActionUrl(Action::EDIT, self::USER_ROLE_USER);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/');
 
         // Simple user with ROLE_ADMIN
-        $this->login(1);
+        $this->loginAsAdmin();
         self::$client->request('GET', $url);
         self::assertResponseIsSuccessful('User with ROLE_ADMIN could edit another User');
     }

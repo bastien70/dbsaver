@@ -1,8 +1,15 @@
 App\Entity\Database:
-    database__{1..10}:
+    database__user_{1..5}:
         host: localhost
         user: <userName()>
         password: <word()>
         name: <word()>
         maxBackups: <numberBetween(5, 20)>
-        owner: '@user__*'
+        owner: '@user'
+    database__admin_{1..5}:
+        host: localhost
+        user: <userName()>
+        password: <word()>
+        name: <word()>
+        maxBackups: <numberBetween(5, 20)>
+        owner: '@admin'

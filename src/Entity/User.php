@@ -174,9 +174,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     {
         $this->plainPassword = $plainPassword;
     }
-
-    public function getDatabasesCount(): int
-    {
-        return \count($this->databases);
-    }
 }

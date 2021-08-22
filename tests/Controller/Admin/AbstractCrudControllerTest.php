@@ -25,7 +25,7 @@ abstract class AbstractCrudControllerTest extends AbstractControllerTest
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/');
 
-        $this->loginAsUser1();
+        $this->loginAsUser();
         self::$client->request('GET', $url);
         self::assertResponseIsSuccessful();
     }
@@ -37,7 +37,7 @@ abstract class AbstractCrudControllerTest extends AbstractControllerTest
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/');
 
-        $this->loginAsUser1();
+        $this->loginAsAdmin();
         self::$client->request('GET', $url);
         self::assertResponseIsSuccessful();
     }
