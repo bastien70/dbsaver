@@ -4,12 +4,45 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin;
 
+use App\Controller\Admin\DashboardController;
 use App\Controller\Admin\UserCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserCrudControllerTest extends AbstractCrudControllerTest
 {
+    public function testCountMenuLinksWithSimpleUser(): void
+    {
+        self::$client->request('GET', '/');
+        $this->loginAsUser();
+
+        $url = $this->adminUrlGenerator->setController(DashboardController::class)
+            ->setAction(Action::INDEX)
+            ->generateUrl();
+
+        $crawler = self::$client->request('GET', $url);
+        self::assertResponseIsSuccessful();
+
+        $menuItems = $crawler->filter('#main-menu')->filter('.menu-item');
+        self::assertCount(6, $menuItems, 'Dashboard should contains 6 menu items with ROLE_USER');
+    }
+
+    public function testCountMenuLinksWithAdminUser(): void
+    {
+        self::$client->request('GET', '/');
+        $this->loginAsAdmin();
+
+        $url = $this->adminUrlGenerator->setController(DashboardController::class)
+            ->setAction(Action::INDEX)
+            ->generateUrl();
+
+        $crawler = self::$client->request('GET', $url);
+        self::assertResponseIsSuccessful();
+
+        $menuItems = $crawler->filter('#main-menu')->filter('.menu-item');
+        self::assertCount(7, $menuItems, 'Dashboard should contains 7 menu items with ROLE_ADMIN');
+    }
+
     public function testNewWithSimpleUser(): void
     {
         $url = $this->getActionUrl(Action::NEW);
@@ -26,7 +59,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         );
     }
 
-    public function testNewWithSimpleAdmin(): void
+    public function testNewWithAdmin(): void
     {
         $url = $this->getActionUrl(Action::NEW);
 

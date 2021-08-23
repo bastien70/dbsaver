@@ -9,7 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 abstract class AbstractCrudControllerTest extends AbstractControllerTest
 {
-    private AdminUrlGenerator $adminUrlGenerator;
+    protected AdminUrlGenerator $adminUrlGenerator;
 
     protected function setUp(): void
     {
