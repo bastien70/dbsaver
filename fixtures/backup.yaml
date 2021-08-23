@@ -1,9 +1,10 @@
 App\Entity\Backup:
-    backup__user_{1..15}:
+    base_backup (template):
         context: <randomElement(['manual', 'automatic'])>
         backupFile: <getSqlFile()>
+
+    backup__user_{1..15} (extends base_backup):
         database: '@database__user_*'
-    backup__admin_{1..15}:
-        context: <randomElement(['manual', 'automatic'])>
-        backupFile: <getSqlFile()>
+
+    backup__admin_{1..15} (extends base_backup):
         database: '@database__admin_*'
