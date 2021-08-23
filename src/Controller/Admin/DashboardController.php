@@ -56,7 +56,8 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('menu.home', 'fa fa-home');
         yield MenuItem::linkToCrud('menu.databases', 'fas fa-database', Database::class);
         yield MenuItem::linkToCrud('menu.backups', 'fas fa-shield-alt', Backup::class);
-        yield MenuItem::linkToCrud('menu.users', 'fas fa-users', User::class);
+        yield MenuItem::linkToCrud('menu.users', 'fas fa-users', User::class)
+            ->setPermission(User::ROLE_ADMIN);
 
         $localeLinks = array_map(static function (string $locale): RouteMenuItem {
             return MenuItem::linkToRoute(ucfirst(Languages::getName($locale, $locale)), null, 'admin_switch_locale', ['locale' => $locale]);

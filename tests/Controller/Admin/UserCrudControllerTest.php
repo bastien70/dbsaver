@@ -26,9 +26,22 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         );
     }
 
+    public function testNewWithSimpleAdmin(): void
+    {
+        $url = $this->getActionUrl(Action::NEW);
+
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects('/');
+
+        // Simple user with ROLE_USER
+        $this->loginAsAdmin();
+        self::$client->request('GET', $url);
+        self::assertResponseIsSuccessful('User with ROLE_ADMIN could add another User');
+    }
+
     public function testEditWithSimpleUser(): void
     {
-        $url = $this->getActionUrl(Action::EDIT, self::USER_ROLE_ADMIN);
+        $url = $this->getActionUrl(Action::EDIT, self::USER_ROLE_USER);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/');
