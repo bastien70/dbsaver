@@ -75,6 +75,12 @@ menu:
     users: Utilisateurs
     switch_locale: Langue
 
+security:
+    login:
+        email: Adresse email
+        password: Mot de passe
+        submit: Connexion
+
 user:
     index:
         title: Liste des utilisateurs
