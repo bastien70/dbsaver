@@ -72,6 +72,7 @@ final class DatabaseCrudController extends AbstractCrudController
     public function launchBackupAction(AdminContext $context): Response
     {
         $database = $context->getEntity()->getInstance();
+        $this->denyAccessUnlessGranted(DatabaseVoter::CAN_SHOW_DATABASE, $database);
 
         try {
             $this->backupService->backup($database, Backup::CONTEXT_MANUAL);
@@ -89,6 +90,7 @@ final class DatabaseCrudController extends AbstractCrudController
     {
         /** @var Database $database */
         $database = $context->getEntity()->getInstance();
+        $this->denyAccessUnlessGranted(DatabaseVoter::CAN_SHOW_DATABASE, $database);
 
         $url = $this->adminUrlGenerator->setController(BackupCrudController::class)
             ->setAction(Action::INDEX)
@@ -115,6 +117,8 @@ final class DatabaseCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, $launchBackupAction)
             ->add(Crud::PAGE_INDEX, $showDatabaseBackupsAction)
+            ->setPermission(Action::DELETE, DatabaseVoter::CAN_SHOW_DATABASE)
+            ->setPermission(Action::EDIT, DatabaseVoter::CAN_SHOW_DATABASE)
             ->setPermission('launchBackup', DatabaseVoter::CAN_SHOW_DATABASE)
             ->setPermission('showDatabaseBackups', DatabaseVoter::CAN_SHOW_DATABASE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
