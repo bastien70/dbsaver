@@ -42,7 +42,7 @@ final class SecurityControllerTest extends AbstractControllerTest
         self::assertResponseIsSuccessful();
         self::$client->enableProfiler();
 
-        $form = $crawler->selectButton('Connexion')->form();
+        $form = $crawler->selectButton('Log in')->form();
         $form['email'] = $email;
         $form['password'] = $password;
         self::$client->submit($form);
