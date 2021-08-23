@@ -1,5 +1,11 @@
 App\Entity\User:
-    user__{1..2}:
-        email: <generateEmailAddressForUser(<current()>)>
+    base_user (template):
         password: <encodePassword(@self, 'test')>
-        role: <randomElement(['ROLE_USER', 'ROLE_ADMIN'])>
+
+    user (extends base_user):
+        email: 'user@test.com'
+        role: 'ROLE_USER'
+
+    admin (extends base_user):
+        email: 'admin@test.com'
+        role: 'ROLE_ADMIN'

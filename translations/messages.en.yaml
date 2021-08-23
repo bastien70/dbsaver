@@ -72,4 +72,29 @@ menu:
     home: Home
     databases: Databases
     backups: Backups
+    users: Users
     switch_locale: Locale
+
+user:
+    index:
+        title: Users list
+    edit:
+        title: Edit user
+    new:
+        title: New user
+    action:
+        new: Add user
+        edit: Edit user
+        delete: Delete user
+    admin_label:
+        singular: User
+        plural: Users
+    field:
+        email: Email address
+        password: Password
+        role: Role
+        databases: Databases
+    choices:
+        role:
+            user: User
+            admin: Admin

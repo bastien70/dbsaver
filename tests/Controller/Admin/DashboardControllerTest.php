@@ -13,7 +13,7 @@ final class DashboardControllerTest extends AbstractControllerTest
         self::$client->request('GET', '/dbsaver');
         self::assertResponseRedirects('/');
 
-        $this->loginAsUser1();
+        $this->loginAsUser();
         self::$client->request('GET', '/dbsaver');
         self::assertResponseIsSuccessful();
     }
@@ -23,7 +23,7 @@ final class DashboardControllerTest extends AbstractControllerTest
         self::$client->request('GET', '/dbsaver/switch-locale/en');
         self::assertResponseRedirects('/');
 
-        $this->loginAsUser1();
+        $this->loginAsUser();
         self::$client->request('GET', '/dbsaver/switch-locale/fr');
         self::assertResponseRedirects('/dbsaver');
         $crawler = self::$client->followRedirect();

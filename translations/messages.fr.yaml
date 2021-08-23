@@ -72,4 +72,30 @@ menu:
     home: Accueil
     databases: Bases de données
     backups: Sauvegardes
+    users: Utilisateurs
     switch_locale: Langue
+
+user:
+    index:
+        title: Liste des utilisateurs
+    edit:
+        title: Modifier un utilisateur
+    new:
+        title: Nouvel utilisateur
+    action:
+        new: Ajouter un utilisateur
+        edit: Modifier
+        delete: Supprimer
+    admin_label:
+        singular: Utilisateur
+        plural: Utilisateurs
+    field:
+        email: Adresse email
+        password: Mot de passe
+        role: Rôle
+        databases: Bases de données
+    choices:
+        role:
+            user: Utilisateur
+            admin: Administrateur
+

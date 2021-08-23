@@ -17,10 +17,10 @@ final class SecurityControllerTest extends AbstractControllerTest
         $this->assertFailedLogin('user100@test.com', 'test');
 
         // Existing user, wrong password
-        $this->assertFailedLogin('user1@test.com', 'pass');
+        $this->assertFailedLogin('user@test.com', 'pass');
 
         // Login ok
-        $this->submitLogin('user1@test.com', 'test');
+        $this->submitLogin('user@test.com', 'test');
         self::assertResponseRedirects();
         self::assertTrue(self::getSecurityDataCollector()->isAuthenticated());
 
