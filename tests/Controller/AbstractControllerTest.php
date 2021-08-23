@@ -12,6 +12,7 @@ abstract class AbstractControllerTest extends WebTestCase
 {
     public const USER_ROLE_USER = 1;
     public const USER_ROLE_ADMIN = 2;
+
     protected static KernelBrowser $client;
 
     protected function setUp(): void
