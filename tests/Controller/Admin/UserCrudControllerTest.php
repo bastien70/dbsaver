@@ -101,6 +101,30 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         self::assertResponseIsSuccessful('User with ROLE_ADMIN could edit another User');
     }
 
+    public function testDeleteWithAdminUser(): void
+    {
+        $url = $this->getActionUrl(Action::DELETE, self::USER_ROLE_USER);
+
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects('/');
+
+        $this->loginAsAdmin();
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects();
+    }
+
+    public function testDeleteWithSimpleUser(): void
+    {
+        $url = $this->getActionUrl(Action::DELETE, self::USER_ROLE_ADMIN);
+
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects('/');
+
+        $this->loginAsUser();
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects();
+    }
+
     protected function getControllerClass(): string
     {
         return UserCrudController::class;

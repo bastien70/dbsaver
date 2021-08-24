@@ -37,7 +37,7 @@ class Database implements \Stringable
     #[ORM\Column(type: 'integer')]
     private int $maxBackups;
 
-    #[ORM\OneToMany(mappedBy: 'database', targetEntity: Backup::class, cascade: ['remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'database', targetEntity: Backup::class, orphanRemoval: true)]
     private Collection $backups;
 
     #[ORM\Column(type: 'datetime')]
