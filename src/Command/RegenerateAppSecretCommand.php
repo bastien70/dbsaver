@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use sixlive\DotenvEditor\DotenvEditor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'app:regenerate-app-secret',
     description: 'Regenerate APP_SECRET',
 )]
-final class RegenerateAppSecretCommand extends Command
+final class RegenerateAppSecretCommand extends AbstractDotEnvCommand
 {
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -27,13 +26,7 @@ final class RegenerateAppSecretCommand extends Command
             $secret .= $a[random_int(0, 15)];
         }
 
-        $filePath = __DIR__ . '/../../.env.local';
-        if (!file_exists($filePath)) {
-            touch($filePath);
-        }
-
-        $editor = new DotenvEditor();
-        $editor->load($filePath);
+        $editor = $this->getDotenvEditor($input);
         $editor->set('APP_SECRET', $secret);
         $editor->save();
 
