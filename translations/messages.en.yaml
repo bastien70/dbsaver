@@ -49,6 +49,7 @@ database:
         new: Add a database
         launch_backup: Launch backup
         show_database_backups: View backups
+        check_connection: Check connection
     field:
         host: Host
         user: User
@@ -67,6 +68,9 @@ database:
         manual_backup: Manual backup
         flash_success: Backup successfully created!
         flash_error: 'An error happened during the backup: "%message%".'
+    check_connection:
+        flash_success: Database "%database%" configuration is ok.
+        flash_error: 'An error happened during database "%database%" connection: "%error%".'
 
 menu:
     home: Home

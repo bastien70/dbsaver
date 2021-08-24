@@ -29,6 +29,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -40,6 +41,7 @@ final class DatabaseCrudController extends AbstractCrudController
     public function __construct(
         private BackupService $backupService,
         private AdminUrlGenerator $adminUrlGenerator,
+        private Encryptor $encryptor,
     ) {
     }
 
@@ -106,6 +108,43 @@ final class DatabaseCrudController extends AbstractCrudController
         return $this->redirect($url);
     }
 
+    public function checkConnection(AdminContext $context): Response
+    {
+        /** @var Database $database */
+        $database = $context->getEntity()->getInstance();
+        $this->denyAccessUnlessGranted(DatabaseVoter::CAN_SHOW_DATABASE, $database);
+
+        if (null === $database->getPort()) {
+            $dsn = sprintf(
+                'mysql:host=%s;dbname=%s',
+                $database->getHost(),
+                $database->getName()
+            );
+        } else {
+            $dsn = sprintf(
+                'mysql:host=%s:%s;dbname=%s',
+                $database->getHost(),
+                $database->getPort(),
+                $database->getName()
+            );
+        }
+
+        try {
+            $connection = new \PDO($dsn, $database->getUser(), $this->encryptor->decrypt($database->getPassword()));
+            $connection = null;
+
+            $this->addFlash('success', new TranslatableMessage('database.check_connection.flash_success', ['%database%' => $database->getName()]));
+        } catch (\Exception $e) {
+            $this->addFlash('danger', new TranslatableMessage('database.check_connection.flash_error', ['%database%' => $database->getName(), '%error%' => $e->getMessage()]));
+        }
+
+        $url = $this->adminUrlGenerator->setController(self::class)
+            ->setAction(Action::INDEX)
+            ->generateUrl();
+
+        return $this->redirect($url);
+    }
+
     public function configureActions(Actions $actions): Actions
     {
         $launchBackupAction = Action::new('launchBackup', 'database.action.launch_backup')
@@ -114,13 +153,18 @@ final class DatabaseCrudController extends AbstractCrudController
         $showDatabaseBackupsAction = Action::new('showDatabaseBackups', 'database.action.show_database_backups')
             ->linkToCrudAction('showDatabaseBackupsAction');
 
+        $checkConnectionAction = Action::new('checkConnection', 'database.action.check_connection')
+            ->linkToCrudAction('checkConnection');
+
         return $actions
             ->add(Crud::PAGE_INDEX, $launchBackupAction)
             ->add(Crud::PAGE_INDEX, $showDatabaseBackupsAction)
+            ->add(Crud::PAGE_INDEX, $checkConnectionAction)
             ->setPermission(Action::DELETE, DatabaseVoter::CAN_SHOW_DATABASE)
             ->setPermission(Action::EDIT, DatabaseVoter::CAN_SHOW_DATABASE)
             ->setPermission('launchBackup', DatabaseVoter::CAN_SHOW_DATABASE)
             ->setPermission('showDatabaseBackups', DatabaseVoter::CAN_SHOW_DATABASE)
+            ->setPermission('checkConnection', DatabaseVoter::CAN_SHOW_DATABASE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
                 return $action->setLabel('database.action.new');

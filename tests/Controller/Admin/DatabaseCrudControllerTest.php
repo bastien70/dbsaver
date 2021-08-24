@@ -40,6 +40,25 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
         self::assertResponseRedirects();
     }
 
+    public function testCheckConnection(): void
+    {
+        $url = $this->getActionUrl('checkConnection', 1);
+
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects('/');
+
+        $this->loginAsAdmin();
+        self::$client->request('GET', $url);
+        self::assertResponseStatusCodeSame(403);
+
+        $this->loginAsUser();
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects();
+        // We expect an error as parameters are randomized with fixtures.
+        $crawler = self::$client->followRedirect();
+        self::assertCount(1, $crawler->filter('.alert-danger'));
+    }
+
     public function testDelete(): void
     {
         $url = $this->getActionUrl('delete', 1);
