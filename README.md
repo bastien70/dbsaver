@@ -28,6 +28,7 @@ Ceux-ci peuvent être sauvegardés en <b>local</b> ou sur le cloud d'Amazon <b>A
 1. [Utiliser l'application](#app)
 1. [Licence](#licence)
 1. [Contribuer](#contribute)
+1. [Changelog](#changelog)
     
     
 ## Pré-requis <a name="preRequis"></a>
@@ -195,3 +196,7 @@ Avant de faire une pull request, n'oubliez pas de lancer les vérifications d'us
 ```bash
 composer ci
 ```
+
+## Changelog <a name="changelog"></a>
+
+Voir les [changelog](CHANGELOG.md)
