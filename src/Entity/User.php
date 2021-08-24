@@ -35,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     private ?string $plainPassword = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Database::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Database::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $databases;
 
     public function __construct()
