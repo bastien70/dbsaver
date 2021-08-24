@@ -10,10 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable
 {
     use PrimaryKeyTrait;
@@ -22,9 +25,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    #[Assert\Length(max: 180)]
     private string $email;
 
     #[ORM\Column(type: Types::STRING)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: 'getAvailableRoles')]
     private string $role;
 
     /**
@@ -33,6 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\Column(type: 'string')]
     private string $password;
 
+    #[Assert\NotBlank(groups: ['Create'])]
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Database::class, orphanRemoval: true)]
