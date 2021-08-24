@@ -59,7 +59,7 @@ database:
         created_at: Ajoutée le
         backups: Sauvegardes
     help:
-        password: Les mots de passe seront cryptés et n'apparaîtront pas en clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour lancer les sauvegardes. Vous devez renseigner ce champ à chaque modification.
+        password: Les mots de passe seront cryptés et n'apparaîtront pas en clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour lancer les sauvegardes.
     admin_label:
         singular: Base de données
         plural: Bases de données

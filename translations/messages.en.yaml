@@ -59,7 +59,7 @@ database:
         created_at: Created at
         backups: Backups
     help:
-        password: Passwords are hashed and aren't displayed unhashed. They will be unhashed only when necessary to launch backups. You have to fill this field at each update.
+        password: Passwords are hashed and aren't displayed unhashed. They will be unhashed only when necessary to launch backups.
     admin_label:
         singular: Database
         plural: Databases
