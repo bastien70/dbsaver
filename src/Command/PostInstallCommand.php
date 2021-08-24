@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use sixlive\DotenvEditor\DotenvEditor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     name: 'app:post-install',
     description: 'Configure the application after install.',
 )]
-final class PostInstallCommand extends Command
+final class PostInstallCommand extends AbstractDotEnvCommand
 {
     public function __construct(private ValidatorInterface $validator, private array $enabledLocales)
     {
@@ -36,13 +35,7 @@ final class PostInstallCommand extends Command
         });
         $defaultLocale = $io->choice('What locale should be the default one?', $this->enabledLocales);
 
-        $filePath = __DIR__ . '/../../.env.local';
-        if (!file_exists($filePath)) {
-            touch($filePath);
-        }
-
-        $editor = new DotenvEditor();
-        $editor->load($filePath);
+        $editor = $this->getDotenvEditor($input);
         $editor->set('DATABASE_URL', $databaseUrl);
         $editor->set('DEFAULT_LOCALE', $defaultLocale);
         $editor->save();

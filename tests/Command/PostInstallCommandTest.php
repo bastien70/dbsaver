@@ -11,6 +11,20 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class PostInstallCommandTest extends KernelTestCase
 {
+    public function testExecute(): void
+    {
+        $kernel = self::createKernel();
+        $application = new Application($kernel);
+
+        $command = $application->find('app:post-install');
+        $commandTester = new CommandTester($command);
+        $commandTester->setInputs(['mysql://dev:dev@127.0.0.1:3306/dbsaver_test', 'en']);
+
+        $commandTester->execute(['command' => $command->getName()]);
+        $output = $commandTester->getDisplay();
+        self::assertStringContainsString('Parameters have been saved in .env.local file.', $output);
+    }
+
     /**
      * @dataProvider provideInvalidCases
      */
