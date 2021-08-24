@@ -44,7 +44,7 @@ class Database implements \Stringable
     private ?\DateTimeInterface $createdAt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'databases')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
     private User $owner;
 
     public function __construct()
