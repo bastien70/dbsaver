@@ -102,5 +102,5 @@ user:
         databases: Databases
     choices:
         role:
-            user: User
-            admin: Admin
+            ROLE_USER: User
+            ROLE_ADMIN: Admin

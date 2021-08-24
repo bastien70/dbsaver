@@ -64,10 +64,7 @@ class UserCrudController extends AbstractCrudController
             ->onlyOnForms()
             ->setRequired(Crud::PAGE_NEW === $pageName);
         yield ChoiceField::new('role', 'user.field.role')
-            ->setChoices([
-                'user.choices.role.user' => User::ROLE_USER,
-                'user.choices.role.admin' => User::ROLE_ADMIN,
-            ]);
+            ->setChoices(array_combine(array_map(fn (string $role): string => 'user.choices.role.' . $role, User::getAvailableRoles()), User::getAvailableRoles()));
         yield BadgeField::new('databases', 'user.field.databases')
             ->formatValue(function ($value) {
                 return \count($value);
