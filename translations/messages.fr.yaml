@@ -49,6 +49,7 @@ database:
         new: Ajouter une base de données
         launch_backup: Lancer une sauvegarde
         show_database_backups: Voir les sauvegardes
+        check_connection: Vérifier la connexion
     field:
         host: Hôte
         user: Utilisateur
@@ -67,6 +68,9 @@ database:
         manual_backup: Sauvegarde manuelle
         flash_success: La sauvegarde a bien été créée !
         flash_error: 'Une erreur est survenue lors de la sauvegarde : "%message%".'
+    check_connection:
+        flash_success: La configuration de la base de données "%database%" est correcte.
+        flash_error: 'Une erreur est survenue lors de la connexion à la base de données "%database%" : "%error%".'
 
 menu:
     home: Accueil
