@@ -57,7 +57,7 @@ class Database implements \Stringable
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'databases')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
-    private User $owner;
+    private ?User $owner = null;
 
     public function __construct()
     {
