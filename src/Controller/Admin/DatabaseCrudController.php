@@ -139,6 +139,7 @@ final class DatabaseCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_NEW, 'database.new.title')
             ->setEntityLabelInPlural('database.admin_label.plural')
             ->setEntityLabelInSingular('database.admin_label.singular')
+            ->setFormOptions(['validation_groups' => ['Default', 'Create']], ['validation_groups' => ['Default']])
         ;
     }
 

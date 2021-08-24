@@ -29,7 +29,8 @@ class UserCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_NEW, 'user.new.title')
             ->setEntityLabelInPlural('user.admin_label.plural')
             ->setEntityLabelInSingular('user.admin_label.singular')
-            ;
+            ->setFormOptions(['validation_groups' => ['Default', 'Create']], ['validation_groups' => ['Default']])
+        ;
     }
 
     public function configureActions(Actions $actions): Actions
