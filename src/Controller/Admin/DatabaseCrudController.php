@@ -151,7 +151,7 @@ final class DatabaseCrudController extends AbstractCrudController
         yield TextField::new('plainPassword', 'database.field.password')
             ->setHelp('database.help.password')
             ->onlyOnForms()
-            ->setRequired(true);
+            ->setRequired(Crud::PAGE_NEW === $pageName);
         yield NumberField::new('maxBackups', 'database.field.max_backups');
 
         yield CollectionField::new('backups', 'database.field.backups')
