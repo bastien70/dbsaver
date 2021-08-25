@@ -117,7 +117,7 @@ class BackupService
      */
     private function defineMysqlDumpObject(Database $database): Mysqldump
     {
-        if ($database->getPort()) {
+        if (null === $database->getPort()) {
             $dsn = sprintf(
                 'mysql:host=%s;dbname=%s',
                 $database->getHost(),

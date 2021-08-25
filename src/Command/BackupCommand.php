@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\Backup;
+use App\Entity\Database;
+use App\Repository\DatabaseRepository;
 use App\Service\BackupService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -20,6 +22,7 @@ final class BackupCommand extends Command
 {
     public function __construct(
         private BackupService $backupService,
+        private DatabaseRepository $databaseRepository,
     ) {
         parent::__construct();
     }
@@ -28,35 +31,48 @@ final class BackupCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        try {
-            $databases = $this->backupService->getDatabases();
-            $databasesCount = \count($databases);
+        $databases = $this->backupService->getDatabases();
+        $databasesCount = \count($databases);
 
-            if ($databasesCount > 0) {
-                $io->section('Starting backups');
-                $io->progressStart($databasesCount);
+        if ($databasesCount > 0) {
+            $errors = [];
+            $io->section('Starting backups');
+            $io->progressStart($databasesCount);
 
-                foreach ($databases as $database) {
+            foreach ($databases as $database) {
+                try {
                     $this->backupService->backup($database, Backup::CONTEXT_AUTOMATIC);
-                    $io->progressAdvance();
+                    $database->setStatus(Database::STATUS_OK);
+                } catch (\Exception $e) {
+                    $database->setStatus(Database::STATUS_ERROR);
+                    $errors[] = [
+                        'database' => $database,
+                        'message' => $e->getMessage(),
+                    ];
                 }
-
-                $io->progressFinish();
-
-                $io->section('Cleaning old backups');
-                $io->progressStart($databasesCount);
-
-                foreach ($databases as $database) {
-                    $this->backupService->clean($database);
-                    $io->progressAdvance();
-                }
-
-                $io->progressFinish();
+                $this->databaseRepository->save($database);
+                $io->progressAdvance();
             }
-        } catch (\Exception $e) {
-            dump($e->getMessage());
 
-            return Command::INVALID;
+            $io->progressFinish();
+
+            $io->section('Cleaning old backups');
+            $io->progressStart($databasesCount);
+
+            foreach ($databases as $database) {
+                $this->backupService->clean($database);
+                $io->progressAdvance();
+            }
+
+            $io->progressFinish();
+
+            if (0 < \count($errors)) {
+                $io->error([\count($errors) . ' errors happened'] + array_map(static function (array $error): string {
+                    return $error['database']->getName() . ': ' . $error['message'];
+                }, $errors));
+
+                return Command::FAILURE;
+            }
         }
 
         return Command::SUCCESS;
