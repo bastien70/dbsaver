@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Entity\Backup;
 use App\Service\BackupService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -36,7 +37,7 @@ final class BackupCommand extends Command
                 $io->progressStart($databasesCount);
 
                 foreach ($databases as $database) {
-                    $this->backupService->backup($database, 'Backup quotidien');
+                    $this->backupService->backup($database, Backup::CONTEXT_AUTOMATIC);
                     $io->progressAdvance();
                 }
 
