@@ -10,7 +10,7 @@ final class SecurityControllerTest extends AbstractControllerTest
 {
     public function testLogin(): void
     {
-        self::$client->request('GET', '/');
+        self::$client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
         // Unknown user
@@ -25,20 +25,20 @@ final class SecurityControllerTest extends AbstractControllerTest
         self::assertTrue(self::getSecurityDataCollector()->isAuthenticated());
 
         // Already logged in: redirect
-        self::$client->request('GET', '/');
-        self::assertResponseRedirects('/dbsaver');
+        self::$client->request('GET', '/login');
+        self::assertResponseRedirects('/');
     }
 
     private function assertFailedLogin(string $username, string $password): void
     {
         $this->submitLogin($username, $password);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
         self::assertFalse(self::getSecurityDataCollector()->isAuthenticated());
     }
 
     private function submitLogin(string $email, string $password): void
     {
-        $crawler = self::$client->request('GET', '/');
+        $crawler = self::$client->request('GET', '/login');
         self::assertResponseIsSuccessful();
         self::$client->enableProfiler();
 

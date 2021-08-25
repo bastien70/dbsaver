@@ -48,7 +48,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl(Action::NEW);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         // Simple user with ROLE_USER
         $this->loginAsUser();
@@ -64,7 +64,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl(Action::NEW);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         // Simple user with ROLE_USER
         $this->loginAsAdmin();
@@ -77,7 +77,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl(Action::EDIT, self::USER_ROLE_USER);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         // Simple user with ROLE_USER
         $this->loginAsUser();
@@ -93,7 +93,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl(Action::EDIT, self::USER_ROLE_USER);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         // Simple user with ROLE_ADMIN
         $this->loginAsAdmin();
@@ -106,7 +106,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl(Action::DELETE, self::USER_ROLE_USER);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);
@@ -118,7 +118,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl(Action::DELETE, self::USER_ROLE_ADMIN);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsUser();
         self::$client->request('GET', $url);

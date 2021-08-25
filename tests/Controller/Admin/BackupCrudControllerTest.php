@@ -13,7 +13,7 @@ final class BackupCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl('new');
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsUser();
         self::$client->request('GET', $url);
@@ -25,7 +25,7 @@ final class BackupCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl('edit', 1);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsUser();
         self::$client->request('GET', $url);
