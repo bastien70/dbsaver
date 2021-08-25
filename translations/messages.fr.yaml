@@ -59,6 +59,7 @@ database:
         max_backups: Nombre de sauvegardes à conserver
         created_at: Ajoutée le
         backups: Sauvegardes
+        status: Statut
     help:
         password: Les mots de passe seront cryptés et n'apparaîtront pas en clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour lancer les sauvegardes.
     admin_label:
@@ -71,6 +72,11 @@ database:
     check_connection:
         flash_success: La configuration de la base de données "%database%" est correcte.
         flash_error: 'Une erreur est survenue lors de la connexion à la base de données "%database%" : "%error%".'
+    choices:
+        status:
+            ok: Ok
+            error: Erreur
+            unknown: Inconnu
 
 menu:
     home: Accueil

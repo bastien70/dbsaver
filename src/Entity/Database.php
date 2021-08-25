@@ -18,14 +18,16 @@ class Database implements \Stringable
 {
     use PrimaryKeyTrait;
 
+    public const STATUS_UNKNOWN = 'unknown';
+    public const STATUS_OK = 'ok';
+    public const STATUS_ERROR = 'error';
+
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private string $host;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private ?int $port = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -58,6 +60,9 @@ class Database implements \Stringable
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'databases')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
     private ?User $owner = null;
+
+    #[ORM\Column(type: 'string', length: 10)]
+    private string $status = self::STATUS_UNKNOWN;
 
     public function __construct()
     {
@@ -203,5 +208,24 @@ class Database implements \Stringable
         $this->owner = $owner;
 
         return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    public static function getAvailableStatuses(): array
+    {
+        return [
+            self::STATUS_UNKNOWN,
+            self::STATUS_OK,
+            self::STATUS_ERROR,
+        ];
     }
 }

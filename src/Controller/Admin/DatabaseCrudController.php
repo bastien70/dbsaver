@@ -20,10 +20,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
@@ -59,6 +61,10 @@ final class DatabaseCrudController extends AbstractCrudController
             ->add(TextFilter::new('user', 'database.field.user'))
             ->add(NumericFilter::new('maxBackups', 'database.field.max_backups'))
             ->add(DateTimeFilter::new('createdAt', 'database.field.created_at'))
+            ->add(ChoiceFilter::new('status', 'database.field.status')->setChoices(array_combine(
+                array_map(fn (string $status): string => 'database.choices.status.' . $status, Database::getAvailableStatuses()),
+                Database::getAvailableStatuses(),
+            ))->setFormTypeOption('translation_domain', 'messages'))
         ;
     }
 
@@ -134,9 +140,13 @@ final class DatabaseCrudController extends AbstractCrudController
             $connection = null;
 
             $this->addFlash('success', new TranslatableMessage('database.check_connection.flash_success', ['%database%' => $database->getName()]));
+            $database->setStatus(Database::STATUS_OK);
         } catch (\Exception $e) {
             $this->addFlash('danger', new TranslatableMessage('database.check_connection.flash_error', ['%database%' => $database->getName(), '%error%' => $e->getMessage()]));
+            $database->setStatus(Database::STATUS_ERROR);
         }
+
+        $this->updateEntity($this->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $database);
 
         $url = $this->adminUrlGenerator->setController(self::class)
             ->setAction(Action::INDEX)
@@ -204,6 +214,17 @@ final class DatabaseCrudController extends AbstractCrudController
 
         yield DateTimeField::new('createdAt', 'database.field.created_at')
             ->setFormat('dd-MM-Y HH:mm')
+            ->hideOnForm();
+        yield ChoiceField::new('status', 'database.field.status')
+            ->setChoices(array_combine(
+                array_map(fn (string $status): string => 'database.choices.status.' . $status, Database::getAvailableStatuses()),
+                Database::getAvailableStatuses(),
+            ))
+            ->renderAsBadges([
+                Database::STATUS_OK => 'success',
+                Database::STATUS_ERROR => 'danger',
+                Database::STATUS_UNKNOWN => 'secondary',
+            ])
             ->hideOnForm();
     }
 }

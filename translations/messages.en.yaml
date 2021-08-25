@@ -59,6 +59,7 @@ database:
         max_backups: How many backups to keep
         created_at: Created at
         backups: Backups
+        status: Status
     help:
         password: Passwords are hashed and aren't displayed unhashed. They will be unhashed only when necessary to launch backups.
     admin_label:
@@ -71,6 +72,11 @@ database:
     check_connection:
         flash_success: Database "%database%" configuration is ok.
         flash_error: 'An error happened during database "%database%" connection: "%error%".'
+    choices:
+        status:
+            ok: Ok
+            error: Error
+            unknown: Unknown
 
 menu:
     home: Home
