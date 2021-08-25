@@ -13,7 +13,7 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl('edit', 1);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);
@@ -29,7 +29,7 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl('showDatabaseBackupsAction', 1);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);
@@ -45,7 +45,7 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl('checkConnection', 1);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);
@@ -64,7 +64,7 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
         $url = $this->getActionUrl('delete', 1);
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsUser();
         self::$client->request('GET', $url);

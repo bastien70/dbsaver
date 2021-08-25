@@ -23,7 +23,7 @@ abstract class AbstractCrudControllerTest extends AbstractControllerTest
         $url = $this->getActionUrl('index');
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsUser();
         self::$client->request('GET', $url);
@@ -35,7 +35,7 @@ abstract class AbstractCrudControllerTest extends AbstractControllerTest
         $url = $this->getActionUrl('new');
 
         self::$client->request('GET', $url);
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/login');
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);

@@ -23,7 +23,7 @@ final class DashboardController extends AbstractDashboardController
     {
     }
 
-    #[Route('/dbsaver', name: 'admin')]
+    #[Route('/', name: 'admin')]
     public function index(): Response
     {
         return parent::index();
@@ -35,7 +35,7 @@ final class DashboardController extends AbstractDashboardController
             ->setTitle('DbSaver');
     }
 
-    #[Route('/dbsaver/switch-locale/{locale}', name: 'admin_switch_locale')]
+    #[Route('/switch-locale/{locale}', name: 'admin_switch_locale')]
     public function switchLocale(Request $request, string $locale): Response
     {
         if (!\in_array($locale, $this->enabledLocales, true)) {
@@ -44,7 +44,7 @@ final class DashboardController extends AbstractDashboardController
 
         $request->getSession()->set('_locale', $locale);
         $redirectUrl = $request->headers->get('referer');
-        if (empty($redirectUrl) || str_contains($redirectUrl, '/dbsaver/switch-locale')) {
+        if (empty($redirectUrl) || str_contains($redirectUrl, '/switch-locale')) {
             $redirectUrl = $this->generateUrl('admin');
         }
 
