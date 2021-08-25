@@ -56,7 +56,7 @@ class Backup implements \Stringable
 
     #[ORM\ManyToOne(targetEntity: Database::class, inversedBy: 'backups')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
-    private Database $database;
+    private ?Database $database = null;
 
     public function __construct()
     {

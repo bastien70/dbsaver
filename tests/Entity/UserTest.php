@@ -6,7 +6,6 @@ namespace App\Tests\Entity;
 
 use App\Entity\Database;
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
 final class UserTest extends TestCase
