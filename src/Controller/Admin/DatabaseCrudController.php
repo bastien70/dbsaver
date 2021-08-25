@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Backup;
 use App\Entity\Database;
 use App\Entity\User;
+use App\Helper\DatabaseHelper;
 use App\Security\Voter\DatabaseVoter;
 use App\Service\BackupService;
 use Doctrine\ORM\QueryBuilder;
@@ -31,7 +32,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -43,7 +43,7 @@ final class DatabaseCrudController extends AbstractCrudController
     public function __construct(
         private BackupService $backupService,
         private AdminUrlGenerator $adminUrlGenerator,
-        private Encryptor $encryptor,
+        private DatabaseHelper $databaseHelper,
     ) {
     }
 
@@ -120,29 +120,14 @@ final class DatabaseCrudController extends AbstractCrudController
         $database = $context->getEntity()->getInstance();
         $this->denyAccessUnlessGranted(DatabaseVoter::CAN_SHOW_DATABASE, $database);
 
-        if (null === $database->getPort()) {
-            $dsn = sprintf(
-                'mysql:host=%s;dbname=%s',
-                $database->getHost(),
-                $database->getName()
-            );
-        } else {
-            $dsn = sprintf(
-                'mysql:host=%s:%s;dbname=%s',
-                $database->getHost(),
-                $database->getPort(),
-                $database->getName()
-            );
-        }
-
-        try {
-            $connection = new \PDO($dsn, $database->getUser(), $this->encryptor->decrypt($database->getPassword()));
-            $connection = null;
-
+        if ($this->databaseHelper->isConnectionOk($database)) {
             $this->addFlash('success', new TranslatableMessage('database.check_connection.flash_success', ['%database%' => $database->getName()]));
             $database->setStatus(Database::STATUS_OK);
-        } catch (\Exception $e) {
-            $this->addFlash('danger', new TranslatableMessage('database.check_connection.flash_error', ['%database%' => $database->getName(), '%error%' => $e->getMessage()]));
+        } else {
+            $this->addFlash('danger', new TranslatableMessage('database.check_connection.flash_error', [
+                '%database%' => $database->getName(),
+                '%error%' => $this->databaseHelper->getLastExceptionMessage(),
+            ]));
             $database->setStatus(Database::STATUS_ERROR);
         }
 
