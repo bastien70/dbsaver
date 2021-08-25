@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DatabaseRepository::class)]
 #[ORM\Table(name: '`database`')]
+#[\App\Validator\Database]
 class Database implements \Stringable
 {
     use PrimaryKeyTrait;
@@ -227,5 +228,23 @@ class Database implements \Stringable
             self::STATUS_OK,
             self::STATUS_ERROR,
         ];
+    }
+
+    public function getDsn(): string
+    {
+        if (null === $this->port) {
+            return sprintf(
+                'mysql:host=%s;dbname=%s',
+                $this->host,
+                $this->name,
+            );
+        }
+
+        return sprintf(
+            'mysql:host=%s:%s;dbname=%s',
+            $this->host,
+            $this->port,
+            $this->name,
+        );
     }
 }
