@@ -17,23 +17,8 @@ final class DatabaseHelper
 
     public function isConnectionOk(Database $database): bool
     {
-        if (null === $database->getPort()) {
-            $dsn = sprintf(
-                'mysql:host=%s;dbname=%s',
-                $database->getHost(),
-                $database->getName()
-            );
-        } else {
-            $dsn = sprintf(
-                'mysql:host=%s:%s;dbname=%s',
-                $database->getHost(),
-                $database->getPort(),
-                $database->getName()
-            );
-        }
-
         try {
-            $connection = new \PDO($dsn, $database->getUser(), $this->encryptor->decrypt($database->getPassword()));
+            $connection = new \PDO($database->getDsn(), $database->getUser(), $this->encryptor->decrypt($database->getPassword()));
             $connection = null;
 
             return true;

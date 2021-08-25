@@ -1,0 +1,1 @@
+'Database connection test errored: "{{ error }}".': 'Le test de connexion à la base de données a échoué : "{{ error }}".'

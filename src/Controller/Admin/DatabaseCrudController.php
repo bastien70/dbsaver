@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Helper\DatabaseHelper;
 use App\Security\Voter\DatabaseVoter;
 use App\Service\BackupService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -87,9 +88,13 @@ final class DatabaseCrudController extends AbstractCrudController
             $this->backupService->clean($database);
 
             $this->addFlash('success', new TranslatableMessage('database.launch_backup.flash_success'));
+            $status = Database::STATUS_OK;
         } catch (\Exception $e) {
             $this->addFlash('danger', new TranslatableMessage('database.launch_backup.flash_error', ['%message%' => $e->getMessage()]));
+            $status = Database::STATUS_ERROR;
         }
+
+        $this->updateEntity($this->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $database, $status);
 
         return $this->redirect($context->getReferrer());
     }
@@ -122,22 +127,35 @@ final class DatabaseCrudController extends AbstractCrudController
 
         if ($this->databaseHelper->isConnectionOk($database)) {
             $this->addFlash('success', new TranslatableMessage('database.check_connection.flash_success', ['%database%' => $database->getName()]));
-            $database->setStatus(Database::STATUS_OK);
+            $status = Database::STATUS_OK;
         } else {
             $this->addFlash('danger', new TranslatableMessage('database.check_connection.flash_error', [
                 '%database%' => $database->getName(),
                 '%error%' => $this->databaseHelper->getLastExceptionMessage(),
             ]));
-            $database->setStatus(Database::STATUS_ERROR);
+            $status = Database::STATUS_ERROR;
         }
 
-        $this->updateEntity($this->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $database);
+        $this->updateEntity($this->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $database, $status);
 
         $url = $this->adminUrlGenerator->setController(self::class)
             ->setAction(Action::INDEX)
             ->generateUrl();
 
         return $this->redirect($url);
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        // When creating a new Database, it is validated so the connection must be ok.
+        $entityInstance->setStatus(Database::STATUS_OK);
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance, string $status = Database::STATUS_OK): void
+    {
+        $entityInstance->setStatus($status);
+        parent::updateEntity($entityManager, $entityInstance);
     }
 
     public function configureActions(Actions $actions): Actions
