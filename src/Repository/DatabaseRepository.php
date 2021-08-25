@@ -21,32 +21,9 @@ class DatabaseRepository extends ServiceEntityRepository
         parent::__construct($registry, Database::class);
     }
 
-    // /**
-    //  * @return Database[] Returns an array of Database objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function save(Database $database): void
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $this->getEntityManager()->persist($database);
+        $this->getEntityManager()->flush();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Database
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
