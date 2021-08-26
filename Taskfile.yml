@@ -35,14 +35,14 @@ tasks:
         cmds:
             - task: setup_tests
             - symfony php vendor/bin/phpunit
-            - docker-compose -f docker-compose.test.yaml stop
+            - task: cleanup_tests
 
     coverage:
         desc: Run tests with coverage
         cmds:
             - task: setup_tests
             - symfony php -dpcov.enabled=1 vendor/bin/phpunit --coverage-html=public/coverage
-            - docker-compose -f docker-compose.test.yaml stop
+            - task: cleanup_tests
 
     setup_tests:
         cmds:
@@ -52,6 +52,10 @@ tasks:
             - symfony console d:d:c --quiet --env=test
             - symfony console d:s:u --force --quiet --env=test
             - symfony console h:f:l --no-interaction --quiet --env=test --no-bundles
+
+    cleanup_tests:
+        cmds:
+            - docker-compose -f docker-compose.test.yaml stop
 
     ci:
         desc: Check code style, static analysis...
