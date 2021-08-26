@@ -247,4 +247,24 @@ class Database implements \Stringable
             $this->name,
         );
     }
+
+    public function getDisplayDsn()
+    {
+        if (null === $this->port) {
+            return sprintf(
+                '%s@%s/%s',
+                $this->user,
+                $this->host,
+                $this->name,
+            );
+        }
+
+        return sprintf(
+            '%s@%s:%s/%s',
+            $this->user,
+            $this->host,
+            $this->port,
+            $this->name,
+        );
+    }
 }

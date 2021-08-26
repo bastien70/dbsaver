@@ -60,6 +60,7 @@ database:
         created_at: Created at
         backups: Backups
         status: Status
+        dsn: DSN
     help:
         password: Passwords are hashed and aren't displayed unhashed. They will be unhashed only when necessary to launch backups.
     admin_label:
