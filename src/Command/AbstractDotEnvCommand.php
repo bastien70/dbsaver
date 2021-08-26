@@ -23,4 +23,11 @@ abstract class AbstractDotEnvCommand extends Command
 
         return $editor;
     }
+
+    protected function removeDotEnvFileIfTest(InputInterface $input): void
+    {
+        if ('test' === $input->getOption('env')) {
+            unlink(__DIR__ . '/../../.env.test.local');
+        }
+    }
 }

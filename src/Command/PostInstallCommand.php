@@ -39,6 +39,7 @@ final class PostInstallCommand extends AbstractDotEnvCommand
         $editor->set('DATABASE_URL', $databaseUrl);
         $editor->set('DEFAULT_LOCALE', $defaultLocale);
         $editor->save();
+        $this->removeDotEnvFileIfTest($input);
 
         $io->success('Parameters have been saved in .env.local file.');
 

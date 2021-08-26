@@ -29,6 +29,7 @@ final class RegenerateAppSecretCommand extends AbstractDotEnvCommand
         $editor = $this->getDotenvEditor($input);
         $editor->set('APP_SECRET', $secret);
         $editor->save();
+        $this->removeDotEnvFileIfTest($input);
 
         $io->success('The new APP_SECRET env var has been regenerated!');
 

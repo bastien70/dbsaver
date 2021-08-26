@@ -35,15 +35,18 @@ tasks:
         cmds:
             - task: setup_tests
             - symfony php vendor/bin/phpunit
+            - docker-compose -f docker-compose.test.yaml stop
 
     coverage:
         desc: Run tests with coverage
         cmds:
             - task: setup_tests
             - symfony php -dpcov.enabled=1 vendor/bin/phpunit --coverage-html=public/coverage
-    
+            - docker-compose -f docker-compose.test.yaml stop
+
     setup_tests:
         cmds:
+            - docker-compose -f docker-compose.test.yaml up -d
             - rm -rf var/cache/test/*
             - symfony console d:d:d --force --if-exists --quiet --env=test
             - symfony console d:d:c --quiet --env=test
