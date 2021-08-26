@@ -187,16 +187,19 @@ Vous aurez la possibilité de supprimer ou télécharger un Backup.
 
 ## Licence <a name="licence"></a>
 
-Cette application est protégée par une licence MIT : [LICENCE](LICENSE)
+Cette application est protégée par une licence MIT : [LICENCE](LICENSE).
 
 ## Contribuer <a name="contribute"></a>
 
-Avant de faire une pull request, n'oubliez pas de lancer les vérifications d'usage:
+Avant de faire une pull request, n'oubliez pas de lancer les vérifications d'usage (nécessite Task et Docker Compose) :
 
 ```bash
-composer ci
+task ci
+task test
 ```
+
+Note : vous pouvez lancer ces commandes sans Task, regardez le fichier Taskfile.yml pour voir quelles commandes sont exécutées.
 
 ## Changelog <a name="changelog"></a>
 
-Voir les [changelog](CHANGELOG.md)
+Voir le [changelog](CHANGELOG.md).
