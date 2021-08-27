@@ -60,6 +60,7 @@ database:
         created_at: Ajoutée le
         backups: Sauvegardes
         status: Statut
+        dsn: DSN
     help:
         password: Les mots de passe seront cryptés et n'apparaîtront pas en clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour lancer les sauvegardes.
     admin_label:

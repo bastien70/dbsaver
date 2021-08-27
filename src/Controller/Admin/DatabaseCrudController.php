@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Admin\Field\BadgeField;
 use App\Entity\Backup;
 use App\Entity\Database;
 use App\Entity\User;
@@ -23,7 +24,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -202,17 +202,27 @@ final class DatabaseCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield TextField::new('name', 'database.field.name');
-        yield TextField::new('host', 'database.field.host');
-        yield NumberField::new('port', 'database.field.port');
-        yield TextField::new('user', 'database.field.user');
+        yield TextField::new('name', 'database.field.name')
+            ->hideOnIndex();
+        yield TextField::new('host', 'database.field.host')
+            ->hideOnIndex();
+        yield NumberField::new('port', 'database.field.port')
+            ->hideOnIndex();
+        yield TextField::new('user', 'database.field.user')
+            ->hideOnIndex();
+        yield TextField::new('displayDsn', 'database.field.dsn')
+            ->onlyOnIndex();
         yield TextField::new('plainPassword', 'database.field.password')
             ->setHelp('database.help.password')
             ->onlyOnForms()
             ->setRequired(Crud::PAGE_NEW === $pageName);
-        yield NumberField::new('maxBackups', 'database.field.max_backups');
+        yield NumberField::new('maxBackups', 'database.field.max_backups')
+            ->hideOnIndex();
 
-        yield CollectionField::new('backups', 'database.field.backups')
+        yield BadgeField::new('backups', 'database.field.backups')
+            ->formatValue(function ($value) {
+                return \count($value);
+            })
             ->hideOnForm();
 
         yield DateTimeField::new('createdAt', 'database.field.created_at')

@@ -29,7 +29,7 @@ final class DatabaseTest extends TestCase
         self::assertSame('test', (string) $entity);
     }
 
-    public function testEmail(): void
+    public function testHost(): void
     {
         $entity = new Database();
         $entity->setHost('localhost');
@@ -97,6 +97,42 @@ final class DatabaseTest extends TestCase
         $entity->setOwner($user);
         /* @phpstan-ignore-next-line */
         self::assertSame($user, $entity->getOwner());
+    }
+
+    public function testDsn(): void
+    {
+        $entity = new Database();
+        $entity->setHost('localhost')
+            ->setPort(3307)
+            ->setUser('admin')
+            ->setName('db_name');
+
+        self::assertSame('mysql:host=localhost:3307;dbname=db_name', $entity->getDsn());
+
+        $entity = new Database();
+        $entity->setHost('localhost')
+            ->setUser('admin')
+            ->setName('db_name');
+
+        self::assertSame('mysql:host=localhost;dbname=db_name', $entity->getDsn());
+    }
+
+    public function testDisplayDsn(): void
+    {
+        $entity = new Database();
+        $entity->setHost('localhost')
+            ->setPort(3307)
+            ->setUser('admin')
+            ->setName('db_name');
+
+        self::assertSame('admin@localhost:3307/db_name', $entity->getDisplayDsn());
+
+        $entity = new Database();
+        $entity->setHost('localhost')
+            ->setUser('admin')
+            ->setName('db_name');
+
+        self::assertSame('admin@localhost/db_name', $entity->getDisplayDsn());
     }
 
     public function testBackups(): void
