@@ -248,7 +248,7 @@ class Database implements \Stringable
         );
     }
 
-    public function getDisplayDsn()
+    public function getDisplayDsn(): string
     {
         if (null === $this->port) {
             return sprintf(
