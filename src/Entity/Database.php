@@ -26,7 +26,7 @@ class Database implements \Stringable
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    private string $host;
+    private ?string $host = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $port = null;
@@ -34,18 +34,18 @@ class Database implements \Stringable
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    private string $user;
+    private ?string $user = null;
 
     #[Assert\NotBlank(groups: ['Create'])]
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $password;
+    private ?string $password = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    private string $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank]
@@ -81,7 +81,7 @@ class Database implements \Stringable
         return $this->host;
     }
 
-    public function setHost(string $host): self
+    public function setHost(?string $host): self
     {
         $this->host = $host;
 
@@ -105,7 +105,7 @@ class Database implements \Stringable
         return $this->user;
     }
 
-    public function setUser(string $user): self
+    public function setUser(?string $user): self
     {
         $this->user = $user;
 
@@ -117,7 +117,7 @@ class Database implements \Stringable
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
@@ -129,7 +129,7 @@ class Database implements \Stringable
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
