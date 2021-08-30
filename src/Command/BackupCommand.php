@@ -8,6 +8,7 @@ use App\Entity\Backup;
 use App\Entity\Database;
 use App\Repository\DatabaseRepository;
 use App\Service\BackupService;
+use App\Service\BackupStatus;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,14 +41,14 @@ final class BackupCommand extends Command
             $io->progressStart($databasesCount);
 
             foreach ($databases as $database) {
-                try {
-                    $this->backupService->backup($database, Backup::CONTEXT_AUTOMATIC);
+                $backupStatus = $this->backupService->backup($database, Backup::CONTEXT_AUTOMATIC);
+                if (BackupStatus::STATUS_OK === $backupStatus->getStatus()) {
                     $database->setStatus(Database::STATUS_OK);
-                } catch (\Exception $e) {
+                } else {
                     $database->setStatus(Database::STATUS_ERROR);
                     $errors[] = [
                         'database' => $database,
-                        'message' => $e->getMessage(),
+                        'message' => $backupStatus->getErrorMessage(),
                     ];
                 }
                 $this->databaseRepository->save($database);
