@@ -97,7 +97,7 @@ final class DatabaseCrudController extends AbstractCrudController
 
         $this->updateEntity($this->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $database, $status);
 
-        return $this->redirect($context->getReferrer());
+        return $this->redirect($context->getReferrer() ?? $this->generateUrl('admin'));
     }
 
     public function showDatabaseBackupsAction(AdminContext $context): Response
