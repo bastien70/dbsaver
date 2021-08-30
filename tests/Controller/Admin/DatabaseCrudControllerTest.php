@@ -59,6 +59,25 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
         self::assertCount(1, $crawler->filter('.alert-danger'));
     }
 
+    public function testLaunchBackupAction(): void
+    {
+        $url = $this->getActionUrl('launchBackupAction', 1);
+
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects('/login');
+
+        $this->loginAsAdmin();
+        self::$client->request('GET', $url);
+        self::assertResponseStatusCodeSame(403);
+
+        $this->loginAsUser();
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects();
+        // We expect an error as parameters are randomized with fixtures.
+        $crawler = self::$client->followRedirect();
+        self::assertCount(1, $crawler->filter('.alert-danger'));
+    }
+
     public function testDelete(): void
     {
         $url = $this->getActionUrl('delete', 1);

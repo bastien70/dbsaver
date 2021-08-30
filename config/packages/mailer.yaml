@@ -8,3 +8,5 @@ when@test:
     framework:
         mailer:
             dsn: 'null://null'
+            envelope:
+                sender: 'test@user.com'
