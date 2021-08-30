@@ -18,7 +18,7 @@ final class PostInstallCommandTest extends KernelTestCase
 
         $command = $application->find('app:post-install');
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs(['mysql://dev:dev@127.0.0.1:3306/dbsaver_test', 'en']);
+        $commandTester->setInputs(['mysql://dev:dev@127.0.0.1:3306/dbsaver_test', 'smtp://localhost', 'me@user.com', 'en']);
 
         $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();
@@ -43,6 +43,9 @@ final class PostInstallCommandTest extends KernelTestCase
 
     public function provideInvalidCases(): iterable
     {
-        yield 'no_dsn' => [''];
+        yield 'no_database_url' => ['', '', '', ''];
+        yield 'no_mailer_dsn' => ['test', '', '', ''];
+        yield 'no_mailer_sender' => ['test', 'test', '', ''];
+        yield 'invalid_mailer_sender' => ['test', 'test', 'test', ''];
     }
 }

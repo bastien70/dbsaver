@@ -14,6 +14,9 @@ use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 use Vich\UploaderBundle\Handler\DownloadHandler;
 
 class BackupService
@@ -27,50 +30,71 @@ class BackupService
         private string $projectDir,
         private Encryptor $encryptor,
         private DownloadHandler $downloadHandler,
+        private NotifierInterface $notifier,
     ) {
     }
 
-    public function backup(Database $database, string $context): void
+    public function backup(Database $database, string $context): BackupStatus
     {
-        // Define mysqldump object
-        $mysqldump = $this->defineMysqlDumpObject($database);
+        try {
+            // Define mysqldump object
+            $mysqldump = $this->defineMysqlDumpObject($database);
 
-        // Define temp path
-        $filepath = sprintf(
-            '%s/backup_%s_hash_%s.sql',
-            $this->projectDir,
-            (new \DateTime())->format('d_m_y'),
-            random_int(1000, 99999999),
-        );
+            // Define temp path
+            $filepath = sprintf(
+                '%s/backup_%s_hash_%s.sql',
+                $this->projectDir,
+                (new \DateTime())->format('d_m_y'),
+                random_int(1000, 99999999),
+            );
 
-        // Launch backup
-        $mysqldump->start($filepath);
+            // Launch backup
+            $mysqldump->start($filepath);
 
-        // Get file infos
-        $fileInfo = pathinfo($filepath);
+            // Get file infos
+            $fileInfo = pathinfo($filepath);
 
-        // Generate Uploaded file
-        $uploadedFile = new UploadedFile(
-            $filepath,
-            $fileInfo['basename'],
-            sprintf('application/%s', $fileInfo['extension']),
-            null,
-            true
-        );
+            // Generate Uploaded file
+            $uploadedFile = new UploadedFile(
+                $filepath,
+                $fileInfo['basename'],
+                sprintf('application/%s', $fileInfo['extension']),
+                null,
+                true
+            );
 
-        // Create backup entity row and applied uploaded file
-        $backup = new Backup();
+            // Create backup entity row and applied uploaded file
+            $backup = new Backup();
 
-        $backup->setContext($context)
-            ->setBackupFile($uploadedFile)
-            ->setDatabase($database);
+            $backup->setContext($context)
+                ->setBackupFile($uploadedFile)
+                ->setDatabase($database);
 
-        $this->manager->persist($backup);
-        $this->manager->flush();
+            $this->manager->persist($backup);
+            $this->manager->flush();
 
-        // Delete temp file from local project
-        $fileSystem = new Filesystem();
-        $fileSystem->remove($filepath);
+            // Delete temp file from local project
+            $fileSystem = new Filesystem();
+            $fileSystem->remove($filepath);
+
+            $backupStatus = new BackupStatus(BackupStatus::STATUS_OK);
+        } catch (\Exception $e) {
+            $backupStatus = new BackupStatus(BackupStatus::STATUS_FAIL, $e->getMessage());
+        }
+
+        $title = sprintf('Backup done: %s', $database->getDisplayDsn());
+        $content = sprintf("The database '%s' backup was launched.\n", $database->getDisplayDsn());
+        if (BackupStatus::STATUS_OK === $backupStatus->getStatus()) {
+            $content .= 'Status: Done.';
+        } else {
+            $content .= sprintf("Status: Failed.\nError: %s", $backupStatus->getErrorMessage());
+        }
+        $notification = (new Notification($title, ['email']))
+            ->content($content)
+            ->importance(BackupStatus::STATUS_FAIL === $backupStatus->getStatus() ? Notification::IMPORTANCE_HIGH : Notification::IMPORTANCE_LOW);
+        $this->notifier->send($notification, new Recipient($database->getOwner()->getEmail()));
+
+        return $backupStatus;
     }
 
     public function clean(Database $database): void

@@ -33,10 +33,22 @@ final class PostInstallCommand extends AbstractDotEnvCommand
 
             return $dsn;
         });
+        $mailerDsn = $io->ask('Mailer DSN (eg. "smtp://localhost")', null, function ($dsn) {
+            $this->validateInput($dsn, [new Assert\NotBlank()]);
+
+            return $dsn;
+        });
+        $mailerSender = $io->ask('Mailer sender email (eg. "you@email.com")', null, function ($email) {
+            $this->validateInput($email, [new Assert\NotBlank(), new Assert\Email()]);
+
+            return $email;
+        });
         $defaultLocale = $io->choice('What locale should be the default one?', $this->enabledLocales);
 
         $editor = $this->getDotenvEditor($input);
         $editor->set('DATABASE_URL', $databaseUrl);
+        $editor->set('MAILER_DSN', $mailerDsn);
+        $editor->set('MAILER_SENDER', $mailerSender);
         $editor->set('DEFAULT_LOCALE', $defaultLocale);
         $editor->save();
         $this->removeDotEnvFileIfTest($input);

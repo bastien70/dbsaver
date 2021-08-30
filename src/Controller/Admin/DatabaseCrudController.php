@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Helper\DatabaseHelper;
 use App\Security\Voter\DatabaseVoter;
 use App\Service\BackupService;
+use App\Service\BackupStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -83,14 +84,14 @@ final class DatabaseCrudController extends AbstractCrudController
         $database = $context->getEntity()->getInstance();
         $this->denyAccessUnlessGranted(DatabaseVoter::CAN_SHOW_DATABASE, $database);
 
-        try {
-            $this->backupService->backup($database, Backup::CONTEXT_MANUAL);
-            $this->backupService->clean($database);
+        $backupStatus = $this->backupService->backup($database, Backup::CONTEXT_MANUAL);
+        $this->backupService->clean($database);
 
+        if (BackupStatus::STATUS_OK === $backupStatus->getStatus()) {
             $this->addFlash('success', new TranslatableMessage('database.launch_backup.flash_success'));
             $status = Database::STATUS_OK;
-        } catch (\Exception $e) {
-            $this->addFlash('danger', new TranslatableMessage('database.launch_backup.flash_error', ['%message%' => $e->getMessage()]));
+        } else {
+            $this->addFlash('danger', new TranslatableMessage('database.launch_backup.flash_error', ['%message%' => $backupStatus->getErrorMessage()]));
             $status = Database::STATUS_ERROR;
         }
 

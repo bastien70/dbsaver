@@ -30,6 +30,16 @@ tasks:
         cmds:
             - symfony server:stop
 
+    docker-start:
+        desc: Start Docker images
+        cmds:
+            - docker-compose up -d
+
+    docker-stop:
+        desc: Stop Docker images
+        cmds:
+            - docker-compose stop
+
     test:
         desc: Run tests
         cmds:

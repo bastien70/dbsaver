@@ -54,8 +54,9 @@ Requiert [Symfony CLI](https://symfony.com/download) et [Task](https://taskfile.
 
 1. `git clone https://github.com/bastien70/dbsaver.git`
 1. `cd dbsaver`
-1. Configurez la variable d'environnement dans un fichier `.env.local` : `DATABASE_URL` (regardez dans le fichier `.env` pour voir la structure de la variable).
 1. `task install`
+1. Si vous souhaitez lancer les conteneurs Docker (actuellement uniquement pour les mails en local avec MailCatcher) : `task docker-start` et `task docker-stop` (requiert Docker et Docker Compose)
+1. Pour démarrer le serveur : `task start` (pour l'arrêter : `task stop`)
 
 ## Configuration de l'application <a name="app-config"></a>
 
