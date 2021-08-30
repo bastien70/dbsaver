@@ -30,7 +30,7 @@ final class DatabaseValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, \App\Entity\Database::class);
         }
 
-        if (null === $value->getHost() || null === $value->getUser() || (null === $value->getPlainPassword() && null === $value->getPassword())) {
+        if (null === $value->getHost() || null === $value->getUser() || null === $value->getName() || (null === $value->getPlainPassword() && null === $value->getPassword())) {
             return;
         }
 
