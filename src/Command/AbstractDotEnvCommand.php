@@ -30,4 +30,13 @@ abstract class AbstractDotEnvCommand extends Command
             unlink(__DIR__ . '/../../.env.test.local');
         }
     }
+
+    protected function getValueFromDotEnv(DotenvEditor $dotenvEditor, string $key): ?string
+    {
+        if ($dotenvEditor->has($key)) {
+            return $dotenvEditor->getEnv($key);
+        }
+
+        return null;
+    }
 }
