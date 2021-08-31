@@ -21,8 +21,6 @@ use Vich\UploaderBundle\Handler\DownloadHandler;
 
 class BackupService
 {
-    public const MAX_ROWS = 30;
-
     public function __construct(
         private EntityManagerInterface $manager,
         private BackupRepository $backupRepository,
