@@ -11,12 +11,11 @@ use App\Repository\DatabaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Notifier\Notification\Notification;
-use Symfony\Component\Notifier\NotifierInterface;
-use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Component\Mailer\MailerInterface;
 use Vich\UploaderBundle\Handler\DownloadHandler;
 
 class BackupService
@@ -30,7 +29,7 @@ class BackupService
         private string $projectDir,
         private Encryptor $encryptor,
         private DownloadHandler $downloadHandler,
-        private NotifierInterface $notifier,
+        private MailerInterface $mailer,
     ) {
     }
 
@@ -82,17 +81,22 @@ class BackupService
             $backupStatus = new BackupStatus(BackupStatus::STATUS_FAIL, $e->getMessage());
         }
 
-        $title = sprintf('Backup done: %s', $database->getDisplayDsn());
         $content = sprintf("The database '%s' backup was launched.\n", $database->getDisplayDsn());
         if (BackupStatus::STATUS_OK === $backupStatus->getStatus()) {
+            $subject = sprintf('[DbSaver] Backup done: %s', $database->getDisplayDsn());
             $content .= 'Status: Done.';
         } else {
+            $subject = sprintf('[DbSaver] Backup errored: %s', $database->getDisplayDsn());
             $content .= sprintf("Status: Failed.\nError: %s", $backupStatus->getErrorMessage());
         }
-        $notification = (new Notification($title, ['email']))
+
+        $email = (new NotificationEmail())
+            ->subject($subject)
             ->content($content)
-            ->importance(BackupStatus::STATUS_FAIL === $backupStatus->getStatus() ? Notification::IMPORTANCE_HIGH : Notification::IMPORTANCE_LOW);
-        $this->notifier->send($notification, new Recipient($database->getOwner()->getEmail()));
+            ->to($database->getOwner()->getEmail())
+            ->markAsPublic()
+            ->context(['footer_text' => 'Automatically sent by DbSaver.']);
+        $this->mailer->send($email);
 
         return $backupStatus;
     }
