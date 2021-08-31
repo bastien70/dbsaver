@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Admin\Field\BadgeField;
 use App\Entity\User;
+use App\Helper\LocaleHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -16,6 +17,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class UserCrudController extends AbstractCrudController
 {
+    public function __construct(private array $enabledLocales)
+    {
+    }
+
     public static function getEntityFqcn(): string
     {
         return User::class;
@@ -65,6 +70,8 @@ class UserCrudController extends AbstractCrudController
             ->setRequired(Crud::PAGE_NEW === $pageName);
         yield ChoiceField::new('role', 'user.field.role')
             ->setChoices(array_combine(array_map(fn (string $role): string => 'user.choices.role.' . $role, User::getAvailableRoles()), User::getAvailableRoles()));
+        yield ChoiceField::new('locale', 'user.field.locale')
+            ->setChoices(array_combine(array_map(fn (string $locale): string => LocaleHelper::getLanguageName($locale), $this->enabledLocales), $this->enabledLocales));
         yield BadgeField::new('databases', 'user.field.databases')
             ->formatValue(function ($value) {
                 return \count($value);

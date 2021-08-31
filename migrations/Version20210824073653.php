@@ -34,4 +34,9 @@ final class Version20210824073653 extends AbstractMigration
         $this->addSql('ALTER TABLE `database` DROP FOREIGN KEY FK_C953062E7E3C61F9');
         $this->addSql('ALTER TABLE `database` ADD CONSTRAINT FK_C953062E7E3C61F9 FOREIGN KEY (owner_id) REFERENCES user (id)');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

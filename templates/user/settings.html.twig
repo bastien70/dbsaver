@@ -1,0 +1,23 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title 'user.settings.title'|trans %}
+{% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
+{% block page_content %}
+    {{ form_start(form) }}
+        <div class="row">
+            {{ form_row(form.locale, { 'row_attr': { 'class': 'col-12 col-md-3' } }) }}
+        </div>
+
+        <div class="row">
+            {{ form_row(form.currentPassword, { 'row_attr': { 'class': 'col-12 col-md-3' } }) }}
+            {{ form_row(form.newPassword, { 'row_attr': { 'class': 'col-12 col-md-3' } }) }}
+        </div>
+
+        <p>
+            <button type="submit" class="btn btn-primary" name="_submit">
+                <i class="fas fa-fw fa-check"></i>
+                {{ 'user.settings.submit'|trans }}
+            </button>
+        </p>
+    {{ form_end(form) }}
+{% endblock %}

@@ -45,7 +45,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
 
     public function testNewWithSimpleUser(): void
     {
-        $url = $this->getActionUrl(Action::NEW);
+        $url = $this->getCrudActionUrl(Action::NEW);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');
@@ -61,7 +61,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
 
     public function testNewWithAdmin(): void
     {
-        $url = $this->getActionUrl(Action::NEW);
+        $url = $this->getCrudActionUrl(Action::NEW);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');
@@ -74,7 +74,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
 
     public function testEditWithSimpleUser(): void
     {
-        $url = $this->getActionUrl(Action::EDIT, self::USER_ROLE_USER);
+        $url = $this->getCrudActionUrl(Action::EDIT, self::USER_ROLE_USER);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');
@@ -90,7 +90,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
 
     public function testEditWithAdminUser(): void
     {
-        $url = $this->getActionUrl(Action::EDIT, self::USER_ROLE_USER);
+        $url = $this->getCrudActionUrl(Action::EDIT, self::USER_ROLE_USER);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');
@@ -103,7 +103,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
 
     public function testDeleteWithAdminUser(): void
     {
-        $url = $this->getActionUrl(Action::DELETE, self::USER_ROLE_USER);
+        $url = $this->getCrudActionUrl(Action::DELETE, self::USER_ROLE_USER);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');
@@ -115,7 +115,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
 
     public function testDeleteWithSimpleUser(): void
     {
-        $url = $this->getActionUrl(Action::DELETE, self::USER_ROLE_ADMIN);
+        $url = $this->getCrudActionUrl(Action::DELETE, self::USER_ROLE_ADMIN);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');

@@ -85,6 +85,7 @@ menu:
     backups: Backups
     users: Users
     switch_locale: Locale
+    settings: Settings
 
 security:
     login:
@@ -111,7 +112,15 @@ user:
         password: Password
         role: Role
         databases: Databases
+        locale: Language
     choices:
         role:
             ROLE_USER: User
             ROLE_ADMIN: Admin
+    settings:
+        title: Settings
+        locale: Language
+        current_password: Current password
+        new_password: New password
+        submit: Save settings
+        flash_success: New settings have been successfully saved.
