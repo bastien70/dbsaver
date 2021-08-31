@@ -18,7 +18,7 @@ final class MakeUserCommandTest extends KernelTestCase
 
         $command = $application->find('app:make-user');
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs(['contact@test.com', 'test', 'ROLE_ADMIN']);
+        $commandTester->setInputs(['contact@test.com', 'test', 'en', 'ROLE_ADMIN']);
 
         $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();
@@ -47,8 +47,9 @@ final class MakeUserCommandTest extends KernelTestCase
 
     public function provideInvalidCases(): iterable
     {
-        yield 'no_email' => ['', '', ''];
-        yield 'invalid_email' => ['contact', '', ''];
-        yield 'no_password' => ['contact@test.com', '', ''];
+        yield 'no_email' => ['', '', '', ''];
+        yield 'invalid_email' => ['contact', '', '', ''];
+        yield 'no_password' => ['contact@test.com', '', '', ''];
+        yield 'no_locale' => ['contact@test.com', 'test', '', ''];
     }
 }

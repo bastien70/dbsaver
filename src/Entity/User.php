@@ -47,6 +47,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Database::class, orphanRemoval: true)]
     private Collection $databases;
 
+    #[ORM\Column(type: 'string', length: 2)]
+    #[Assert\NotBlank]
+    #[Assert\Locale]
+    private ?string $locale = null;
+
     public function __construct()
     {
         $this->databases = new ArrayCollection();
@@ -179,5 +184,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     public function setPlainPassword(?string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?string $locale): self
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 }

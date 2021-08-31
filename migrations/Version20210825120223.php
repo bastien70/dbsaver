@@ -25,4 +25,9 @@ final class Version20210825120223 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE `database` DROP status');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

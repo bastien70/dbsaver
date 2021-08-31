@@ -1,6 +1,7 @@
 App\Entity\User:
     base_user (template):
         password: <encodePassword(@self, 'test')>
+        locale: en
 
     user (extends base_user):
         email: 'user@test.com'

@@ -85,6 +85,7 @@ menu:
     backups: Sauvegardes
     users: Utilisateurs
     switch_locale: Langue
+    settings: Paramètres
 
 security:
     login:
@@ -111,8 +112,15 @@ user:
         password: Mot de passe
         role: Rôle
         databases: Bases de données
+        locale: Langue
     choices:
         role:
             ROLE_USER: Utilisateur
             ROLE_ADMIN: Administrateur
-
+    settings:
+        title: Paramètres
+        locale: Langue
+        current_password: Mot de passe actuel
+        new_password: Nouveau mot de passe
+        submit: Enregistrer les paramètres
+        flash_success: Les nouveaux paramètres ont été enregistrés.

@@ -27,6 +27,7 @@ final class MakeUserCommand extends Command
         private UserPasswordHasherInterface $hasher,
         private EntityManagerInterface $manager,
         private ValidatorInterface $validator,
+        private array $enabledLocales,
     ) {
         parent::__construct();
     }
@@ -55,11 +56,13 @@ final class MakeUserCommand extends Command
 
             return $password;
         });
+        $locale = $io->choice('Locale', $this->enabledLocales);
         $role = $io->choice('Role', User::getAvailableRoles(), 'ROLE_USER');
 
         $user = new User();
         $user->setEmail($email)
             ->setPassword($this->hasher->hashPassword($user, $plainPassword))
+            ->setLocale($locale)
             ->setRole($role);
 
         try {

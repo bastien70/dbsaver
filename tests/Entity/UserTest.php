@@ -90,4 +90,12 @@ final class UserTest extends TestCase
         self::assertCount(0, $entity->getDatabases());
         self::assertNull($database->getOwner());
     }
+
+    public function testLocale(): void
+    {
+        $entity = new User();
+        self::assertNull($entity->getLocale());
+        $entity->setLocale('fr');
+        self::assertSame('fr', $entity->getLocale());
+    }
 }
