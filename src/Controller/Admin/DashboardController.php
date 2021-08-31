@@ -44,6 +44,9 @@ final class DashboardController extends AbstractDashboardController
             throw new BadRequestHttpException();
         }
 
+        $this->getUser()->setLocale($locale);
+        $this->getDoctrine()->getManager()->flush();
+
         $request->getSession()->set('_locale', $locale);
         $redirectUrl = $request->headers->get('referer');
         if (empty($redirectUrl) || str_contains($redirectUrl, '/switch-locale')) {
