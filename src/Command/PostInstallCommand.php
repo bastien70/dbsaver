@@ -27,25 +27,25 @@ final class PostInstallCommand extends AbstractDotEnvCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $editor = $this->getDotenvEditor($input);
 
-        $databaseUrl = $io->ask('Database URL (eg. "mysql://root:root@127.0.0.1:3306/dbsaver?serverVersion=5.7")', null, function ($dsn) {
+        $databaseUrl = $io->ask('Database URL (eg. "mysql://root:root@127.0.0.1:3306/dbsaver?serverVersion=5.7")', $this->getValueFromDotEnv($editor, 'DATABASE_URL'), function ($dsn) {
             $this->validateInput($dsn, [new Assert\NotBlank()]);
 
             return $dsn;
         });
-        $mailerDsn = $io->ask('Mailer DSN (eg. "smtp://localhost")', null, function ($dsn) {
+        $mailerDsn = $io->ask('Mailer DSN (eg. "smtp://localhost")', $this->getValueFromDotEnv($editor, 'MAILER_DSN'), function ($dsn) {
             $this->validateInput($dsn, [new Assert\NotBlank()]);
 
             return $dsn;
         });
-        $mailerSender = $io->ask('Mailer sender email (eg. "you@email.com")', null, function ($email) {
+        $mailerSender = $io->ask('Mailer sender email (eg. "you@email.com")', $this->getValueFromDotEnv($editor, 'MAILER_SENDER'), function ($email) {
             $this->validateInput($email, [new Assert\NotBlank(), new Assert\Email()]);
 
             return $email;
         });
-        $defaultLocale = $io->choice('What locale should be the default one?', $this->enabledLocales);
+        $defaultLocale = $io->choice('What locale should be the default one?', $this->enabledLocales, $this->getValueFromDotEnv($editor, 'DEFAULT_LOCALE'));
 
-        $editor = $this->getDotenvEditor($input);
         $editor->set('DATABASE_URL', $databaseUrl);
         $editor->set('MAILER_DSN', $mailerDsn);
         $editor->set('MAILER_SENDER', $mailerSender);
