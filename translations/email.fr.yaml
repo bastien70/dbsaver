@@ -1,0 +1,13 @@
+backup_done:
+    subject:
+        ok: '[DbSaver] Sauvegarde effectuée : %dsn%'
+        fail: '[DbSaver] Sauvegarde échouée : %dsn%'
+    content:
+        ok: |
+            La sauvegarde de la base de données "%dsn%" a été lancée.
+            Statut : ok.
+        fail: |
+            La sauvegarde de la base de données "%dsn%" a été lancée.
+            Statut : échoué.
+            Erreur : %error%
+    footer: Cet email a été envoyé automatiquement par DbSaver.
