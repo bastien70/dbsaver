@@ -92,9 +92,10 @@ final class BackupCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, $downloadBackupAction)
             ->setPermission('downloadBackup', BackupVoter::CAN_SHOW_BACKUP)
+            ->setPermission(Action::DELETE, BackupVoter::CAN_SHOW_BACKUP)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ->remove(Crud::PAGE_INDEX, Action::EDIT)
-            ->disable(Action::NEW, Action::EDIT, Action::DELETE)
+            ->disable(Action::NEW, Action::EDIT)
         ;
     }
 

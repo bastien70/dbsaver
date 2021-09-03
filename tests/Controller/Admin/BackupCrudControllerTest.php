@@ -32,6 +32,18 @@ final class BackupCrudControllerTest extends AbstractCrudControllerTest
         self::assertResponseStatusCodeSame(403);
     }
 
+    public function testDelete(): void
+    {
+        $url = $this->getCrudActionUrl('delete', 1);
+
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects('/login');
+
+        $this->loginAsUser();
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects();
+    }
+
     protected function getControllerClass(): string
     {
         return BackupCrudController::class;
