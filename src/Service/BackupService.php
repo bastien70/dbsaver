@@ -16,6 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Vich\UploaderBundle\Handler\DownloadHandler;
 
 class BackupService
@@ -28,6 +29,7 @@ class BackupService
         private Encryptor $encryptor,
         private DownloadHandler $downloadHandler,
         private MailerInterface $mailer,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -79,21 +81,21 @@ class BackupService
             $backupStatus = new BackupStatus(BackupStatus::STATUS_FAIL, $e->getMessage());
         }
 
-        $content = sprintf("The database '%s' backup was launched.\n", $database->getDisplayDsn());
-        if (BackupStatus::STATUS_OK === $backupStatus->getStatus()) {
-            $subject = sprintf('[DbSaver] Backup done: %s', $database->getDisplayDsn());
-            $content .= 'Status: Done.';
-        } else {
-            $subject = sprintf('[DbSaver] Backup errored: %s', $database->getDisplayDsn());
-            $content .= sprintf("Status: Failed.\nError: %s", $backupStatus->getErrorMessage());
-        }
+        $locale = $database->getOwner()->getLocale();
+        $subject = $this->translator->trans('backup_done.subject.' . $backupStatus->getStatus(), [
+            '%dsn%' => $database->getDisplayDsn(),
+        ], 'email', $locale);
+        $content = $this->translator->trans('backup_done.content.' . $backupStatus->getStatus(), [
+            '%dsn%' => $database->getDisplayDsn(),
+            '%error%' => $backupStatus->getErrorMessage(),
+        ], 'email', $locale);
 
         $email = (new NotificationEmail())
             ->subject($subject)
             ->content($content)
             ->to($database->getOwner()->getEmail())
             ->markAsPublic()
-            ->context(['footer_text' => 'Automatically sent by DbSaver.']);
+            ->context(['footer_text' => $this->translator->trans('backup_done.footer', [], 'email', $locale)]);
         $this->mailer->send($email);
 
         return $backupStatus;

@@ -1,0 +1,13 @@
+backup_done:
+    subject:
+        ok: '[DbSaver] Backup done: %dsn%'
+        fail: '[DbSaver] Backup errored: %dsn%'
+    content:
+        ok: |
+            The database '%dsn%' backup was launched.
+            Status: Done.
+        fail: |
+            The database '%dsn%' backup was launched.
+            Status: Failed.
+            Error: %error%
+    footer: This email was automatically sent by DbSaver.
