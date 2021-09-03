@@ -1,0 +1,24 @@
+{% extends 'bundles/EasyAdminBundle/login_layout.html.twig' %}
+
+{% block content %}
+
+    {% for flashError in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h3>{{ 'reset_password.request.title'|trans }}</h3>
+
+    {{ form_start(requestForm) }}
+    {{ form_row(requestForm.email) }}
+
+    <div>
+        <small>
+            {{ 'reset_password.request.help'|trans }}
+        </small>
+    </div>
+
+    <button type="submit" name="_submit" class="btn btn-primary mt-4">{{ 'reset_password.request.submit'|trans }}</button>
+
+    {{ form_end(requestForm) }}
+
+{% endblock %}

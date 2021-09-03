@@ -124,3 +124,27 @@ user:
         new_password: Nouveau mot de passe
         submit: Enregistrer les paramètres
         flash_success: Les nouveaux paramètres ont été enregistrés.
+
+reset_password:
+    forgotten_password: Mot de passe oublié
+    request:
+        title: Réinitialiser mon mot de passe
+        help: Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+        submit: Envoyer un email de réinitialisation de mot de passe
+        field:
+            email: Adresse email
+            not_blank_message: Veuillez entrer votre adresse email
+    check_email:
+        intro: S'il existe un compte correspondant à votre email, un email vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.
+        expires_message: Ce lien va expirer dans %expires_in%.
+        not_received: Si vous ne recevez pas d'email, veuillez vérifier votre dossier spam ou <a href="%app_forgot_password_request_route%">réessayez</a>.
+    reset:
+        title: Réinitialiser mon mot de passe
+        submit: Réinitialiser
+        field:
+            new_password: Nouveau mot de passe
+            repeat_password: Répétez le mot de passe
+            not_blank_message: Veuillez entrer un mot de passe
+            invalid_message: Les mots de passe doivent être identiques.
+        flash_success: Votre mot de passe a bien été réinitialisé ! Vous pouvez désormais vous connecter.
+        flash_error: Un problème est survenu lors de la validation de votre demande de réinitialisation

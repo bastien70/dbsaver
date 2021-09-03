@@ -11,3 +11,11 @@ backup_done:
             Statut : échoué.
             Erreur : %error%
     footer: Cet email a été envoyé automatiquement par DbSaver.
+
+reset_password:
+    subject: '[DbSaver] Votre demande de réinitialisation de mot de passe'
+    content:
+        intro: Pour réinitialiser votre mot de passe, merci de cliquer sur le lien ci-dessous.
+        expires_in: Ce lien expirera dans %expires_in%
+        button_text: Réinitialiser mon mot de passe
+    footer: Cet email a été envoyé automatiquement par DbSaver.

@@ -124,3 +124,27 @@ user:
         new_password: New password
         submit: Save settings
         flash_success: New settings have been successfully saved.
+
+reset_password:
+    forgotten_password: Forgot your password
+    request:
+        title: Reset your password
+        help: Enter your email address and we we will send you a link to reset your password.
+        submit: Send password reset email
+        field:
+            email: Email address
+            not_blank_message: Please enter your email
+    check_email:
+        intro: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+        expires_message: This link will expire in %expires_in%.
+        not_received: If you don't receive an email please check your spam folder or <a href="%app_forgot_password_request_route%">try again</a>.
+    reset:
+        title: Reset your password
+        submit: Reset
+        field:
+            new_password: New password
+            repeat_password: Repeat Password
+            not_blank_message: Please enter a password
+            invalid_message: The password fields must match.
+            flash_success: Your password has been reset! You can now log in.
+            flash_error: A problem occurred while validating your reset request

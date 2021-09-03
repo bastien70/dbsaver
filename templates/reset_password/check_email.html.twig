@@ -1,0 +1,16 @@
+{% extends 'bundles/EasyAdminBundle/login_layout.html.twig' %}
+
+{% block content %}
+    <p>{{ 'reset_password.check_email.intro'|trans }}</p>
+
+    <p>
+        {{ 'reset_password.check_email.expires_message'|trans({
+            '%expires_in%': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')
+        }) }}
+    </p>
+    <p>
+        {{ 'reset_password.check_email.not_received'|trans({
+            '%app_forgot_password_request_route%': path('app_forgot_password_request')
+        })|raw }}
+    </p>
+{% endblock %}

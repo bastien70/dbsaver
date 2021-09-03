@@ -11,3 +11,11 @@ backup_done:
             Status: Failed.
             Error: %error%
     footer: This email was automatically sent by DbSaver.
+
+reset_password:
+    subject: '[DbSaver] Your password reset request'
+    content:
+        intro: To reset your password, please visit the link below
+        expires_in: This link will expire in %expires_in%
+        button_text: Reset my password
+    footer: This email was automatically sent by DbSaver.
