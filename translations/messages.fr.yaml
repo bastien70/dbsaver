@@ -133,7 +133,6 @@ reset_password:
         submit: Envoyer un email de réinitialisation de mot de passe
         field:
             email: Adresse email
-            not_blank_message: Veuillez entrer votre adresse email
     check_email:
         intro: S'il existe un compte correspondant à votre email, un email vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.
         expires_message: Ce lien va expirer dans %expires_in%.
@@ -144,7 +143,5 @@ reset_password:
         field:
             new_password: Nouveau mot de passe
             repeat_password: Répétez le mot de passe
-            not_blank_message: Veuillez entrer un mot de passe
-            invalid_message: Les mots de passe doivent être identiques.
         flash_success: Votre mot de passe a bien été réinitialisé ! Vous pouvez désormais vous connecter.
         flash_error: Un problème est survenu lors de la validation de votre demande de réinitialisation

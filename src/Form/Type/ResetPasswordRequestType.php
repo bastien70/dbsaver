@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
+use App\Form\Model\ResetPasswordRequestModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ResetPasswordRequestFormType extends AbstractType
+class ResetPasswordRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -18,17 +18,12 @@ class ResetPasswordRequestFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => ['autocomplete' => 'email'],
                 'label' => 'reset_password.request.field.email',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'reset_password.request.field.not_blank_message',
-                    ]),
-                ],
             ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([]);
+        $resolver->setDefault('data_class', ResetPasswordRequestModel::class);
     }
 }

@@ -11,7 +11,7 @@ class ResetPasswordControllerTest extends AbstractControllerTest
         self::$client->request('GET', '/reset-password');
         self::assertResponseIsSuccessful();
 
-        self::$client->submitForm('_submit', ['reset_password_request_form' => [
+        self::$client->submitForm('_submit', ['reset_password_request' => [
             'email' => 'user@test.com',
         ]]);
 

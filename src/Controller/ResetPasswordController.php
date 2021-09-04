@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\Type\ChangePasswordFormType;
-use App\Form\Type\ResetPasswordRequestFormType;
+use App\Form\Model\ResetPasswordModel;
+use App\Form\Model\ResetPasswordRequestModel;
+use App\Form\Type\ResetPasswordRequestType;
+use App\Form\Type\ResetPasswordType;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,12 +40,13 @@ class ResetPasswordController extends AbstractController
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, MailerInterface $mailer): Response
     {
-        $form = $this->createForm(ResetPasswordRequestFormType::class);
+        $resetPasswordRequest = new ResetPasswordRequestModel();
+        $form = $this->createForm(ResetPasswordRequestType::class, $resetPasswordRequest);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->processSendingPasswordResetEmail(
-                $form->get('email')->getData(),
+                $resetPasswordRequest->email,
                 $mailer
             );
         }
@@ -103,7 +106,8 @@ class ResetPasswordController extends AbstractController
         }
 
         // The token is valid; allow the user to change their password.
-        $form = $this->createForm(ChangePasswordFormType::class);
+        $resetPassword = new ResetPasswordModel();
+        $form = $this->createForm(ResetPasswordType::class, $resetPassword);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -113,7 +117,7 @@ class ResetPasswordController extends AbstractController
             // Encode the plain password, and set it.
             $encodedPassword = $hasher->hashPassword(
                 $user,
-                $form->get('plainPassword')->getData()
+                $resetPassword->plainPassword
             );
 
             $user->setPassword($encodedPassword);
