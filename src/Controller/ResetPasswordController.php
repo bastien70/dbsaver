@@ -100,7 +100,7 @@ class ResetPasswordController extends AbstractController
                 'danger',
                 new TranslatableMessage(
                     'reset_password.reset.flash_error', [
-                        '%message%' => $e->getReason()
+                        '%message%' => $e->getReason(),
                     ]
                 )
             );
