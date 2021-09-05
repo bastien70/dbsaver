@@ -143,5 +143,5 @@ reset_password:
         field:
             new_password: Nouveau mot de passe
             repeat_password: Répétez le mot de passe
-        flash_success: Votre mot de passe a bien été réinitialisé ! Vous pouvez désormais vous connecter.
-        flash_error: Un problème est survenu lors de la validation de votre demande de réinitialisation
+        flash_success: 'Votre mot de passe a bien été réinitialisé ! Vous pouvez désormais vous connecter.'
+        flash_error: 'Un problème est survenu lors de la validation de votre demande de réinitialisation : %message%'

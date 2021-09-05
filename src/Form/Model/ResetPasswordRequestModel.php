@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class ResetPasswordRequestModel
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     public ?string $email = null;
 }
