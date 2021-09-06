@@ -1,4 +1,7 @@
 {
+    "aws/aws-crt-php": {
+        "version": "v1.0.2"
+    },
     "aws/aws-sdk-php": {
         "version": "3.190.3"
     },
