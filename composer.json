@@ -32,7 +32,6 @@
         "symfony/http-client": "5.3.*",
         "symfony/intl": "5.3.*",
         "symfony/mailer": "5.3.*",
-        "symfony/mime": "5.3.*",
         "symfony/monolog-bundle": "^3.7.0",
         "symfony/process": "5.3.*",
         "symfony/property-access": "5.3.*",
@@ -40,12 +39,10 @@
         "symfony/proxy-manager-bridge": "5.3.*",
         "symfony/runtime": "5.3.*",
         "symfony/security-bundle": "5.3.*",
-        "symfony/serializer": "5.3.*",
         "symfony/string": "5.3.*",
         "symfony/translation": "5.3.*",
         "symfony/twig-bundle": "5.3.*",
         "symfony/validator": "5.3.*",
-        "symfony/web-link": "5.3.*",
         "symfony/yaml": "5.3.*",
         "symfonycasts/reset-password-bundle": "^1.9.1",
         "twig/cssinliner-extra": "^3.3.0",
@@ -93,6 +90,9 @@
     "replace": {
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php73": "*",
         "symfony/polyfill-php72": "*"
     },
     "scripts": {
