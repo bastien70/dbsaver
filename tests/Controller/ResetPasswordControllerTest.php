@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Repository\UserRepository;
-use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
-use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 class ResetPasswordControllerTest extends AbstractControllerTest
@@ -33,10 +31,6 @@ class ResetPasswordControllerTest extends AbstractControllerTest
         self::assertResponseRedirects('/reset-password/check-email');
     }
 
-    /**
-     * @throws ResetPasswordExceptionInterface
-     * @throws TooManyPasswordRequestsException
-     */
     public function testResetPassword(): void
     {
         $user = $this->userRepository->find(self::USER_ROLE_ADMIN);
