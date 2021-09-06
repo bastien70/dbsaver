@@ -96,14 +96,12 @@ class ResetPasswordController extends AbstractController
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash(
-                'danger',
-                new TranslatableMessage(
-                    'reset_password.reset.flash_error', [
-                        '%message%' => $e->getReason(),
-                    ]
-                )
-            );
+            $this->addFlash('danger', new TranslatableMessage('reset_password.reset.flash_error', [
+                '%message%' => $this->translator->trans(
+                    $e->getReason(),
+                    domain: 'reset_password'
+                ),
+            ]));
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
