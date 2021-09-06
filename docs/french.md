@@ -28,6 +28,7 @@ Celles-ci peuvent être sauvegardées en **local** ou sur le cloud d'Amazon **AW
     1. [En local](#local-storage)
     1. [Sur AWS S3](#aws-storage)
 1. [Utiliser l'application](#use-app)
+1. [Mettre à jour l'application](#update-app)
 1. [Licence](#license)
 1. [Contribuer](#contribute)
 1. [Changelog](#changelog)
@@ -152,6 +153,19 @@ Pour accéder aux sauvegardes de vos bases de données, cliquez sur l'onglet `Sa
 ![Liste des sauvegardes](images/backup-list-fr.png?raw=true)
 
 Vous aurez la possibilité de supprimer ou télécharger une sauvegarde.
+
+## Mettre à jour l'application <a name="update-app"></a>
+
+Si Task et Symfony CLI sont installés sur votre système, vous avez simplement à lancer cette commande : `task update`
+
+Sinon, lancez les commandes suivantes :
+
+```bash
+git pull --rebase
+composer install
+php bin/console doctrine:migrations:migrate --no-interaction
+php bin/console app:post-install --only-missing
+```
 
 ## Licence <a name="license"></a>
 
