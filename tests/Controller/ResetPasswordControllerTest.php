@@ -9,7 +9,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-class ResetPasswordControllerTest extends AbstractControllerTest
+final class ResetPasswordControllerTest extends AbstractControllerTest
 {
     private ResetPasswordHelperInterface $resetPasswordHelper;
     private UserRepository $userRepository;
