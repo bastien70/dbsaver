@@ -144,4 +144,4 @@ reset_password:
             new_password: New password
             repeat_password: Repeat Password
         flash_success: 'Your password has been reset! You can now log in.'
-        flash_error: 'A problem occurred while validating your reset request : %message%'
+        flash_error: 'A problem occurred while validating your reset request: %message%.'
