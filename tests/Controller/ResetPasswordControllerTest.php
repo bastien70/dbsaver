@@ -37,7 +37,7 @@ class ResetPasswordControllerTest extends AbstractControllerTest
      * @throws ResetPasswordExceptionInterface
      * @throws TooManyPasswordRequestsException
      */
-    public function testResetPassword()
+    public function testResetPassword(): void
     {
         $user = $this->userRepository->find(self::USER_ROLE_ADMIN);
         $resetToken = $this->resetPasswordHelper->generateResetToken($user);
