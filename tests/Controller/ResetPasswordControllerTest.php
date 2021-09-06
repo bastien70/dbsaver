@@ -21,7 +21,7 @@ class ResetPasswordControllerTest extends AbstractControllerTest
         $this->userRepository = self::getContainer()->get(UserRepository::class);
     }
 
-    public function testRequestPasswordReset()
+    public function testRequestPasswordReset(): void
     {
         self::$client->request('GET', '/reset-password');
         self::assertResponseIsSuccessful();
