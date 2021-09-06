@@ -30,6 +30,7 @@ Backups can be saved **locally** or on Amazon's cloud **AWS S3**.
     1. [Locally](#local-storage)
     1. [On AWS S3](#aws-storage)
 1. [Use the application](#use-app)
+1. [Update the application](#update-app)
 1. [License](#license)
 1. [Contribute](#contribute)
 1. [Changelog](#changelog)
@@ -153,6 +154,19 @@ To access your databases backups, click the `Backups` tab.
 ![Backup list](images/backup-list-en.png?raw=true)
 
 You will be able to download or delete a backup.
+
+## Update the application <a name="update-app"></a>
+
+If you have Task and Symfony CLI installed, just run this command: `task update`
+
+Else run the following commands instead:
+
+```bash
+git pull --rebase
+composer install
+php bin/console doctrine:migrations:migrate --no-interaction
+php bin/console app:post-install --only-missing
+```
 
 ## License <a name="license"></a>
 

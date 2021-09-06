@@ -93,3 +93,4 @@ tasks:
             - git pull --rebase
             - task: composer
             - symfony console doctrine:migrations:migrate --no-interaction
+            - symfony console app:post-install --only-missing
