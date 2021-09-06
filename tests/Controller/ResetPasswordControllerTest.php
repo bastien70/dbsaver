@@ -7,7 +7,7 @@ namespace App\Tests\Controller;
 use App\Repository\UserRepository;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-class ResetPasswordControllerTest extends AbstractControllerTest
+final class ResetPasswordControllerTest extends AbstractControllerTest
 {
     private ResetPasswordHelperInterface $resetPasswordHelper;
     private UserRepository $userRepository;
