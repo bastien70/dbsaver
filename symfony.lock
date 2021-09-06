@@ -1,4 +1,7 @@
 {
+    "aws/aws-crt-php": {
+        "version": "v1.0.2"
+    },
     "aws/aws-sdk-php": {
         "version": "3.190.3"
     },
@@ -275,9 +278,6 @@
     },
     "psr/http-message": {
         "version": "1.0.1"
-    },
-    "psr/link": {
-        "version": "1.1.1"
     },
     "psr/log": {
         "version": "1.1.4"
@@ -556,12 +556,6 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.23.1"
     },
-    "symfony/polyfill-php73": {
-        "version": "v1.23.0"
-    },
-    "symfony/polyfill-php80": {
-        "version": "v1.23.1"
-    },
     "symfony/polyfill-php81": {
         "version": "v1.23.0"
     },
@@ -622,9 +616,6 @@
     },
     "symfony/security-http": {
         "version": "v5.3.6"
-    },
-    "symfony/serializer": {
-        "version": "v5.3.4"
     },
     "symfony/serializer-pack": {
         "version": "v1.0.4"
@@ -696,9 +687,6 @@
         "version": "v5.3.6"
     },
     "symfony/var-exporter": {
-        "version": "v5.3.4"
-    },
-    "symfony/web-link": {
         "version": "v5.3.4"
     },
     "symfony/web-profiler-bundle": {
