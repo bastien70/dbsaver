@@ -57,12 +57,14 @@ final class MakeUserCommand extends Command
             return $password;
         });
         $locale = $io->choice('Locale', $this->enabledLocales);
+        $receiveAutomaticEmails = $io->confirm('Should the user receive automatic emails?');
         $role = $io->choice('Role', User::getAvailableRoles(), 'ROLE_USER');
 
         $user = new User();
         $user->setEmail($email)
             ->setPassword($this->hasher->hashPassword($user, $plainPassword))
             ->setLocale($locale)
+            ->setReceiveAutomaticEmails($receiveAutomaticEmails)
             ->setRole($role);
 
         try {

@@ -122,6 +122,7 @@ user:
         locale: Language
         current_password: Current password
         new_password: New password
+        receive_automatic_emails: Receive automatic emails
         submit: Save settings
         flash_success: New settings have been successfully saved.
 

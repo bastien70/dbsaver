@@ -98,4 +98,12 @@ final class UserTest extends TestCase
         $entity->setLocale('fr');
         self::assertSame('fr', $entity->getLocale());
     }
+
+    public function testReceiveAutomaticEmails(): void
+    {
+        $entity = new User();
+        self::assertTrue($entity->getReceiveAutomaticEmails());
+        $entity->setReceiveAutomaticEmails(false);
+        self::assertFalse($entity->getReceiveAutomaticEmails());
+    }
 }

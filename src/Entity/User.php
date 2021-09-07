@@ -38,7 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     /**
      * @var string The hashed password
      */
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     private string $password;
 
     #[Assert\NotBlank(groups: ['Create'])]
@@ -47,10 +47,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Database::class, orphanRemoval: true)]
     private Collection $databases;
 
-    #[ORM\Column(type: 'string', length: 2)]
+    #[ORM\Column(type: Types::STRING, length: 2)]
     #[Assert\NotBlank]
     #[Assert\Locale]
     private ?string $locale = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $receiveAutomaticEmails = true;
 
     public function __construct()
     {
@@ -194,6 +197,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     public function setLocale(?string $locale): self
     {
         $this->locale = $locale;
+
+        return $this;
+    }
+
+    public function getReceiveAutomaticEmails(): bool
+    {
+        return $this->receiveAutomaticEmails;
+    }
+
+    public function setReceiveAutomaticEmails(bool $receiveAutomaticEmails): self
+    {
+        $this->receiveAutomaticEmails = $receiveAutomaticEmails;
 
         return $this;
     }

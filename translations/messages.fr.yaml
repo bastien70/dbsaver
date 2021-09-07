@@ -122,6 +122,7 @@ user:
         locale: Langue
         current_password: Mot de passe actuel
         new_password: Nouveau mot de passe
+        receive_automatic_emails: Recevoir les emails automatiques
         submit: Enregistrer les paramètres
         flash_success: Les nouveaux paramètres ont été enregistrés.
 
