@@ -18,7 +18,7 @@ final class PostInstallCommandTest extends KernelTestCase
 
         $command = $application->find('app:post-install');
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs(['mysql://dev:dev@127.0.0.1:3306/dbsaver_test', 'smtp://localhost', 'me@user.com', 'en']);
+        $commandTester->setInputs(['mysql://dev:dev@127.0.0.1:3306/dbsaver_test', 'smtp://localhost', 'me@user.com', 'en', 'dev']);
 
         $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();
@@ -28,14 +28,14 @@ final class PostInstallCommandTest extends KernelTestCase
     /**
      * @dataProvider provideInvalidCases
      */
-    public function testExecuteWithInvalidInput(string $dsn): void
+    public function testExecuteWithInvalidInput(string $databaseUrl, string $mailerDsn, string $mailerSender, string $locale, string $environment): void
     {
         $kernel = self::createKernel();
         $application = new Application($kernel);
 
         $command = $application->find('app:post-install');
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs([$dsn]);
+        $commandTester->setInputs([$databaseUrl, $mailerDsn, $mailerSender, $locale, $environment]);
 
         $this->expectException(MissingInputException::class);
         $commandTester->execute(['command' => $command->getName()]);
@@ -43,9 +43,13 @@ final class PostInstallCommandTest extends KernelTestCase
 
     public function provideInvalidCases(): iterable
     {
-        yield 'no_database_url' => ['', '', '', ''];
-        yield 'no_mailer_dsn' => ['test', '', '', ''];
-        yield 'no_mailer_sender' => ['test', 'test', '', ''];
-        yield 'invalid_mailer_sender' => ['test', 'test', 'test', ''];
+        yield 'no_database_url' => ['', '', '', '', ''];
+        yield 'no_mailer_dsn' => ['test', '', '', '', ''];
+        yield 'no_mailer_sender' => ['test', 'test', '', '', ''];
+        yield 'invalid_mailer_sender' => ['test', 'test', 'test', '', ''];
+        yield 'no_locale' => ['test', 'test', 'test', '', ''];
+        yield 'invalid_locale' => ['test', 'test', 'test', 'de', ''];
+        yield 'no_environment' => ['test', 'test', 'test', 'de', ''];
+        yield 'invalid_environment' => ['test', 'test', 'test', 'de', 'test'];
     }
 }

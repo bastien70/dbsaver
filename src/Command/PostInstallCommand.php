@@ -58,6 +58,7 @@ final class PostInstallCommand extends AbstractDotEnvCommand
             return $email;
         });
         $this->choice('DEFAULT_LOCALE', 'What locale should be the default one?', $this->enabledLocales);
+        $this->choice('APP_ENV', 'What environment should the app use?', ['prod', 'dev']);
 
         $this->dotenvEditor->save();
         $this->removeDotEnvFileIfTest($input);
