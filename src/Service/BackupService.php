@@ -81,22 +81,24 @@ class BackupService
             $backupStatus = new BackupStatus(BackupStatus::STATUS_FAIL, $e->getMessage());
         }
 
-        $locale = $database->getOwner()->getLocale();
-        $subject = $this->translator->trans('backup_done.subject.' . $backupStatus->getStatus(), [
-            '%dsn%' => $database->getDisplayDsn(),
-        ], 'email', $locale);
-        $content = $this->translator->trans('backup_done.content.' . $backupStatus->getStatus(), [
-            '%dsn%' => $database->getDisplayDsn(),
-            '%error%' => $backupStatus->getErrorMessage(),
-        ], 'email', $locale);
+        if ($database->getOwner()->getReceiveAutomaticEmails()) {
+            $locale = $database->getOwner()->getLocale();
+            $subject = $this->translator->trans('backup_done.subject.' . $backupStatus->getStatus(), [
+                '%dsn%' => $database->getDisplayDsn(),
+            ], 'email', $locale);
+            $content = $this->translator->trans('backup_done.content.' . $backupStatus->getStatus(), [
+                '%dsn%' => $database->getDisplayDsn(),
+                '%error%' => $backupStatus->getErrorMessage(),
+            ], 'email', $locale);
 
-        $email = (new NotificationEmail())
-            ->subject($subject)
-            ->content($content)
-            ->to($database->getOwner()->getEmail())
-            ->markAsPublic()
-            ->context(['footer_text' => $this->translator->trans('backup_done.footer', [], 'email', $locale)]);
-        $this->mailer->send($email);
+            $email = (new NotificationEmail())
+                ->subject($subject)
+                ->content($content)
+                ->to($database->getOwner()->getEmail())
+                ->markAsPublic()
+                ->context(['footer_text' => $this->translator->trans('backup_done.footer', [], 'email', $locale)]);
+            $this->mailer->send($email);
+        }
 
         return $backupStatus;
     }

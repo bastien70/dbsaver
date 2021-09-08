@@ -19,6 +19,8 @@ final class SettingsModel
 
     public ?string $newPassword = null;
 
+    public bool $receiveAutomaticEmails;
+
     #[Assert\Callback]
     public function validatePassword(ExecutionContextInterface $context): void
     {
@@ -41,6 +43,7 @@ final class SettingsModel
     {
         $model = new self();
         $model->locale = $user->getLocale();
+        $model->receiveAutomaticEmails = $user->getReceiveAutomaticEmails();
 
         return $model;
     }

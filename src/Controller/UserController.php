@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\Model\SettingsModel;
 use App\Form\Type\SettingsType;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -26,12 +27,14 @@ final class UserController extends AbstractController
     public function settings(Request $request): Response
     {
         $user = $this->getUser();
+        \assert($user instanceof User);
         $settings = SettingsModel::createFromUser($user);
         $form = $this->createForm(SettingsType::class, $settings);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setLocale($settings->locale);
+            $user->setReceiveAutomaticEmails($settings->receiveAutomaticEmails);
             $request->getSession()->set('_locale', $settings->locale);
             if (null !== $settings->newPassword) {
                 $user->setPassword($this->passwordHasher->hashPassword($user, $settings->newPassword));

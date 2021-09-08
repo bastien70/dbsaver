@@ -21,6 +21,7 @@ final class UserControllerTest extends AbstractControllerTest
             'locale' => 'en',
             'currentPassword' => 'test',
             'newPassword' => 'test',
+            'receiveAutomaticEmails' => true,
         ]]);
         self::assertResponseRedirects();
         $crawler = self::$client->followRedirect();

@@ -18,7 +18,7 @@ final class MakeUserCommandTest extends KernelTestCase
 
         $command = $application->find('app:make-user');
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs(['contact@test.com', 'test', 'en', 'ROLE_ADMIN']);
+        $commandTester->setInputs(['contact@test.com', 'test', 'en', true, 'ROLE_ADMIN']);
 
         $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();

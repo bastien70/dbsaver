@@ -2,6 +2,7 @@ App\Entity\User:
     base_user (template):
         password: <encodePassword(@self, 'test')>
         locale: en
+        receiveAutomaticEmails: <boolean()>
 
     user (extends base_user):
         email: 'user@test.com'
