@@ -3,10 +3,10 @@
         "version": "v1.0.2"
     },
     "aws/aws-sdk-php": {
-        "version": "3.190.3"
+        "version": "3.196.0"
     },
     "composer/package-versions-deprecated": {
-        "version": "1.11.99.2"
+        "version": "1.11.99.4"
     },
     "composer/semver": {
         "version": "3.2.5"
@@ -39,7 +39,7 @@
         "version": "1.5.0"
     },
     "doctrine/dbal": {
-        "version": "2.13.2"
+        "version": "2.13.3"
     },
     "doctrine/deprecations": {
         "version": "v0.5.3"
@@ -50,7 +50,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.4",
-            "ref": "dda18c8830b143bc31c0e0457fb13b9029614d76"
+            "ref": "bac5c852ff628886de2753215fe5eb1f9ce980fb"
         },
         "files": [
             "config/packages/doctrine.yaml",
@@ -89,7 +89,7 @@
         "version": "3.2.1"
     },
     "doctrine/orm": {
-        "version": "2.9.4"
+        "version": "2.9.5"
     },
     "doctrine/persistence": {
         "version": "2.2.2"
@@ -110,7 +110,7 @@
         "version": "3.1.1"
     },
     "fakerphp/faker": {
-        "version": "v1.15.0"
+        "version": "v1.16.0"
     },
     "friendsofphp/php-cs-fixer": {
         "version": "3.0",
@@ -142,7 +142,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.1",
-            "ref": "71822522faf7ed2792d86b7f94ce73443358ccb9"
+            "ref": "ff94d76b2ec0c552b5d67d401f59ab8fd62f3d5f"
         },
         "files": [
             "config/packages/dev/hautelook_alice.yaml",
@@ -154,7 +154,7 @@
         "version": "v2.9"
     },
     "jms/metadata": {
-        "version": "2.5.0"
+        "version": "2.5.1"
     },
     "knplabs/gaufrette": {
         "version": "v0.9.0"
@@ -163,13 +163,13 @@
         "version": "v0.7.1"
     },
     "laminas/laminas-code": {
-        "version": "4.4.2"
+        "version": "4.4.3"
     },
     "lorenzo/pinky": {
         "version": "1.0.5"
     },
     "monolog/monolog": {
-        "version": "2.3.2"
+        "version": "2.3.4"
     },
     "mtdowling/jmespath.php": {
         "version": "2.6.1"
@@ -191,7 +191,7 @@
         ]
     },
     "nikic/php-parser": {
-        "version": "v4.12.0"
+        "version": "v4.13.0"
     },
     "nzo/url-encryptor-bundle": {
         "version": "v6.0.1"
@@ -212,31 +212,31 @@
         "version": "5.2.2"
     },
     "phpdocumentor/type-resolver": {
-        "version": "1.4.0"
+        "version": "1.5.0"
     },
     "phpspec/prophecy": {
-        "version": "1.13.0"
+        "version": "1.14.0"
     },
     "phpstan/extension-installer": {
         "version": "1.1.0"
     },
     "phpstan/phpstan": {
-        "version": "0.12.94"
+        "version": "0.12.99"
     },
     "phpstan/phpstan-deprecation-rules": {
         "version": "0.12.6"
     },
     "phpstan/phpstan-doctrine": {
-        "version": "0.12.42"
+        "version": "0.12.44"
     },
     "phpstan/phpstan-phpunit": {
         "version": "0.12.22"
     },
     "phpstan/phpstan-symfony": {
-        "version": "0.12.42"
+        "version": "0.12.44"
     },
     "phpunit/php-code-coverage": {
-        "version": "9.2.6"
+        "version": "9.2.7"
     },
     "phpunit/php-file-iterator": {
         "version": "3.0.5"
@@ -355,7 +355,7 @@
         "version": "v5.3.4"
     },
     "symfony/cache": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/cache-contracts": {
         "version": "v2.4.0"
@@ -394,37 +394,37 @@
         "version": "v1.0.9"
     },
     "symfony/dependency-injection": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/deprecation-contracts": {
         "version": "v2.4.0"
     },
     "symfony/doctrine-bridge": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/dom-crawler": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/dotenv": {
-        "version": "v5.3.6"
+        "version": "v5.3.8"
     },
     "symfony/error-handler": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/event-dispatcher": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/event-dispatcher-contracts": {
         "version": "v2.4.0"
     },
     "symfony/expression-language": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/filesystem": {
         "version": "v5.3.4"
     },
     "symfony/finder": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/flex": {
         "version": "1.0",
@@ -439,7 +439,7 @@
         ]
     },
     "symfony/form": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/framework-bundle": {
         "version": "5.3",
@@ -447,7 +447,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "772b77cfb5017644547ef7f9364c54e4eb9a6c61"
+            "ref": "414ba00ad43fa71be42c7906a551f1831716b03c"
         },
         "files": [
             "config/packages/cache.yaml",
@@ -461,19 +461,19 @@
         ]
     },
     "symfony/http-client": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/http-client-contracts": {
         "version": "v2.4.0"
     },
     "symfony/http-foundation": {
-        "version": "v5.3.6"
+        "version": "v5.3.7"
     },
     "symfony/http-kernel": {
-        "version": "v5.3.6"
+        "version": "v5.3.9"
     },
     "symfony/intl": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/mailer": {
         "version": "4.3",
@@ -481,26 +481,17 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.3",
-            "ref": "15658c2a0176cda2e7dba66276a2030b52bd81b2"
+            "ref": "bbfc7e27257d3a3f12a6fb0a42540a42d9623a37"
         },
         "files": [
             "config/packages/mailer.yaml"
         ]
     },
-    "symfony/maker-bundle": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
-        }
-    },
     "symfony/mime": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/monolog-bridge": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/monolog-bundle": {
         "version": "3.7",
@@ -518,13 +509,13 @@
         ]
     },
     "symfony/options-resolver": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/orm-pack": {
         "version": "v2.1.0"
     },
     "symfony/password-hasher": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/phpunit-bridge": {
         "version": "5.3",
@@ -532,7 +523,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "905679249e7b10f06c572917a9022a72cbfedc04"
+            "ref": "97cb3dc7b0f39c7cfc4b7553504c9d7b7795de96"
         },
         "files": [
             ".env.test",
@@ -563,16 +554,16 @@
         "version": "v1.23.0"
     },
     "symfony/process": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/profiler-pack": {
         "version": "v1.0.5"
     },
     "symfony/property-access": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/property-info": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/proxy-manager-bridge": {
         "version": "v5.3.4"
@@ -599,23 +590,23 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "227eba5e0c7e8fc4beda3537c3d81dc23ba08182"
+            "ref": "9c4fcf79873f7400c885b90935f7163233615d6f"
         },
         "files": [
             "config/packages/security.yaml"
         ]
     },
     "symfony/security-core": {
-        "version": "v5.3.6"
+        "version": "v5.3.8"
     },
     "symfony/security-csrf": {
         "version": "v5.3.4"
     },
     "symfony/security-guard": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/security-http": {
-        "version": "v5.3.6"
+        "version": "v5.3.8"
     },
     "symfony/serializer-pack": {
         "version": "v1.0.4"
@@ -627,7 +618,7 @@
         "version": "v5.3.4"
     },
     "symfony/string": {
-        "version": "v5.3.3"
+        "version": "v5.3.7"
     },
     "symfony/test-pack": {
         "version": "v1.0.8"
@@ -649,7 +640,7 @@
         "version": "v2.4.0"
     },
     "symfony/twig-bridge": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/twig-bundle": {
         "version": "5.3",
@@ -684,10 +675,10 @@
         ]
     },
     "symfony/var-dumper": {
-        "version": "v5.3.6"
+        "version": "v5.3.8"
     },
     "symfony/var-exporter": {
-        "version": "v5.3.4"
+        "version": "v5.3.8"
     },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
@@ -734,16 +725,16 @@
         "version": "2.2.3"
     },
     "twig/cssinliner-extra": {
-        "version": "v3.3.0"
+        "version": "v3.3.3"
     },
     "twig/extra-bundle": {
-        "version": "v3.3.1"
+        "version": "v3.3.3"
     },
     "twig/inky-extra": {
-        "version": "v3.3.0"
+        "version": "v3.3.3"
     },
     "twig/twig": {
-        "version": "v3.3.2"
+        "version": "v3.3.3"
     },
     "vich/uploader-bundle": {
         "version": "1.7",
