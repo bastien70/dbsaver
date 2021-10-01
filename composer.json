@@ -54,6 +54,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.1.0",
         "hautelook/alice-bundle": "^2.9.0",
+        "laminas/laminas-code": "^4.5.x-dev",
         "phpstan/extension-installer": "^1.1.0",
         "phpstan/phpstan": "^0.12.99",
         "phpstan/phpstan-deprecation-rules": "^0.12.6",
