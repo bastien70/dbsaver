@@ -58,6 +58,7 @@ class SecurityController extends AbstractController
 
             'forgot_password_enabled' => true,
             'forgot_password_path' => $this->generateUrl('app_forgot_password_request'),
+            'remember_me_enabled' => true,
         ]);
     }
 
