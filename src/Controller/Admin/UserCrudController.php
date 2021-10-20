@@ -17,6 +17,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class UserCrudController extends AbstractCrudController
 {
+    /**
+     * @param array<string> $enabledLocales
+     */
     public function __construct(private array $enabledLocales)
     {
     }

@@ -21,6 +21,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class DashboardController extends AbstractDashboardController
 {
+    /**
+     * @param array<string> $enabledLocales
+     */
     public function __construct(private array $enabledLocales)
     {
     }

@@ -146,6 +146,9 @@ final class DatabaseCrudController extends AbstractCrudController
         return $this->redirect($url);
     }
 
+    /**
+     * @param Database $entityInstance
+     */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         // When creating a new Database, it is validated so the connection must be ok.
@@ -153,6 +156,9 @@ final class DatabaseCrudController extends AbstractCrudController
         parent::persistEntity($entityManager, $entityInstance);
     }
 
+    /**
+     * @param Database $entityInstance
+     */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance, string $status = Database::STATUS_OK): void
     {
         $entityInstance->setStatus($status);

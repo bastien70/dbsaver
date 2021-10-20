@@ -221,6 +221,9 @@ class Database implements \Stringable
         $this->status = $status;
     }
 
+    /**
+     * @return string[]
+     */
     public static function getAvailableStatuses(): array
     {
         return [

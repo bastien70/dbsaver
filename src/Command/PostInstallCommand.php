@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,6 +27,9 @@ final class PostInstallCommand extends AbstractDotEnvCommand
     private bool $onlyMissing;
     private bool $anyValueWasUpdated = false;
 
+    /**
+     * @param array<string> $enabledLocales
+     */
     public function __construct(private ValidatorInterface $validator, private array $enabledLocales)
     {
         parent::__construct();
@@ -82,6 +86,9 @@ final class PostInstallCommand extends AbstractDotEnvCommand
         }
     }
 
+    /**
+     * @param array<string> $choices
+     */
     private function choice(string $key, string $question, array $choices): void
     {
         $value = $this->getValueFromDotEnv($this->dotenvEditor, $key);
@@ -96,6 +103,9 @@ final class PostInstallCommand extends AbstractDotEnvCommand
         }
     }
 
+    /**
+     * @param array<Constraint> $constraints
+     */
     private function validateInput(mixed $value, array $constraints): void
     {
         $errors = $this->validator->validate($value, $constraints);
