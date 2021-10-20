@@ -120,7 +120,7 @@ final class DatabaseValidatorTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array<null|string>>
+     * @return iterable<string, array<string|null>>
      */
     public function provideEmptyValidCases(): iterable
     {
