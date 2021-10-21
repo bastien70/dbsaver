@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\BackupRepository;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -22,7 +23,7 @@ class Backup implements \Stringable
     public const CONTEXT_MANUAL = 'manual';
     public const CONTEXT_AUTOMATIC = 'automatic';
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $backupFileName = null;
 
     /**
@@ -36,22 +37,22 @@ class Backup implements \Stringable
      */
     private File $backupFile;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $mimeType = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $backupFileSize = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $context;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $originalName = null;
 
     #[ORM\ManyToOne(targetEntity: Database::class, inversedBy: 'backups')]

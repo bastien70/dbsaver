@@ -9,6 +9,7 @@ use App\Repository\DatabaseRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,15 +24,15 @@ class Database implements \Stringable
     public const STATUS_OK = 'ok';
     public const STATUS_ERROR = 'error';
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private ?string $host = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $port = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private ?string $user = null;
@@ -39,15 +40,15 @@ class Database implements \Stringable
     #[Assert\NotBlank(groups: ['Create'])]
     private ?string $plainPassword = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[Assert\NotBlank]
     #[Assert\Positive]
     private int $maxBackups;
@@ -55,14 +56,14 @@ class Database implements \Stringable
     #[ORM\OneToMany(mappedBy: 'database', targetEntity: Backup::class, orphanRemoval: true)]
     private Collection $backups;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'databases')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
     private ?User $owner = null;
 
-    #[ORM\Column(type: 'string', length: 10)]
+    #[ORM\Column(type: Types::STRING, length: 10)]
     private string $status = self::STATUS_UNKNOWN;
 
     public function __construct()
