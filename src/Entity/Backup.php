@@ -169,7 +169,7 @@ class Backup implements \Stringable
     /**
      * @see \Serializable::unserialize()
      */
-    public function unserialize($data)
+    public function unserialize(string $data): void
     {
         [
             $this->id,

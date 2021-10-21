@@ -41,6 +41,9 @@ final class PostInstallCommandTest extends KernelTestCase
         $commandTester->execute(['command' => $command->getName()]);
     }
 
+    /**
+     * @return iterable<string, array<string>>
+     */
     public function provideInvalidCases(): iterable
     {
         yield 'no_database_url' => ['', '', '', '', ''];

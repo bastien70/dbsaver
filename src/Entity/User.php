@@ -174,6 +174,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     public static function getAvailableRoles(): array
     {
         return [self::ROLE_USER, self::ROLE_ADMIN];

@@ -23,6 +23,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 )]
 final class MakeUserCommand extends Command
 {
+    /**
+     * @param array<string> $enabledLocales
+     */
     public function __construct(
         private UserPasswordHasherInterface $hasher,
         private EntityManagerInterface $manager,

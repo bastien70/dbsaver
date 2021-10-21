@@ -17,6 +17,9 @@ final class LocaleHelperTest extends TestCase
         self::assertSame($expectedLanguageName, LocaleHelper::getLanguageName($locale));
     }
 
+    /**
+     * @return iterable<string, array<string>>
+     */
     public function provideCases(): iterable
     {
         yield 'english' => ['en', 'English'];

@@ -18,17 +18,17 @@ final class UserProviderTest extends TestCase
     protected function setUp(): void
     {
         $passwordHasher = new class() implements UserPasswordHasherInterface {
-            public function hashPassword(PasswordAuthenticatedUserInterface $user, string $plainPassword)
+            public function hashPassword(PasswordAuthenticatedUserInterface $user, string $plainPassword): ?string
             {
                 return null;
             }
 
-            public function isPasswordValid(PasswordAuthenticatedUserInterface $user, string $plainPassword)
+            public function isPasswordValid(PasswordAuthenticatedUserInterface $user, string $plainPassword): bool
             {
                 return true;
             }
 
-            public function needsRehash(PasswordAuthenticatedUserInterface $user)
+            public function needsRehash(PasswordAuthenticatedUserInterface $user): bool
             {
                 return false;
             }

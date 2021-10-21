@@ -6,6 +6,7 @@ parameters:
         - public/index.php
         - src
         - tests
-    level: 5
+    level: 6
+    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
         - '#Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface::getFlashBag\(\).#'

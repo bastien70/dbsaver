@@ -119,6 +119,9 @@ final class DatabaseValidatorTest extends TestCase
         $this->validator->validate($entity, new DatabaseConstraint());
     }
 
+    /**
+     * @return iterable<string, array<string|null>>
+     */
     public function provideEmptyValidCases(): iterable
     {
         yield 'empty_everything' => [null, null, null, null, null];
