@@ -8,6 +8,7 @@ use App\Entity\Backup;
 use App\Entity\Database;
 use App\Entity\User;
 use App\Helper\LocaleHelper;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Menu\RouteMenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -24,7 +25,7 @@ final class DashboardController extends AbstractDashboardController
     /**
      * @param array<string> $enabledLocales
      */
-    public function __construct(private array $enabledLocales)
+    public function __construct(private array $enabledLocales, private EntityManagerInterface $em)
     {
     }
 
@@ -47,8 +48,9 @@ final class DashboardController extends AbstractDashboardController
             throw new BadRequestHttpException();
         }
 
+        \assert($this->getUser() instanceof User);
         $this->getUser()->setLocale($locale);
-        $this->getDoctrine()->getManager()->flush();
+        $this->em->flush();
 
         $request->getSession()->set('_locale', $locale);
         $redirectUrl = $request->headers->get('referer');

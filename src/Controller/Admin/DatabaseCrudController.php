@@ -46,6 +46,7 @@ final class DatabaseCrudController extends AbstractCrudController
         private BackupService $backupService,
         private AdminUrlGenerator $adminUrlGenerator,
         private DatabaseHelper $databaseHelper,
+        private EntityManagerInterface $em,
     ) {
     }
 
@@ -72,7 +73,7 @@ final class DatabaseCrudController extends AbstractCrudController
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        return $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
+        return $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
             ->join('entity.owner', 'owner')
             ->andWhere('owner.id = :user')
             ->setParameter('user', $this->getUser()->getId())
@@ -95,7 +96,7 @@ final class DatabaseCrudController extends AbstractCrudController
             $status = Database::STATUS_ERROR;
         }
 
-        $this->updateEntity($this->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $database, $status);
+        $this->updateEntity($this->em, $database, $status);
 
         return $this->redirect($context->getReferrer() ?? $this->generateUrl('admin'));
     }
@@ -137,7 +138,7 @@ final class DatabaseCrudController extends AbstractCrudController
             $status = Database::STATUS_ERROR;
         }
 
-        $this->updateEntity($this->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $database, $status);
+        $this->updateEntity($this->em, $database, $status);
 
         $url = $this->adminUrlGenerator->setController(self::class)
             ->setAction(Action::INDEX)

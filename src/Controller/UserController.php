@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\Model\SettingsModel;
 use App\Form\Type\SettingsType;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,7 @@ final class UserController extends AbstractController
     public function __construct(
         private AdminUrlGenerator $adminUrlGenerator,
         private UserPasswordHasherInterface $passwordHasher,
+        private EntityManagerInterface $em,
     ) {
     }
 
@@ -40,7 +42,7 @@ final class UserController extends AbstractController
                 $user->setPassword($this->passwordHasher->hashPassword($user, $settings->newPassword));
             }
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
             $this->addFlash('success', new TranslatableMessage('user.settings.flash_success'));
 
             return $this->redirect($this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl());
