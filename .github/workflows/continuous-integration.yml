@@ -12,6 +12,8 @@ jobs:
   phpunit:
     name: PHPUnit (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-20.04
+    env:
+      SYMFONY_DEPRECATIONS_HELPER: disabled
 
     services:
       mysql:
