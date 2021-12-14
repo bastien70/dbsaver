@@ -12,6 +12,6 @@ final class DatabaseTest extends TestCase
 {
     public function testGetTargets(): void
     {
-        self::assertSame(Constraint::CLASS_CONSTRAINT, (new Database())->getTargets());
+        self::assertSame([Constraint::CLASS_CONSTRAINT], (new Database())->getTargets());
     }
 }
