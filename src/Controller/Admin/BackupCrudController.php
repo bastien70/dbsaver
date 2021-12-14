@@ -40,6 +40,7 @@ final class BackupCrudController extends AbstractCrudController
         private S3Helper $s3Helper,
         private BackupService $backupService,
         private int $backupOnLocal,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -64,7 +65,7 @@ final class BackupCrudController extends AbstractCrudController
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        return $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
+        return $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
             ->join('entity.database', 'database')
             ->join('database.owner', 'owner')
             ->andWhere('owner.id = :user')
@@ -114,7 +115,7 @@ final class BackupCrudController extends AbstractCrudController
             ->setFormat('dd-MM-Y HH:mm');
         yield TextField::new('database.name', 'backup.field.database');
         yield TextField::new('context', 'backup.field.context')->formatValue(function (string $context): string {
-            return $this->get(TranslatorInterface::class)->trans('backup.choices.context.' . $context);
+            return $this->translator->trans('backup.choices.context.' . $context);
         });
         yield TextField::new('backupFileName', 'backup.field.filename');
     }

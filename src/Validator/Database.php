@@ -11,6 +11,9 @@ final class Database extends Constraint
 {
     public string $message = 'Database connection test errored: "{{ error }}".';
 
+    /**
+     * @return string[]
+     */
     public function getTargets(): array
     {
         return [self::CLASS_CONSTRAINT];
