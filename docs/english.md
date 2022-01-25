@@ -75,13 +75,17 @@ Initialize a CRON job on your server or computer:
 
 ## Configure backup storage <a name="storage-config"></a>
 
+The application is configured to store backups locally by default.
+During installation, you will be offered to store the backups either **locally** or on **the AWS S3 cloud**.
+You can decide at any time to switch the storage mode. To do this, follow the instructions below.
+
 ### Locally <a name="local-storage"></a>
 
-The application is configured to store backups locally by default.
-If you just installed the app there's nothing to do.
-Else here are the modifications to apply:
+If you have **Task** installed, then just run the following command : `task switch-local-storage`.
 
-Open file `[project]/config/packages/vich_uploader.yaml` and replace its content with the following code:
+Else, follow the instructions below :
+
+1. Open file `[project]/config/packages/vich_uploader.yaml` and replace its content with the following code:
 
 ```yaml
 vich_uploader:
@@ -92,12 +96,16 @@ vich_uploader:
             upload_destination: '%kernel.project_dir%/public/files/backups'
 ```
 
-You also need to add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
+2. Add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
 `BACKUP_LOCAL=1`
 
 ### On AWS S3 <a name="aws-storage"></a>
 
-Create/update the following environment variables in the `.env.local` file to match the ones from AWS S3:
+If you have **Task** installed, then just run the following command : `task switch-aws-storage`.
+
+Else, follow the instructions below :
+
+1. Create/update the following environment variables in the `.env.local` file to match the ones from AWS S3:
 
 ```
 ###> AWS_S3 ###
@@ -108,10 +116,11 @@ AWS_S3_REGION="eu-west-3"
 ###< AWS S3 ###
 ```
 
-You also need to add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
+2. You also need to add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
 `BACKUP_LOCAL=0`
 
-Open file `[project]/config/packages/vich_uploader.yaml` and replace its content with the following code:
+
+3. Open file `[project]/config/packages/vich_uploader.yaml` and replace its content with the following code:
 
 ```yaml
 vich_uploader:

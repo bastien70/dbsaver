@@ -73,13 +73,16 @@ Initialisez une tâche CRON sur votre serveur ou PC :
 
 ## Configuration du stockage des sauvegardes <a name="storage-config"></a>
 
+L'application est configurée pour stocker les sauvegardes en local par défaut.
+Lors de l'installation, il vous sera proposé de stocker les sauvegardes soit **localement**, soit sur **le cloud AWS S3**.
+Vous pourrez à tout moment décider de switcher de mode de stockage. Pour cela, suivez les instructions ci-dessous.
+
 ### En local <a name="local-storage"></a>
 
-L'application est configurée pour stocker les sauvegardes en local par défaut.
-Si vous venez d'installer l'application, vous n'avez rien à faire.
-Sinon, voici les changements à effectuer :
+Si vous avez installé **Task**, alors lancez simplement la commande `task switch-local-storage`.
 
-Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son contenu par le code suivant:
+Sinon, suivez les instructions suivantes :
+1. Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son contenu par le code suivant:
 
 ```yaml
 vich_uploader:
@@ -90,12 +93,16 @@ vich_uploader:
             upload_destination: '%kernel.project_dir%/public/files/backups'
 ```
 
-Ajoutez/modifiez également la variable d'environnement `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
+2. Ajoutez/modifiez la variable d'environnement `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
 `BACKUP_LOCAL=1`
 
 ### Sur AWS S3 <a name="aws-storage"></a>
 
-Ajoutez/modifiez dans le fichier `.env.local` les variables d'environnement suivantes pour les faire correspondre à celles renseignées par AWS S3.
+Si vous avez installé **Task**, lancez simplement la commande `task switch-aws-storage`.
+
+Sinon, suivez les instructions suivantes :
+
+1. Ajoutez/modifiez dans le fichier `.env.local` les variables d'environnement suivantes pour les faire correspondre à celles renseignées par AWS S3.
 
 ```
 ###> AWS_S3 ###
@@ -106,10 +113,11 @@ AWS_S3_REGION="eu-west-3"
 ###< AWS S3 ###
 ```
 
-Modifiez également la variable `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
+2. Modifiez la variable `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
 `BACKUP_LOCAL=0`
 
-Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son contenu par le code suivant:
+
+3. Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son contenu par le code suivant:
 
 ```yaml
 vich_uploader:
