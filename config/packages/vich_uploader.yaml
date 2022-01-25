@@ -1,19 +1,6 @@
-### UTILISEZ CETTE CONFIGURATION SI VOUS SOUHAITEZ STOCKER LES FICHIERS EN LOCAL ###
 vich_uploader:
     db_driver: orm
     mappings:
         backups:
             uri_prefix: /files/backups
             upload_destination: '%kernel.project_dir%/public/files/backups'
-
-
-### UTILISEZ CETTE CONFIGURATION SI VOUS SOUHAITEZ STOCKER LES FICHIERS SUR LE CLOUD AWS S3
-#vich_uploader:
-#    db_driver: orm
-#    storage: gaufrette
-#    mappings:
-#        backups:
-#            uri_prefix: '%uploads_base_url%'
-#            upload_destination: backup_fs
-
-
