@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use function file_exists;
 use sixlive\DotenvEditor\DotenvEditor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,7 +28,11 @@ abstract class AbstractDotEnvCommand extends Command
     protected function removeDotEnvFileIfTest(InputInterface $input): void
     {
         if ('test' === $input->getOption('env')) {
-            unlink(__DIR__ . '/../../.env.test.local');
+            $envPath = __DIR__ . '/../../.env.test.local';
+
+            if (file_exists($envPath)) {
+                unlink($envPath);
+            }
         }
     }
 

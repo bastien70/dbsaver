@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Exception;
 use sixlive\DotenvEditor\DotenvEditor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,6 +24,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 )]
 final class PostInstallCommand extends AbstractDotEnvCommand
 {
+    public const STORAGE_LOCALLY = 'Locally';
+    public const STORAGE_AWS = 'AWS S3';
     private SymfonyStyle $io;
     private DotenvEditor $dotenvEditor;
     private bool $onlyMissing;
@@ -40,6 +44,9 @@ final class PostInstallCommand extends AbstractDotEnvCommand
         $this->addOption('only-missing', 'm', InputOption::VALUE_NONE, 'Only configure non existent parameters');
     }
 
+    /**
+     * @throws Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
@@ -65,6 +72,22 @@ final class PostInstallCommand extends AbstractDotEnvCommand
         $this->choice('APP_ENV', 'What environment should the app use?', ['prod', 'dev']);
 
         $this->dotenvEditor->save();
+
+        $storageChoice = (string) $this->io->choice(
+            'Where do you want to store backups?',
+            [self::STORAGE_LOCALLY, self::STORAGE_AWS],
+            self::STORAGE_LOCALLY
+        );
+
+        $storageCommand = match ($storageChoice) {
+            self::STORAGE_LOCALLY => 'app:switch-local-storage',
+            self::STORAGE_AWS => 'app:switch-aws-storage'
+        };
+
+        $command = $this->getApplication()->find($storageCommand);
+        $arrayInput = new ArrayInput([]);
+        $command->run($arrayInput, $output);
+
         $this->removeDotEnvFileIfTest($input);
 
         if ($this->anyValueWasUpdated) {

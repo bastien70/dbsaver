@@ -18,7 +18,7 @@ final class PostInstallCommandTest extends KernelTestCase
 
         $command = $application->find('app:post-install');
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs(['mysql://dev:dev@127.0.0.1:3306/dbsaver_test', 'smtp://localhost', 'me@user.com', 'en', 'dev']);
+        $commandTester->setInputs(['mysql://dev:dev@127.0.0.1:3306/dbsaver_test', 'smtp://localhost', 'me@user.com', 'en', 'dev', 'Locally']);
 
         $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();

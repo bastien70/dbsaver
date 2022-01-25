@@ -95,13 +95,13 @@ tasks:
             - symfony console doctrine:migrations:migrate --no-interaction
             - symfony console app:post-install --only-missing
 
-    switch-to-local:
+    switch-local-storage:
         desc: Switch storage mode to local
         cmds:
             - symfony console app:switch-local-storage
 
 
-    switch-to-aws:
+    switch-aws-storage:
         desc: Switch storage mode to AWS S3
         cmds:
             - symfony console app:switch-aws-storage

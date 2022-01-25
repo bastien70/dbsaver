@@ -33,24 +33,22 @@ final class SwitchToAwsStorageCommand extends AbstractDotEnvCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $this->io = $io;
+        $this->io = new SymfonyStyle($input, $output);
 
-        $editor = $this->getDotenvEditor($input);
-        $this->editor = $editor;
+        $this->editor = $this->getDotenvEditor($input);
 
-        $this->updateAwsEnvVariables('AWS_S3_ACCESS_ID', "Votre clé d'accès AWS S3");
-        $this->updateAwsEnvVariables('AWS_S3_ACCESS_SECRET', "Vote clé d'accès secrète AWS S3");
-        $this->updateAwsEnvVariables('AWS_S3_BUCKET_NAME', 'Le nom du bucket sur lequel les fichiers seront envoyés');
-        $this->updateAwsEnvVariables('AWS_S3_REGION', 'Région AWS', 'eu-west-3');
+        $this->updateAwsEnvVariables('AWS_S3_ACCESS_ID', 'Your AWS S3 access ID');
+        $this->updateAwsEnvVariables('AWS_S3_ACCESS_SECRET', 'Your AWS S3 access secret');
+        $this->updateAwsEnvVariables('AWS_S3_BUCKET_NAME', 'The AWS S3 bucket name');
+        $this->updateAwsEnvVariables('AWS_S3_REGION', 'The AWS S3 region', 'eu-west-3');
 
-        $editor->set('BACKUP_LOCAL', '1');
-        $editor->save();
+        $this->editor->set('BACKUP_LOCAL', '1');
+        $this->editor->save();
         $this->removeDotEnvFileIfTest($input);
 
         $this->updateConfigFile();
 
-        $io->success('Successfully switched to AWS S3 storage!');
+        $this->io->success('Successfully switched to AWS S3 storage!');
 
         return Command::SUCCESS;
     }
@@ -68,7 +66,7 @@ final class SwitchToAwsStorageCommand extends AbstractDotEnvCommand
             $default,
             function ($value) use ($editor, $key) {
                 if (empty($value)) {
-                    throw new RuntimeException('Vous devez saisir une valeur !');
+                    throw new RuntimeException('This value should not be blank.');
                 }
                 $editor->set($key, (string) $value);
             }
