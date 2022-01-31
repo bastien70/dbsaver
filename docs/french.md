@@ -79,55 +79,14 @@ Vous pourrez à tout moment décider de switcher de mode de stockage. Pour cela,
 
 ### En local <a name="local-storage"></a>
 
-Si vous avez installé **Task**, alors lancez simplement la commande `task switch-local-storage`.
-
-Sinon, suivez les instructions suivantes :
-1. Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son contenu par le code suivant:
-
-```yaml
-vich_uploader:
-    db_driver: orm
-    mappings:
-        backups:
-            uri_prefix: /files/backups
-            upload_destination: '%kernel.project_dir%/public/files/backups'
-```
-
-2. Ajoutez/modifiez la variable d'environnement `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
-`BACKUP_LOCAL=1`
+Lancez la commande `php bin/console app:switch-storage-mode` (ou `task switch-storage-mode` si vous avez installé **Task**).
+Choisissez l'option **Locally**.
 
 ### Sur AWS S3 <a name="aws-storage"></a>
 
-Si vous avez installé **Task**, lancez simplement la commande `task switch-aws-storage`.
-
-Sinon, suivez les instructions suivantes :
-
-1. Ajoutez/modifiez dans le fichier `.env.local` les variables d'environnement suivantes pour les faire correspondre à celles renseignées par AWS S3.
-
-```
-###> AWS_S3 ###
-AWS_S3_ACCESS_ID="your aws_s3 access id"
-AWS_S3_ACCESS_SECRET="your aws_s3 access secret"
-AWS_S3_BUCKET_NAME="your aws_s3 bucket name"
-AWS_S3_REGION="eu-west-3"
-###< AWS S3 ###
-```
-
-2. Modifiez la variable `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
-`BACKUP_LOCAL=0`
-
-
-3. Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son contenu par le code suivant:
-
-```yaml
-vich_uploader:
-    db_driver: orm
-    storage: gaufrette
-    mappings:
-        backups:
-            uri_prefix: '%uploads_base_url%'
-            upload_destination: backup_fs
-```
+Lancez la commande `php bin/console app:switch-storage-mode` (ou `task switch-storage-mode` si vous avez installé **Task**).
+Choisissez l'option **AWS S3**.
+Vous serez invité à saisir votre clé d'accès AWS S3 ainsi que votre clé secrète AWS S3.
 
 ## Utiliser l'application <a name="use-app"></a>
 

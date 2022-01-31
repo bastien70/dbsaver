@@ -81,56 +81,14 @@ You can decide at any time to switch the storage mode. To do this, follow the in
 
 ### Locally <a name="local-storage"></a>
 
-If you have **Task** installed, then just run the following command : `task switch-local-storage`.
-
-Else, follow the instructions below :
-
-1. Open file `[project]/config/packages/vich_uploader.yaml` and replace its content with the following code:
-
-```yaml
-vich_uploader:
-    db_driver: orm
-    mappings:
-        backups:
-            uri_prefix: /files/backups
-            upload_destination: '%kernel.project_dir%/public/files/backups'
-```
-
-2. Add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
-`BACKUP_LOCAL=1`
+Run the following command : `php bin/console app:switch-storage-mode` (or `task switch-storage-mode` if you have installed **Task**).
+Choose the **Locally** option.
 
 ### On AWS S3 <a name="aws-storage"></a>
 
-If you have **Task** installed, then just run the following command : `task switch-aws-storage`.
-
-Else, follow the instructions below :
-
-1. Create/update the following environment variables in the `.env.local` file to match the ones from AWS S3:
-
-```
-###> AWS_S3 ###
-AWS_S3_ACCESS_ID="your aws_s3 access id"
-AWS_S3_ACCESS_SECRET="your aws_s3 access secret"
-AWS_S3_BUCKET_NAME="your aws_s3 bucket name"
-AWS_S3_REGION="eu-west-3"
-###< AWS S3 ###
-```
-
-2. You also need to add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
-`BACKUP_LOCAL=0`
-
-
-3. Open file `[project]/config/packages/vich_uploader.yaml` and replace its content with the following code:
-
-```yaml
-vich_uploader:
-    db_driver: orm
-    storage: gaufrette
-    mappings:
-        backups:
-            uri_prefix: '%uploads_base_url%'
-            upload_destination: backup_fs
-```
+Run `php bin/console app:switch-storage-mode` (or `task switch-storage-mode` if you have **Task** installed).
+Choose the **AWS S3** option.
+You will be prompted to enter your AWS S3 Access key as well as your AWS S3 secret key.
 
 ## Use the application <a name="use-app"></a>
 

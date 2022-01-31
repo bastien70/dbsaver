@@ -10,4 +10,3 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
         - '#Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface::getFlashBag\(\).#'
-        - '#Match expression does not handle remaining value: string#'

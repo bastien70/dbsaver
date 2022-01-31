@@ -82,6 +82,7 @@ tasks:
         cmds:
             - task: composer
             - symfony console app:post-install
+            - symfony console app:switch-storage-mode
             - symfony console app:regenerate-app-secret
             - symfony console doctrine:database:create
             - symfony console doctrine:migrations:migrate --no-interaction
@@ -95,13 +96,7 @@ tasks:
             - symfony console doctrine:migrations:migrate --no-interaction
             - symfony console app:post-install --only-missing
 
-    switch-local-storage:
-        desc: Switch storage mode to local
+    switch-storage-mode:
+        desc: Switch storage mode
         cmds:
-            - symfony console app:switch-local-storage
-
-
-    switch-aws-storage:
-        desc: Switch storage mode to AWS S3
-        cmds:
-            - symfony console app:switch-aws-storage
+            - symfony console app:switch-storage-mode
