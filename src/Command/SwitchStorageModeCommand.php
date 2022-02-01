@@ -25,6 +25,7 @@ final class SwitchStorageModeCommand extends AbstractDotEnvCommand
 
     public const STORAGE_LOCALLY = 'Locally';
     public const STORAGE_AWS = 'AWS S3';
+
     private YamlService $yamlService;
     private ?DotenvEditor $editor = null;
     private ?SymfonyStyle $io = null;
