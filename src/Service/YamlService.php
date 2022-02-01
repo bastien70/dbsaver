@@ -40,7 +40,7 @@ class YamlService
         $this->absoluteFilePath = $absoluteFilePath;
     }
 
-    private function buildFilePath(string $fileDir, string $fileName, string $projectDir): null|false|string
+    private function buildFilePath(string $fileDir, string $fileName, string $projectDir): string
     {
         return sprintf('%s/%s/%s.yaml', $projectDir, $fileDir, $fileName);
     }
