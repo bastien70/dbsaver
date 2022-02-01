@@ -30,10 +30,10 @@ final class SwitchStorageModeCommand extends AbstractDotEnvCommand
     private ?DotenvEditor $editor = null;
     private ?SymfonyStyle $io = null;
 
-    public function __construct()
+    public function __construct(string $projectDir)
     {
         parent::__construct();
-        $this->yamlService = new YamlService(self::FILE_DIR, self::FILE_NAME);
+        $this->yamlService = new YamlService(self::FILE_DIR, self::FILE_NAME, $projectDir);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -111,20 +111,18 @@ final class SwitchStorageModeCommand extends AbstractDotEnvCommand
 
     private function updateEnvVariables(string $key, string $question, ?string $default = null): void
     {
-        $editor = $this->editor;
-
         if (!$default) {
-            $default = $editor->has($key) ? (string) $editor->getEnv($key) : null;
+            $default = $this->editor->has($key) ? (string) $this->editor->getEnv($key) : null;
         }
 
         $this->io->ask(
             $question,
             $default,
-            function ($value) use ($editor, $key) {
+            function ($value) use ($key) {
                 if (empty($value)) {
                     throw new RuntimeException('This value should not be blank.');
                 }
-                $editor->set($key, (string) $value);
+                $this->editor->set($key, (string) $value);
             }
         );
     }

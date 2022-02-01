@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Symfony\Component\Finder\Finder;
+use function sprintf;
 use Symfony\Component\Yaml\Yaml;
 
 class YamlService
@@ -13,12 +13,9 @@ class YamlService
 
     private ?string $absoluteFilePath;
 
-    private Finder $finder;
-
-    public function __construct(string $fileDir, string $fileName)
+    public function __construct(string $fileDir, string $fileName, string $projectDir)
     {
-        $this->finder = new Finder();
-        $this->setAbsoluteFilePath($this->buildFilePath($fileDir, $fileName));
+        $this->setAbsoluteFilePath($this->buildFilePath($fileDir, $fileName, $projectDir));
     }
 
     public function getFileContent(): mixed
@@ -43,17 +40,8 @@ class YamlService
         $this->absoluteFilePath = $absoluteFilePath;
     }
 
-    private function buildFilePath(string $fileDir, string $fileName): null|false|string
+    private function buildFilePath(string $fileDir, string $fileName, string $projectDir): null|false|string
     {
-        $filePath = null;
-        $this->finder->files()->name(sprintf('%s.yaml', $fileName))->in(sprintf('%s/../../%s', __DIR__, $fileDir));
-
-        if ($this->finder->hasResults()) {
-            foreach ($this->finder as $file) {
-                $filePath = $file->getRealPath();
-            }
-        }
-
-        return $filePath;
+        return sprintf('%s/%s/%s.yaml', $projectDir, $fileDir, $fileName);
     }
 }
