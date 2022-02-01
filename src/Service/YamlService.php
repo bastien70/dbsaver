@@ -10,6 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 class YamlService
 {
     public const CONFIG_INLINE_LEVEL = 5;
+
     private ?string $absoluteFilePath;
 
     private Finder $finder;
