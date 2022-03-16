@@ -396,9 +396,6 @@
             "config/packages/dev/debug.yaml"
         ]
     },
-    "symfony/debug-pack": {
-        "version": "v1.0.9"
-    },
     "symfony/dependency-injection": {
         "version": "v5.4.1"
     },
@@ -517,9 +514,6 @@
     "symfony/options-resolver": {
         "version": "v5.4.0"
     },
-    "symfony/orm-pack": {
-        "version": "v2.1.0"
-    },
     "symfony/password-hasher": {
         "version": "v5.4.0"
     },
@@ -561,9 +555,6 @@
     },
     "symfony/process": {
         "version": "v5.4.0"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.5"
     },
     "symfony/property-access": {
         "version": "v5.4.0"
@@ -608,14 +599,8 @@
     "symfony/security-csrf": {
         "version": "v5.4.0"
     },
-    "symfony/security-guard": {
-        "version": "v5.4.0"
-    },
     "symfony/security-http": {
         "version": "v5.4.0"
-    },
-    "symfony/serializer-pack": {
-        "version": "v1.0.4"
     },
     "symfony/service-contracts": {
         "version": "v2.4.1"
@@ -625,9 +610,6 @@
     },
     "symfony/string": {
         "version": "v5.4.0"
-    },
-    "symfony/test-pack": {
-        "version": "v1.0.8"
     },
     "symfony/translation": {
         "version": "5.3",
@@ -660,9 +642,6 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
-    },
-    "symfony/twig-pack": {
-        "version": "v1.0.1"
     },
     "symfony/uid": {
         "version": "v5.4.0"

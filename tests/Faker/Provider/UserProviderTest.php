@@ -18,9 +18,9 @@ final class UserProviderTest extends TestCase
     protected function setUp(): void
     {
         $passwordHasher = new class() implements UserPasswordHasherInterface {
-            public function hashPassword(PasswordAuthenticatedUserInterface $user, string $plainPassword): ?string
+            public function hashPassword(PasswordAuthenticatedUserInterface $user, string $plainPassword): string
             {
-                return null;
+                return '';
             }
 
             public function isPasswordValid(PasswordAuthenticatedUserInterface $user, string $plainPassword): bool
@@ -41,7 +41,7 @@ final class UserProviderTest extends TestCase
     {
         $user = new User();
         $password = $this->userProvider->encodePassword($user, 'password');
-        self::assertNull($password); // null as there's no encoder defined
+        self::assertSame('', $password); // empty string as there's no encoder defined
     }
 
     public function testGenerateEmailAddressForUser(): void
