@@ -20,7 +20,7 @@ class BackupVoter extends Voter
         self::CAN_SHOW_BACKUP,
     ];
 
-    protected function supports(string $attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
@@ -28,7 +28,7 @@ class BackupVoter extends Voter
             && $subject instanceof Backup;
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access

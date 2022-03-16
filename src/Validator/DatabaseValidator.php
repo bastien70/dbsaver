@@ -16,7 +16,7 @@ final class DatabaseValidator extends ConstraintValidator
     {
     }
 
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof Database) {
             throw new UnexpectedTypeException($constraint, Database::class);
