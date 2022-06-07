@@ -36,7 +36,7 @@ Celles-ci peuvent être sauvegardées en **local** ou sur le cloud d'Amazon **AW
     
 ## Pré-requis <a name="prerequisites"></a>
 
-* PHP 8
+* PHP 8.1+
 * Composer
 * Symfony CLI (si vous souhaitez lancer le projet en local)
 
