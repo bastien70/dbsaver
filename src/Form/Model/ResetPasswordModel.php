@@ -8,6 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ResetPasswordModel
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     public ?string $plainPassword = null;
 }

@@ -11,7 +11,7 @@ final class DatabaseHelper
 {
     private ?string $lastExceptionMessage = null;
 
-    public function __construct(private Encryptor $encryptor)
+    public function __construct(private readonly Encryptor $encryptor)
     {
     }
 

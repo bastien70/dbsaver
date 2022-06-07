@@ -27,10 +27,10 @@ final class MakeUserCommand extends Command
      * @param array<string> $enabledLocales
      */
     public function __construct(
-        private UserPasswordHasherInterface $hasher,
-        private EntityManagerInterface $manager,
-        private ValidatorInterface $validator,
-        private array $enabledLocales,
+        private readonly UserPasswordHasherInterface $hasher,
+        private readonly EntityManagerInterface $manager,
+        private readonly ValidatorInterface $validator,
+        private readonly array $enabledLocales,
     ) {
         parent::__construct();
     }

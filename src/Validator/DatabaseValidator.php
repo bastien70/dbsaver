@@ -12,8 +12,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class DatabaseValidator extends ConstraintValidator
 {
-    public function __construct(private DatabaseHelper $databaseHelper, private Encryptor $encryptor)
-    {
+    public function __construct(
+        private readonly DatabaseHelper $databaseHelper,
+        private readonly Encryptor $encryptor,
+    ) {
     }
 
     public function validate(mixed $value, Constraint $constraint): void

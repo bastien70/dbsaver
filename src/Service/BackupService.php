@@ -22,14 +22,14 @@ use Vich\UploaderBundle\Handler\DownloadHandler;
 class BackupService
 {
     public function __construct(
-        private EntityManagerInterface $manager,
-        private BackupRepository $backupRepository,
-        private DatabaseRepository $databaseRepository,
-        private string $projectDir,
-        private Encryptor $encryptor,
-        private DownloadHandler $downloadHandler,
-        private MailerInterface $mailer,
-        private TranslatorInterface $translator,
+        private readonly EntityManagerInterface $manager,
+        private readonly BackupRepository $backupRepository,
+        private readonly DatabaseRepository $databaseRepository,
+        private readonly string $projectDir,
+        private readonly Encryptor $encryptor,
+        private readonly DownloadHandler $downloadHandler,
+        private readonly MailerInterface $mailer,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 

@@ -10,8 +10,8 @@ final class BackupStatus
     public const STATUS_OK = 'ok';
 
     public function __construct(
-        private string $status,
-        private ?string $errorMessage = null,
+        private readonly string $status,
+        private readonly ?string $errorMessage = null,
     ) {
     }
 

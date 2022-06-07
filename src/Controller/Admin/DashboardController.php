@@ -25,11 +25,11 @@ final class DashboardController extends AbstractDashboardController
     /**
      * @param array<string> $enabledLocales
      */
-    public function __construct(private array $enabledLocales, private EntityManagerInterface $em)
+    public function __construct(private readonly array $enabledLocales, private readonly EntityManagerInterface $em)
     {
     }
 
-    #[Route('/', name: 'admin')]
+    #[Route('/', name: 'admin', methods: ['GET', 'POST'])]
     public function index(): Response
     {
         return parent::index();
@@ -41,7 +41,7 @@ final class DashboardController extends AbstractDashboardController
             ->setTitle('DbSaver');
     }
 
-    #[Route('/switch-locale/{locale}', name: 'admin_switch_locale')]
+    #[Route('/switch-locale/{locale}', name: 'admin_switch_locale', methods: ['GET'])]
     public function switchLocale(Request $request, string $locale): Response
     {
         if (!\in_array($locale, $this->enabledLocales, true)) {

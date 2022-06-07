@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\HeaderUtils;
 class S3Helper
 {
     public function __construct(
-        private S3Client $s3Client,
-        private string $s3BucketName,
+        private readonly S3Client $s3Client,
+        private readonly string $s3BucketName,
     ) {
     }
 

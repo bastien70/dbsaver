@@ -12,9 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: BackupRepository::class)]
 class Backup implements \Stringable
 {
@@ -26,15 +24,13 @@ class Backup implements \Stringable
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $backupFileName = null;
 
-    /**
-     * @Vich\UploadableField(
-     *     mapping="backups",
-     *     fileNameProperty="backupFileName",
-     *     size="backupFileSize",
-     *     mimeType="mimeType",
-     *     originalName="originalName",
-     * )
-     */
+    #[Vich\UploadableField(
+        mapping: 'backups',
+        fileNameProperty: 'backupFileName',
+        size: 'backupFileSize',
+        mimeType: 'mimeType',
+        originalName: 'originalName',
+    )]
     private File $backupFile;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]

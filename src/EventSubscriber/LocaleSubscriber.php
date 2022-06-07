@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 
 class LocaleSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private string $defaultLocale)
+    public function __construct(private readonly string $defaultLocale)
     {
     }
 

@@ -30,7 +30,7 @@ final class PostInstallCommand extends AbstractDotEnvCommand
     /**
      * @param array<string> $enabledLocales
      */
-    public function __construct(private ValidatorInterface $validator, private array $enabledLocales)
+    public function __construct(private readonly ValidatorInterface $validator, private readonly array $enabledLocales)
     {
         parent::__construct();
     }

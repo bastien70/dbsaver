@@ -43,10 +43,10 @@ use Symfony\Component\Translation\TranslatableMessage;
 final class DatabaseCrudController extends AbstractCrudController
 {
     public function __construct(
-        private BackupService $backupService,
-        private AdminUrlGenerator $adminUrlGenerator,
-        private DatabaseHelper $databaseHelper,
-        private EntityManagerInterface $em,
+        private readonly BackupService $backupService,
+        private readonly AdminUrlGenerator $adminUrlGenerator,
+        private readonly DatabaseHelper $databaseHelper,
+        private readonly EntityManagerInterface $em,
     ) {
     }
 
