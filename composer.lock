@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "06d9caeec0416264201167a893315b7a",
+    "content-hash": "20879b225ba30441196f8c35f7607425",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3398,24 +3398,25 @@
         },
         {
             "name": "sixlive/dotenv-editor",
-            "version": "v1.3.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sixlive/dotenv-editor.git",
-                "reference": "8fe8695962cbf1462dca903d1455054e66bae5e4"
+                "reference": "c13a1a043887a5c61079bb98dfa32e0583f4aa52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sixlive/dotenv-editor/zipball/8fe8695962cbf1462dca903d1455054e66bae5e4",
-                "reference": "8fe8695962cbf1462dca903d1455054e66bae5e4",
+                "url": "https://api.github.com/repos/sixlive/dotenv-editor/zipball/c13a1a043887a5c61079bb98dfa32e0583f4aa52",
+                "reference": "c13a1a043887a5c61079bb98dfa32e0583f4aa52",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1|^8.0"
+                "php": "^8.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.2",
                 "larapack/dd": "^1.0",
-                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+                "phpunit/phpunit": "^9.0"
             },
             "type": "library",
             "autoload": {
@@ -3444,9 +3445,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sixlive/dotenv-editor/issues",
-                "source": "https://github.com/sixlive/dotenv-editor/tree/v1.3.0"
+                "source": "https://github.com/sixlive/dotenv-editor/tree/v2.0.0"
             },
-            "time": "2020-11-29T13:42:53+00:00"
+            "time": "2021-11-15T13:52:36+00:00"
         },
         {
             "name": "symfony/asset",
