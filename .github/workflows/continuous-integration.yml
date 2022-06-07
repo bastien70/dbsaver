@@ -51,7 +51,7 @@ jobs:
           bin/console doctrine:schema:drop --force --env=test
           bin/console doctrine:schema:create --env=test
           bin/console doctrine:schema:validate --env=test
-          bin/console hautelook:fixtures:load --no-interaction --no-bundles --env=test
+          bin/console app:fixtures:load --env=test
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
