@@ -88,6 +88,8 @@ vich_uploader:
         backups:
             uri_prefix: /files/backups
             upload_destination: '%kernel.project_dir%/public/files/backups'
+    metatadata:
+        type: attribute
 ```
 
 Ajoutez/modifiez également la variable d'environnement `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
@@ -119,6 +121,8 @@ vich_uploader:
         backups:
             uri_prefix: '%uploads_base_url%'
             upload_destination: backup_fs
+    metadata:
+        type: attribute
 ```
 
 ## Utiliser l'application <a name="use-app"></a>
