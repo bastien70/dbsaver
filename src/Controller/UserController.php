@@ -19,13 +19,13 @@ use Symfony\Component\Translation\TranslatableMessage;
 final class UserController extends AbstractController
 {
     public function __construct(
-        private AdminUrlGenerator $adminUrlGenerator,
-        private UserPasswordHasherInterface $passwordHasher,
-        private EntityManagerInterface $em,
+        private readonly AdminUrlGenerator $adminUrlGenerator,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly EntityManagerInterface $em,
     ) {
     }
 
-    #[Route('/settings', name: 'app_user_settings')]
+    #[Route('/settings', name: 'app_user_settings', methods: ['GET', 'POST'])]
     public function settings(Request $request): Response
     {
         $user = $this->getUser();

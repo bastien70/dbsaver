@@ -42,13 +42,6 @@ final class UserTest extends TestCase
         self::assertSame('user@test.com', $entity->getUserIdentifier());
     }
 
-    public function testUsername(): void
-    {
-        $entity = new User();
-        $entity->setEmail('user@test.com');
-        self::assertSame('user@test.com', $entity->getUsername());
-    }
-
     public function testRole(): void
     {
         $entity = new User();

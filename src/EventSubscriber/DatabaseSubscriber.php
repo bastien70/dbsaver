@@ -15,8 +15,8 @@ use Symfony\Component\Security\Core\Security;
 class DatabaseSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private Encryptor $encryptor,
-        private Security $security,
+        private readonly Encryptor $encryptor,
+        private readonly Security $security,
     ) {
     }
 

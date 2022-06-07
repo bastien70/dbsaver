@@ -18,7 +18,7 @@ final class SettingsType extends AbstractType
     /**
      * @param array<string> $enabledLocales
      */
-    public function __construct(private array $enabledLocales)
+    public function __construct(private readonly array $enabledLocales)
     {
     }
 

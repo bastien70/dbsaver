@@ -22,8 +22,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class BackupCommand extends Command
 {
     public function __construct(
-        private BackupService $backupService,
-        private DatabaseRepository $databaseRepository,
+        private readonly BackupService $backupService,
+        private readonly DatabaseRepository $databaseRepository,
     ) {
         parent::__construct();
     }

@@ -37,10 +37,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class BackupCrudController extends AbstractCrudController
 {
     public function __construct(
-        private S3Helper $s3Helper,
-        private BackupService $backupService,
-        private int $backupOnLocal,
-        private TranslatorInterface $translator,
+        private readonly S3Helper $s3Helper,
+        private readonly BackupService $backupService,
+        private readonly int $backupOnLocal,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
