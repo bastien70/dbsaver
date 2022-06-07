@@ -1,0 +1,11 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
+			count: 3
+			path: src/EventSubscriber/EasyAdminSubscriber.php
+
+		-
+			message: "#^Call to an undefined method Faker\\\\Generator\\:\\:getSqlFile\\(\\)\\.$#"
+			count: 1
+			path: src/Factory/BackupFactory.php

@@ -28,6 +28,7 @@
             <directory suffix=".php">src</directory>
         </include>
         <exclude>
+            <directory>./src/Factory</directory>
             <file>./src/Kernel.php</file>
         </exclude>
     </coverage>
