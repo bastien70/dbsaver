@@ -9,7 +9,7 @@ tasks:
             - symfony console d:s:u --force --quiet
             - symfony console d:m:sync-metadata-storage --quiet
             - symfony console d:m:v --add --all --quiet
-            - symfony console h:f:l --no-interaction --quiet --no-bundles
+            - symfony console a:f:l --quiet
 
     composer:
         desc: Install PHP vendors
@@ -61,7 +61,7 @@ tasks:
             - symfony console d:d:d --force --if-exists --quiet --env=test
             - symfony console d:d:c --quiet --env=test
             - symfony console d:s:u --force --quiet --env=test
-            - symfony console h:f:l --no-interaction --quiet --env=test --no-bundles
+            - symfony console a:f:l --quiet --env=test
 
     cleanup_tests:
         cmds:
