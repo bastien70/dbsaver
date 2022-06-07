@@ -38,7 +38,7 @@ Backups can be saved **locally** or on Amazon's cloud **AWS S3**.
     
 ## Prerequisites <a name="prerequisites"></a>
 
-* PHP 8
+* PHP 8.1+
 * Composer
 * Symfony CLI (if you want to run the project locally)
 

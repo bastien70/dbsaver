@@ -95,7 +95,6 @@ final class DatabaseTest extends TestCase
         $user = new User();
         self::assertNull($entity->getOwner());
         $entity->setOwner($user);
-        /* @phpstan-ignore-next-line */
         self::assertSame($user, $entity->getOwner());
     }
 

@@ -105,7 +105,6 @@ final class BackupTest extends TestCase
         $database = new Database();
         self::assertNull($entity->getDatabase());
         $entity->setDatabase($database);
-        /* @phpstan-ignore-next-line */
         self::assertSame($database, $entity->getDatabase());
     }
 
