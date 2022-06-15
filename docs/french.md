@@ -14,24 +14,25 @@ Vous n'avez qu'à renseigner les identifiants pour accéder aux différentes bas
 Les mots de passe seront automatiquement cryptés.
 
 Vous pourrez ensuite grâce à DbSaver accéder aux différentes sauvegardes de vos bases de données en vous rendant sur l'onglet **Sauvegardes**.
-Celles-ci peuvent être sauvegardées en **local** ou sur le cloud d'Amazon **AWS S3**.
+Celles-ci peuvent être sauvegardées en **local** ou sur différents services de cloud utilisant **S3** (AWS, Scaleway, ...).
 
 /!\ DbSaver sauvegarde uniquement les données stockées dans les bases de données. Les fichiers (uploads clients par exemple) ne sont pas sauvegardés.
 
 # Table des matières
 
 1. [Pré-requis](#prerequisites)
-1. [Installation manuelle](#manual-install)
-1. [Installation avec Task](#task-install)
-1. [Configuration de la tâche CRON](#cron)
-1. [Configuration du stockage des sauvegardes](#storage-config)
-    1. [En local](#local-storage)
-    1. [Sur AWS S3](#aws-storage)
-1. [Utiliser l'application](#use-app)
-1. [Mettre à jour l'application](#update-app)
-1. [Licence](#license)
-1. [Contribuer](#contribute)
-1. [Changelog](#changelog)
+2. [Installation manuelle](#manual-install)
+3. [Installation avec Task](#task-install)
+4. [Configuration de la tâche CRON](#cron)
+5. [Utiliser l'application](#use-app)
+   1. [Connexion](#login)
+   2. [Gérer les espaces de stockage](#storage-spaces)
+   3. [Gérer les bases de données](#databases)
+   4. [Gérer les backups](#backups)
+6. [Mettre à jour l'application](#update-app)
+7. [Licence](#license)
+8. [Contribuer](#contribute)
+9. [Changelog](#changelog)
     
     
 ## Pré-requis <a name="prerequisites"></a>
@@ -71,65 +72,12 @@ Initialisez une tâche CRON sur votre serveur ou PC :
 
 `[chemin vers php] [chemin vers la racine du projet]/bin/console app:backup`
 
-## Configuration du stockage des sauvegardes <a name="storage-config"></a>
-
-### En local <a name="local-storage"></a>
-
-L'application est configurée pour stocker les sauvegardes en local par défaut.
-Si vous venez d'installer l'application, vous n'avez rien à faire.
-Sinon, voici les changements à effectuer :
-
-Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son contenu par le code suivant:
-
-```yaml
-vich_uploader:
-    db_driver: orm
-    mappings:
-        backups:
-            uri_prefix: /files/backups
-            upload_destination: '%kernel.project_dir%/public/files/backups'
-    metatadata:
-        type: attribute
-```
-
-Ajoutez/modifiez également la variable d'environnement `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
-`BACKUP_LOCAL=1`
-
-### Sur AWS S3 <a name="aws-storage"></a>
-
-Ajoutez/modifiez dans le fichier `.env.local` les variables d'environnement suivantes pour les faire correspondre à celles renseignées par AWS S3.
-
-```
-###> AWS_S3 ###
-AWS_S3_ACCESS_ID="your aws_s3 access id"
-AWS_S3_ACCESS_SECRET="your aws_s3 access secret"
-AWS_S3_BUCKET_NAME="your aws_s3 bucket name"
-AWS_S3_REGION="eu-west-3"
-###< AWS S3 ###
-```
-
-Modifiez également la variable `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
-`BACKUP_LOCAL=0`
-
-Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son contenu par le code suivant:
-
-```yaml
-vich_uploader:
-    db_driver: orm
-    storage: gaufrette
-    mappings:
-        backups:
-            uri_prefix: '%uploads_base_url%'
-            upload_destination: backup_fs
-    metadata:
-        type: attribute
-```
-
 ## Utiliser l'application <a name="use-app"></a>
 
 Après avoir déployé l'application sur votre serveur (ou l'avoir lancée en local), accédez à la page de connexion.
 Pour l'exemple, l'hôte attaché à l'application sera `127.0.0.1:8000`.
 
+### Connexion <a name="login"></a>
 Accédez à l'application : https://127.0.0.1:8000/login
 
 Vous serez invité à vous connecter. Entrez les identifiants de votre compte (que vous avez créé avec la commande `php bin/console app:make-user`).
@@ -139,6 +87,19 @@ Vous serez invité à vous connecter. Entrez les identifiants de votre compte (q
 Vous serez redirigé vers https://127.0.0.1:8000/
 
 ![Accueil](images/home-fr.png?raw=true)
+
+### Gérer les espaces de stockage <a name="storage-spaces"></a>
+
+Pour créer un espace de stockage (local ou utilisant S3), cliquez sur l'onglet `Espaces de stockage` puis sur celui que vous désirez. Cliquez ensuite sur `Ajouter un espace de stockage`.
+Remplissez les informations de votre espace de stockage et validez.
+
+![Ajouter une espace de stockage](images/adapter-create-fr.png?raw=true)
+
+Vous retrouverez dès lors cet espace de stockage dans la liste.
+
+![Liste des espaces de stockage](images/adapter-list-fr.png?raw=true)
+
+### Gérer les bases de données <a name="databases"></a>
 
 Pour créer une base de données, cliquez sur l'onglet `Bases de données`, puis sur le bouton `Ajouter une base de données`.
 Remplissez les informations de votre base de données et validez.
@@ -151,6 +112,8 @@ supprimer la base de données de l'application (ainsi que ses sauvegardes), ou l
 ![Liste des bases de données](images/database-list-fr.png?raw=true)
 
 Selon la fréquence de la tâche CRON que vous avez configurée, une sauvegarde automatique sera effectuée.
+
+### Gérer les backups <a name="backups"></a>
 
 Pour accéder aux sauvegardes de vos bases de données, cliquez sur l'onglet `Sauvegardes`.
 

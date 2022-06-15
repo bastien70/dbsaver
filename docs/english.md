@@ -23,17 +23,18 @@ Backups can be saved **locally** or on Amazon's cloud **AWS S3**.
 # Table of contents
 
 1. [Prerequisites](#prerequisites)
-1. [Manual install](#manual-install)
-1. [Install using Task](#task-install)
-1. [Configure the CRON job](#cron)
-1. [Configure backup storage](#storage-config)
-    1. [Locally](#local-storage)
-    1. [On AWS S3](#aws-storage)
-1. [Use the application](#use-app)
-1. [Update the application](#update-app)
-1. [License](#license)
-1. [Contribute](#contribute)
-1. [Changelog](#changelog)
+2. [Manual install](#manual-install)
+3. [Install using Task](#task-install)
+4. [Configure the CRON job](#cron)
+5. [Use the application](#use-app)
+    1. [Login](#login)
+    2. [Manage storage spaces](#storage-spaces)
+    3. [Manage databases](#databases)
+    4. [Manage backups](#backups)
+6. [Update the application](#update-app)
+7. [License](#license)
+8. [Contribute](#contribute)
+9. [Changelog](#changelog)
     
     
 ## Prerequisites <a name="prerequisites"></a>
@@ -73,64 +74,12 @@ Initialize a CRON job on your server or computer:
 
 `[path to php] [path to project root]/bin/console app:backup`
 
-## Configure backup storage <a name="storage-config"></a>
-
-### Locally <a name="local-storage"></a>
-
-The application is configured to store backups locally by default.
-If you just installed the app there's nothing to do.
-Else here are the modifications to apply:
-
-Open file `[project]/config/packages/vich_uploader.yaml` and replace its content with the following code:
-
-```yaml
-vich_uploader:
-    db_driver: orm
-    mappings:
-        backups:
-            uri_prefix: /files/backups
-            upload_destination: '%kernel.project_dir%/public/files/backups'
-    metadata:
-        type: attribute
-```
-
-You also need to add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
-`BACKUP_LOCAL=1`
-
-### On AWS S3 <a name="aws-storage"></a>
-
-Create/update the following environment variables in the `.env.local` file to match the ones from AWS S3:
-
-```
-###> AWS_S3 ###
-AWS_S3_ACCESS_ID="your aws_s3 access id"
-AWS_S3_ACCESS_SECRET="your aws_s3 access secret"
-AWS_S3_BUCKET_NAME="your aws_s3 bucket name"
-AWS_S3_REGION="eu-west-3"
-###< AWS S3 ###
-```
-
-You also need to add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
-`BACKUP_LOCAL=0`
-
-Open file `[project]/config/packages/vich_uploader.yaml` and replace its content with the following code:
-
-```yaml
-vich_uploader:
-    db_driver: orm
-    storage: gaufrette
-    mappings:
-        backups:
-            uri_prefix: '%uploads_base_url%'
-            upload_destination: backup_fs
-    metadata:
-        type: attribute
-```
-
 ## Use the application <a name="use-app"></a>
 
 After deploying the application on your server (or launching it locally) access the login page.
 For the example the host will be `127.0.0.1:8000`.
+
+### Login <a name="login"></a>
 
 Access the app: https://127.0.0.1:8000/login
 
@@ -142,6 +91,19 @@ You will be redirected to https://127.0.0.1:8000/
 
 ![Homepage](images/home-en.png?raw=true)
 
+### Manage storage spaces <a name="storage-spaces"></a>
+
+To create a storage space (locally or using S3), click on the `Storage Spaces` tab then on the one you want. Then click on `Add storage space`.
+Remplissez les informations de votre espace de stockage et validez.
+
+![Add storage space](images/adapter-create-en.png?raw=true)
+
+You will find this storage space in the list.
+
+![Storage space list](images/adapter-list-en.png?raw=true)
+
+### Manage databases <a name="databases"></a>
+
 To create a database, click the `Databases` tab, then the `Add a database` button.
 Fill your database information and submit.
 
@@ -152,6 +114,8 @@ Then, for every database you add, you will be able to see its backups, update it
 ![Database list](images/database-list-en.png?raw=true)
 
 According to the frequency of the CRON job you configured, automatic backups will be performed.
+
+### Backups <a name="backups"></a>
 
 To access your databases backups, click the `Backups` tab.
 
