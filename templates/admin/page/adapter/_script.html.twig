@@ -1,0 +1,36 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let $s3Provider = document.querySelector('#S3Adapter_s3Provider');
+
+        $s3Provider.addEventListener('change', function () {
+            {% set url = ea_url()
+                .setController('App\\Controller\\Admin\\S3AdapterCrudController')
+                .setAction('new') %} // has to be "new" action even for editForm (isXmlHttpRequest is not allowed in Edit, see line 221 in EasyCorp\Bundle\EasyAdminBundle\Controller)
+            let $form = this.closest('form');
+
+            let formData = new FormData();
+            formData.append($s3Provider.getAttribute('name'), $s3Provider.value);
+
+            fetch('{{ url|raw }}', {
+                method: $form.getAttribute('method'),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                // body: JSON.stringify(data),
+                body: formData,
+            }).then(function (response) {
+                // The API call was successful!
+                return response.text();
+            }).then(function (html) {
+                // This is the HTML from our response as a text string
+                html = new DOMParser().parseFromString(html, "text/html");
+                document.querySelector('#S3Adapter_storageClass').parentElement.replaceWith(html.querySelector('#S3Adapter_storageClass').parentElement);
+            }).catch(function (err) {
+                // There was an error
+                console.warn('Something went wrong.', err);
+            });
+
+            return false;
+        });
+    });
+</script>

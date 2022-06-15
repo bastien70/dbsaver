@@ -10,9 +10,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: BackupRepository::class)]
 class Backup implements \Stringable
 {
@@ -24,13 +22,6 @@ class Backup implements \Stringable
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $backupFileName = null;
 
-    #[Vich\UploadableField(
-        mapping: 'backups',
-        fileNameProperty: 'backupFileName',
-        size: 'backupFileSize',
-        mimeType: 'mimeType',
-        originalName: 'originalName',
-    )]
     private File $backupFile;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
@@ -48,8 +39,8 @@ class Backup implements \Stringable
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt;
 
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $originalName = null;
+//    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+//    private ?string $originalName = null;
 
     #[ORM\ManyToOne(targetEntity: Database::class, inversedBy: 'backups')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
@@ -173,17 +164,17 @@ class Backup implements \Stringable
         ] = unserialize($data, ['allowed_classes' => false]);
     }
 
-    public function getOriginalName(): ?string
-    {
-        return $this->originalName;
-    }
-
-    public function setOriginalName(?string $originalName): self
-    {
-        $this->originalName = $originalName;
-
-        return $this;
-    }
+//    public function getOriginalName(): ?string
+//    {
+//        return $this->originalName;
+//    }
+//
+//    public function setOriginalName(?string $originalName): self
+//    {
+//        $this->originalName = $originalName;
+//
+//        return $this;
+//    }
 
     public function getDatabase(): ?Database
     {

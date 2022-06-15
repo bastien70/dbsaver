@@ -91,14 +91,6 @@ final class BackupTest extends TestCase
         self::assertSame($date, $entity->getUpdatedAt());
     }
 
-    public function testOriginalName(): void
-    {
-        $entity = new Backup();
-        self::assertNull($entity->getOriginalName());
-        $entity->setOriginalName('origin');
-        self::assertSame('origin', $entity->getOriginalName());
-    }
-
     public function testDatabase(): void
     {
         $entity = new Backup();

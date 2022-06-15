@@ -4,7 +4,6 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    uploads_base_url: 'https://%env(AWS_S3_BUCKET_NAME)%.s3.%env(AWS_S3_REGION)%.amazonaws.com'
     enabled_locales:
         - en
         - fr
@@ -17,8 +16,6 @@ services:
 
         bind:
             $projectDir: '%kernel.project_dir%'
-            $s3BucketName: '%env(AWS_S3_BUCKET_NAME)%'
-            $backupOnLocal: '%env(BACKUP_LOCAL)%'
             string $defaultLocale: '%env(DEFAULT_LOCALE)%'
             array $enabledLocales: '%enabled_locales%'
 
@@ -33,12 +30,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    Aws\S3\S3Client:
-        factory: [ Aws\S3\S3Client, 'factory' ]
-        arguments:
-            -   version: '2006-03-01'
-                region: "%env(AWS_S3_REGION)%"
-                credentials:
-                    key: '%env(AWS_S3_ACCESS_ID)%'
-                    secret: '%env(AWS_S3_ACCESS_SECRET)%'

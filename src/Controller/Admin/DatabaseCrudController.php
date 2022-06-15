@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Admin\Field\BadgeField;
+use App\Entity\AdapterConfig;
 use App\Entity\Backup;
 use App\Entity\Database;
 use App\Entity\User;
@@ -24,6 +25,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -211,22 +213,31 @@ final class DatabaseCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield TextField::new('name', 'database.field.name')
-            ->hideOnIndex();
+            ->hideOnIndex()
+            ->setColumns(4);
         yield TextField::new('host', 'database.field.host')
-            ->hideOnIndex();
+            ->hideOnIndex()
+            ->setColumns(4);
         yield NumberField::new('port', 'database.field.port')
-            ->hideOnIndex();
+            ->hideOnIndex()
+            ->setColumns(4);
         yield TextField::new('user', 'database.field.user')
-            ->hideOnIndex();
+            ->hideOnIndex()
+            ->setColumns(6);
         yield TextField::new('displayDsn', 'database.field.dsn')
             ->onlyOnIndex();
         yield TextField::new('plainPassword', 'database.field.password')
             ->setHelp('database.help.password')
             ->onlyOnForms()
+            ->setColumns(6)
             ->setRequired(Crud::PAGE_NEW === $pageName);
         yield NumberField::new('maxBackups', 'database.field.max_backups')
-            ->hideOnIndex();
-
+            ->hideOnIndex()
+            ->setColumns(6);
+        yield AssociationField::new('adapter', 'database.field.adapter')
+            ->setFormTypeOption('class', AdapterConfig::class)
+            ->hideWhenUpdating()
+            ->setColumns(6);
         yield BadgeField::new('backups', 'database.field.backups')
             ->formatValue(function ($value) {
                 return \count($value);

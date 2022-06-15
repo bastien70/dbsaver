@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\AdapterConfig;
 use App\Entity\Backup;
 use App\Entity\User;
+use App\Helper\FlysystemHelper;
 use App\Security\Voter\BackupVoter;
-use App\Service\BackupService;
-use App\Service\S3Helper;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -20,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -27,7 +29,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -37,10 +38,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class BackupCrudController extends AbstractCrudController
 {
     public function __construct(
-        private readonly S3Helper $s3Helper,
-        private readonly BackupService $backupService,
-        private readonly int $backupOnLocal,
         private readonly TranslatorInterface $translator,
+        private readonly FlysystemHelper $flysystemHelper
     ) {
     }
 
@@ -73,16 +72,21 @@ final class BackupCrudController extends AbstractCrudController
             ->orderBy('entity.createdAt', 'DESC');
     }
 
-    public function downloadBackupAction(AdminContext $context): Response
+    public function downloadBackupAction(AdminContext $context, FlysystemHelper $flysystemHelper): Response
     {
         /** @var Backup $backup */
         $backup = $context->getEntity()->getInstance();
 
-        if (true === (bool) $this->backupOnLocal) {
-            return $this->backupService->downloadBackupFile($backup);
-        }
+        return $flysystemHelper->download($backup);
+    }
 
-        return new RedirectResponse($this->s3Helper->generatePresignedUri($backup));
+    /**
+     * @param Backup $entityInstance
+     */
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $this->flysystemHelper->remove($entityInstance);
+        parent::deleteEntity($entityManager, $entityInstance);
     }
 
     public function configureActions(Actions $actions): Actions
@@ -118,6 +122,8 @@ final class BackupCrudController extends AbstractCrudController
             return $this->translator->trans('backup.choices.context.' . $context);
         });
         yield TextField::new('backupFileName', 'backup.field.filename');
+        yield AssociationField::new('database.adapter', 'backup.field.adapter')
+            ->setFieldFqcn(AdapterConfig::class);
     }
 
     public static function getSubscribedServices(): array

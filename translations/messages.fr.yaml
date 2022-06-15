@@ -8,6 +8,7 @@ backup:
         context: Contexte
         created_at: Date de création
         filename: Nom du fichier
+        adapter: Espace de stockage
     admin_label:
         singular: Sauvegarde
         plural: Sauvegardes
@@ -30,13 +31,55 @@ dashboard:
         how_to: Vous n'avez qu'à renseigner les identifiants pour accéder aux différentes bases de données, configurer une tâche CRON... et c'est fini. Les mots de passe seront automatiquement cryptés.
         backups: |
             Vous pourrez ensuite grâce à DbSaver accéder aux différentes sauvegardes de vos bases de données en vous rendant sur l'onglet <b>Sauvegardes</b>.
-            Celles-ci peuvent être sauvegardées en <b>local</b> ou sur le cloud d'Amazon <b>AWS S3</b>.
-            Par défaut, l'application va enregistrer les fichiers en local.
-            Pour utiliser AWS S3, veuillez vous référer à la section ci-dessous.
-        docs: 'Documentation : <a href="%docs_link%">%docs_link%</a>'
+            Celles-ci peuvent être sauvegardées en <b>local</b> ou sur différents services de cloud utilisant <b>S3</b> (AWS, Scaleway, ...).
     author:
         title: Auteur
+        website: Site internet
         description: Cette application a été développée par <b>%author%</b>.
+
+adapter:
+    admin_label:
+        singular: Espace de stockage
+        plural: Espaces de stockage
+    action:
+        new: Ajouter un espace de stockage
+        edit: Modifier un espace de stockage
+    local:
+        index:
+            title: Espaces de stockage en local
+        new:
+            title: Nouvel espace de stockage local
+        edit:
+            title: Modifier les paramètres de l'espace de stockage local
+        field:
+            name: Nom
+            prefix: Préfixe
+            backups: Sauvegardes
+            help:
+                prefix: Les sauvegardes seront placées dans le dossier dbsaver/var/uploads/[préfixe]
+    s3:
+        index:
+            title: Espaces de stockage S3
+        new:
+            title: Nouvel espace de stockage S3
+        edit:
+            title: Modifier les paramètres de l'espace de stockage S3
+        field:
+            name: Nom
+            prefix: Préfixe
+            backups: Sauvegardes
+            access_id: Access ID
+            access_secret: Access Secret
+            bucket_name: Nom du bucket
+            region: Région
+            provider: Fournisseur
+            storage_class: Classe de stockage
+            endpoint: Endpoint
+            endpoint_default: Par défaut
+            help:
+                endpoint: Veuillez remplir ce champs uniquement si vous avez sélectionné 'Autre' pour la région de S3
+                storage_class: Choisissez une classe de stockage parmi la liste proposée suivant votre fournisseur. Si vous avez choisi le fournisseur 'Autre', vous ne pourrez pas sélectionner une classe de stockage. Celle par défaut de votre fournisseur sera alors utilisée.
+                access_secret: Les clés secrètes seront cryptées et n'apparaîtront pas en clair. Elles seront décryptées uniquement lorsqu'elles seront nécessaires pour se connecter à l'espace de stockage.
 
 database:
     index:
@@ -61,6 +104,7 @@ database:
         backups: Sauvegardes
         status: Statut
         dsn: DSN
+        adapter: Espace de stockage
     help:
         password: Les mots de passe seront cryptés et n'apparaîtront pas en clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour lancer les sauvegardes.
     admin_label:
@@ -86,6 +130,11 @@ menu:
     users: Utilisateurs
     switch_locale: Langue
     settings: Paramètres
+    adapters:
+        name: Espaces de stockage
+        submenu:
+            s3: S3
+            local: Local
 
 security:
     login:
@@ -146,3 +195,9 @@ reset_password:
             repeat_password: Répétez le mot de passe
         flash_success: 'Votre mot de passe a bien été réinitialisé ! Vous pouvez désormais vous connecter.'
         flash_error: 'Un problème est survenu lors de la validation de votre demande de réinitialisation : %message%'
+
+enum:
+    s3_provider:
+        amazon_aws: Amazon S3
+        scaleway: Scaleway
+        other: Autre

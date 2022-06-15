@@ -7,3 +7,26 @@ services:
             - '3307:3306'
         environment:
             MYSQL_ROOT_PASSWORD: root
+    minio:
+        image: minio/minio
+        environment:
+            MINIO_ROOT_USER: minio
+            MINIO_ROOT_PASSWORD: minio123
+        volumes:
+            - ./data/minio:/data
+        command: server /data --address ":9004" --console-address ":9001"
+        ports:
+            - 9004:9004
+            - 9001:9001
+
+    createbuckets:
+        image: minio/mc
+        depends_on:
+            - minio
+        entrypoint: >
+            /bin/sh -c "
+            /usr/bin/mc alias set myminio http://minio:9004 minio minio123;
+            /usr/bin/mc mb myminio/somebucketname;
+            /usr/bin/mc policy set public myminio/somebucketname;
+            exit 0;
+            "

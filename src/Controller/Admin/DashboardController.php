@@ -6,6 +6,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Backup;
 use App\Entity\Database;
+use App\Entity\LocalAdapter;
+use App\Entity\S3Adapter;
 use App\Entity\User;
 use App\Helper\LocaleHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,8 +27,10 @@ final class DashboardController extends AbstractDashboardController
     /**
      * @param array<string> $enabledLocales
      */
-    public function __construct(private readonly array $enabledLocales, private readonly EntityManagerInterface $em)
-    {
+    public function __construct(
+        private readonly array $enabledLocales,
+        private readonly EntityManagerInterface $em
+    ) {
     }
 
     #[Route('/', name: 'admin', methods: ['GET', 'POST'])]
@@ -64,6 +68,12 @@ final class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('menu.home', 'fa fa-home');
+        yield MenuItem::subMenu('menu.adapters.name', 'fas fa-bullseye')->setSubItems([
+            MenuItem::linkToCrud('menu.adapters.submenu.s3', null, S3Adapter::class)
+                ->setBadge($this->em->getRepository(S3Adapter::class)->count([]) ?: null),
+            MenuItem::linkToCrud('menu.adapters.submenu.local', null, LocalAdapter::class)
+                ->setBadge($this->em->getRepository(LocalAdapter::class)->count([]) ?: null),
+        ]);
         yield MenuItem::linkToCrud('menu.databases', 'fas fa-database', Database::class);
         yield MenuItem::linkToCrud('menu.backups', 'fas fa-shield-alt', Backup::class);
         yield MenuItem::linkToCrud('menu.users', 'fas fa-users', User::class)

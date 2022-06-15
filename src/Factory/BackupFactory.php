@@ -7,7 +7,7 @@ namespace App\Factory;
 use App\Entity\Backup;
 use App\Entity\Database;
 use App\Repository\BackupRepository;
-use Symfony\Component\HttpFoundation\File\File;
+use function sprintf;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -32,8 +32,13 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class BackupFactory extends ModelFactory
 {
+    public function withDatabase(Database $database): self
+    {
+        return $this->addState(['database' => $database]);
+    }
+
     /**
-     * @return array<string, string|File|Proxy<Database>>
+     * @return array{context: mixed, backupFile: mixed,database: Database|Proxy, backupFileName: non-empty-string, backupFileSize: 462320, mimeType: 'text/plain'}
      */
     protected function getDefaults(): array
     {
@@ -41,6 +46,9 @@ final class BackupFactory extends ModelFactory
             'context' => self::faker()->randomElement([Backup::CONTEXT_AUTOMATIC, Backup::CONTEXT_MANUAL]),
             'backupFile' => self::faker()->getSqlFile(),
             'database' => DatabaseFactory::random(),
+            'backupFileName' => sprintf('backup_%s.sql', self::faker()->numberBetween(1, 9999)),
+            'backupFileSize' => 462320,
+            'mimeType' => 'text/plain',
         ];
     }
 

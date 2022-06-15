@@ -6,6 +6,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Backup;
 use App\Entity\Database;
+use App\Entity\LocalAdapter;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
@@ -149,5 +150,14 @@ final class DatabaseTest extends TestCase
         $entity->removeBackup($backup);
         self::assertCount(0, $entity->getBackups());
         self::assertNull($backup->getDatabase());
+    }
+
+    public function testAdapter(): void
+    {
+        $entity = new Database();
+        self::assertNull($entity->getAdapter());
+        $adapter = new LocalAdapter();
+        $entity->setAdapter($adapter);
+        self::assertSame($adapter, $entity->getAdapter());
     }
 }

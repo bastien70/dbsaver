@@ -6,18 +6,17 @@ namespace App\Service;
 
 use App\Entity\Backup;
 use App\Entity\Database;
+use App\Helper\FlysystemHelper;
 use App\Repository\BackupRepository;
 use App\Repository\DatabaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
+use function pathinfo;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Vich\UploaderBundle\Handler\DownloadHandler;
 
 class BackupService
 {
@@ -27,9 +26,9 @@ class BackupService
         private readonly DatabaseRepository $databaseRepository,
         private readonly string $projectDir,
         private readonly Encryptor $encryptor,
-        private readonly DownloadHandler $downloadHandler,
         private readonly MailerInterface $mailer,
         private readonly TranslatorInterface $translator,
+        private readonly FlysystemHelper $flysystemHelper,
     ) {
     }
 
@@ -67,13 +66,18 @@ class BackupService
 
             $backup->setContext($context)
                 ->setBackupFile($uploadedFile)
-                ->setDatabase($database);
+                ->setDatabase($database)
+                ->setBackupFileName($fileInfo['basename'])
+                ->setBackupFileSize($uploadedFile->getSize())
+                ->setMimeType($uploadedFile->getMimeType());
 
             $this->manager->persist($backup);
             $this->manager->flush();
 
+//            $this->flysystemHelper->upload($backup);
+
             // Delete temp file from local project
-            $fileSystem = new Filesystem();
+            $fileSystem = new \Symfony\Component\Filesystem\Filesystem();
             $fileSystem->remove($filepath);
 
             $backupStatus = new BackupStatus(BackupStatus::STATUS_OK);
@@ -111,19 +115,12 @@ class BackupService
         if (\count($backups) > $maxBackups) {
             for ($i = $maxBackups, $iMax = \count($backups); $i < $iMax; ++$i) {
                 $deleteBackup = $backups[$i];
+                $this->flysystemHelper->remove($deleteBackup);
                 $this->manager->remove($deleteBackup);
             }
         }
 
         $this->manager->flush();
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function downloadBackupFile(Backup $backup): StreamedResponse
-    {
-        return $this->downloadHandler->downloadObject($backup, 'backupFile');
     }
 
     /**

@@ -1,0 +1,8 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% extends '@EasyAdmin/crud/edit.html.twig' %}
+
+{% block configured_javascripts %}
+    {{ parent() }}
+    {% include 'admin/page/adapter/_script.html.twig' %}
+{% endblock %}
