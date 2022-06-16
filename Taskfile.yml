@@ -65,7 +65,6 @@ tasks:
 
     cleanup_tests:
         cmds:
-            - docker-compose -f docker-compose.test.yaml stop
             - docker-compose -f docker-compose.test.yaml down
 
     ci:

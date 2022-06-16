@@ -23,18 +23,18 @@ Backups can be saved **locally** or on Amazon's cloud **AWS S3**.
 # Table of contents
 
 1. [Prerequisites](#prerequisites)
-2. [Manual install](#manual-install)
-3. [Install using Task](#task-install)
-4. [Configure the CRON job](#cron)
-5. [Use the application](#use-app)
-    1. [Login](#login)
-    2. [Manage storage spaces](#storage-spaces)
-    3. [Manage databases](#databases)
-    4. [Manage backups](#backups)
-6. [Update the application](#update-app)
-7. [License](#license)
-8. [Contribute](#contribute)
-9. [Changelog](#changelog)
+1. [Manual install](#manual-install)
+1. [Install using Task](#task-install)
+1. [Configure the CRON job](#cron)
+1. [Use the application](#use-app)
+   1. [Login](#login)
+   1. [Manage storage spaces](#storage-spaces)
+   1. [Manage databases](#databases)
+   1. [Manage backups](#backups)
+1. [Update the application](#update-app)
+1. [License](#license)
+1. [Contribute](#contribute)
+1. [Changelog](#changelog)
     
     
 ## Prerequisites <a name="prerequisites"></a>

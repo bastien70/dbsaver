@@ -21,18 +21,18 @@ Celles-ci peuvent être sauvegardées en **local** ou sur différents services d
 # Table des matières
 
 1. [Pré-requis](#prerequisites)
-2. [Installation manuelle](#manual-install)
-3. [Installation avec Task](#task-install)
-4. [Configuration de la tâche CRON](#cron)
-5. [Utiliser l'application](#use-app)
+1. [Installation manuelle](#manual-install)
+1. [Installation avec Task](#task-install)
+1. [Configuration de la tâche CRON](#cron)
+1. [Utiliser l'application](#use-app)
    1. [Connexion](#login)
-   2. [Gérer les espaces de stockage](#storage-spaces)
-   3. [Gérer les bases de données](#databases)
-   4. [Gérer les backups](#backups)
-6. [Mettre à jour l'application](#update-app)
-7. [Licence](#license)
-8. [Contribuer](#contribute)
-9. [Changelog](#changelog)
+   1. [Gérer les espaces de stockage](#storage-spaces)
+   1. [Gérer les bases de données](#databases)
+   1. [Gérer les backups](#backups)
+1. [Mettre à jour l'application](#update-app)
+1. [Licence](#license)
+1. [Contribuer](#contribute)
+1. [Changelog](#changelog)
     
     
 ## Pré-requis <a name="prerequisites"></a>
