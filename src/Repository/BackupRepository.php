@@ -22,12 +22,12 @@ class BackupRepository extends ServiceEntityRepository
         parent::__construct($registry, Backup::class);
     }
 
-    public function remove(Backup $backup)
+    public function remove(Backup $backup): void
     {
         $this->getEntityManager()->remove($backup);
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->getEntityManager()->flush();
     }
