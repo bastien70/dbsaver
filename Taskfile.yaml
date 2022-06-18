@@ -65,7 +65,7 @@ tasks:
 
     cleanup_tests:
         cmds:
-            - docker-compose -f docker-compose.test.yaml down
+            - docker-compose -f docker-compose.test.yaml stop
 
     ci:
         desc: Check code style, static analysis...
