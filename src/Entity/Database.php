@@ -150,7 +150,7 @@ class Database implements \Stringable
     }
 
     /**
-     * @return Collection|Backup[]
+     * @return Collection<int,Backup>
      */
     public function getBackups(): Collection
     {
