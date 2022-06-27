@@ -93,7 +93,7 @@ You will be redirected to https://127.0.0.1:8000/
 
 ### Manage storage spaces <a name="storage-spaces"></a>
 
-To create a storage space (locally or using S3), click on the `Storage Spaces` tab then on the one you want. Then click on `Add storage space`.
+To create a storage space (locally or using S3), click on the `Storage spaces` tab then on the one you want. Then click on `Add storage space`.
 Remplissez les informations de votre espace de stockage et validez.
 
 ![Add storage space](images/adapter-create-en.png?raw=true)
