@@ -113,7 +113,7 @@ supprimer la base de données de l'application (ainsi que ses sauvegardes), ou l
 
 Selon la fréquence de la tâche CRON que vous avez configurée, une sauvegarde automatique sera effectuée.
 
-### Gérer les backups <a name="backups"></a>
+### Gérer les sauvegardes <a name="backups"></a>
 
 Pour accéder aux sauvegardes de vos bases de données, cliquez sur l'onglet `Sauvegardes`.
 
