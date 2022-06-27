@@ -33,7 +33,7 @@ use Zenstruck\Foundry\RepositoryProxy;
 final class DatabaseFactory extends ModelFactory
 {
     public function __construct(
-        private readonly Encryptor $encryptor
+        private readonly Encryptor $encryptor,
     ) {
         parent::__construct();
     }
