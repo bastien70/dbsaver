@@ -32,6 +32,7 @@ dashboard:
         backups: |
             Vous pourrez ensuite grâce à DbSaver accéder aux différentes sauvegardes de vos bases de données en vous rendant sur l'onglet <b>Sauvegardes</b>.
             Celles-ci peuvent être sauvegardées en <b>local</b> ou sur différents services de cloud utilisant <b>S3</b> (AWS, Scaleway, ...).
+        docs: 'Documentation : <a href="%docs_link%">%docs_link%</a>'
     author:
         title: Auteur
         website: Site internet

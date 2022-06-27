@@ -32,6 +32,7 @@ dashboard:
         backups: |
             Then, using DbSaver, you can access your databases backups by browsing the <b>Backups</b> tab.
             Backups can be saved <b>locally</b> or on different cloud services using <b>S3</b> (AWS, Scaleway, ...).
+        docs: 'Documentation : <a href="%docs_link%">%docs_link%</a>'
     author:
         title: Author
         website: Website
