@@ -28,7 +28,7 @@ Celles-ci peuvent être sauvegardées en **local** ou sur différents services d
    1. [Connexion](#login)
    1. [Gérer les espaces de stockage](#storage-spaces)
    1. [Gérer les bases de données](#databases)
-   1. [Gérer les backups](#backups)
+   1. [Gérer les sauvegardes](#backups)
 1. [Mettre à jour l'application](#update-app)
 1. [Licence](#license)
 1. [Contribuer](#contribute)
