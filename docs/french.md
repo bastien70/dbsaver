@@ -93,7 +93,7 @@ Vous serez redirigé vers https://127.0.0.1:8000/
 Pour créer un espace de stockage (local ou utilisant S3), cliquez sur l'onglet `Espaces de stockage` puis sur celui que vous désirez. Cliquez ensuite sur `Ajouter un espace de stockage`.
 Remplissez les informations de votre espace de stockage et validez.
 
-![Ajouter une espace de stockage](images/adapter-create-fr.png?raw=true)
+![Ajouter un espace de stockage](images/adapter-create-fr.png?raw=true)
 
 Vous retrouverez dès lors cet espace de stockage dans la liste.
 
