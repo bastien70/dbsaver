@@ -15,7 +15,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
         bind:
-            $projectDir: '%kernel.project_dir%'
+            string $projectDir: '%kernel.project_dir%'
             string $defaultLocale: '%env(DEFAULT_LOCALE)%'
             array $enabledLocales: '%enabled_locales%'
 

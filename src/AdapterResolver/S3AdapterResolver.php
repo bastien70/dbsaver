@@ -71,14 +71,13 @@ final class S3AdapterResolver implements AdapterResolverInterface
             ],
         ];
 
-        // Fill endpoint option by default value if Scaleway. None if AWS, and custom if other.
-        switch ($this->adapterConfig->getS3Provider()) {
-            case S3Provider::SCALEWAY:
-                $clientData['endpoint'] = self::S3_SCALEWAY_ENDPOINT;
-                break;
-            case S3Provider::OTHER:
-                $clientData['endpoint'] = $this->adapterConfig->getS3Endpoint();
-                break;
+        if (($provider = $this->adapterConfig->getS3Provider()) !== S3Provider::AMAZON_AWS) {
+            // Fill endpoint option by default value if Scaleway. None if AWS, and custom if other.
+            $clientData['endpoint'] = match ($provider) {
+                S3Provider::SCALEWAY => self::S3_SCALEWAY_ENDPOINT,
+                S3Provider::OTHER => $this->adapterConfig->getS3Endpoint(),
+                default => throw new \Exception('Unexpected adapter provider value'),
+            };
         }
 
         return new S3Client($clientData);

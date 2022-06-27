@@ -17,13 +17,16 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class LocalAdapterResolver implements AdapterResolverInterface
 {
-    public function __construct(private readonly LocalAdapter $adapterConfig)
-    {
+    public function __construct(
+        private readonly LocalAdapter $adapterConfig,
+        private readonly string $projectDir
+    ) {
     }
 
     public function getAdapter(): FilesystemAdapter
     {
-        return new LocalFilesystemAdapter(__DIR__ . sprintf('/../../var/uploads/%s', $this->adapterConfig->getPrefix()));
+//        return new LocalFilesystemAdapter(__DIR__ . sprintf('/../../var/uploads/%s', $this->adapterConfig->getPrefix()));
+        return new LocalFilesystemAdapter($this->projectDir . '/var/uploads/' . $this->adapterConfig->getPrefix());
     }
 
     public function download(Backup $backup): StreamedResponse

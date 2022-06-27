@@ -66,7 +66,7 @@ class Database implements \Stringable
     #[ORM\Column(type: Types::STRING, length: 10)]
     private string $status = self::STATUS_UNKNOWN;
 
-    #[ORM\ManyToOne(targetEntity: AdapterConfig::class, inversedBy: 'dbases')]
+    #[ORM\ManyToOne(targetEntity: AdapterConfig::class, inversedBy: 'databases')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     private ?AdapterConfig $adapter = null;

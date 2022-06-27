@@ -25,6 +25,7 @@ final class FlysystemHelper
 
     public function __construct(
         private readonly Encryptor $encryptor,
+        private readonly string $projectDir,
     ) {
     }
 
@@ -81,9 +82,9 @@ final class FlysystemHelper
         $adapterConfig = $backup->getDatabase()->getAdapter();
 
         return match (true) {
-            $adapterConfig instanceof LocalAdapter => (new LocalAdapterResolver($adapterConfig))->download($backup),
+            $adapterConfig instanceof LocalAdapter => (new LocalAdapterResolver($adapterConfig, $this->projectDir))->download($backup),
             $adapterConfig instanceof S3Adapter => (new S3AdapterResolver($adapterConfig, $this->encryptor))->download($backup),
-            default => throw new RuntimeException('Adapter non pris en charge'),
+            default => throw new RuntimeException('Adapter not supported'),
         };
     }
 
@@ -91,8 +92,8 @@ final class FlysystemHelper
     {
         return match (true) {
             $adapterConfig instanceof S3Adapter => (new S3AdapterResolver($adapterConfig, $this->encryptor))->getAdapter(),
-            $adapterConfig instanceof LocalAdapter => (new LocalAdapterResolver($adapterConfig))->getAdapter(),
-            default => throw new RuntimeException('Adapter non pris en charge'),
+            $adapterConfig instanceof LocalAdapter => (new LocalAdapterResolver($adapterConfig, $this->projectDir))->getAdapter(),
+            default => throw new RuntimeException('Adapter not supported'),
         };
     }
 }

@@ -39,9 +39,6 @@ class Backup implements \Stringable
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt;
 
-//    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-//    private ?string $originalName = null;
-
     #[ORM\ManyToOne(targetEntity: Database::class, inversedBy: 'backups')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
     private ?Database $database = null;
@@ -149,7 +146,6 @@ class Backup implements \Stringable
     {
         return serialize([
             $this->id,
-            // $this->backupFile,
         ]);
     }
 
@@ -160,21 +156,8 @@ class Backup implements \Stringable
     {
         [
             $this->id,
-            // $this->backupFile,
         ] = unserialize($data, ['allowed_classes' => false]);
     }
-
-//    public function getOriginalName(): ?string
-//    {
-//        return $this->originalName;
-//    }
-//
-//    public function setOriginalName(?string $originalName): self
-//    {
-//        $this->originalName = $originalName;
-//
-//        return $this;
-//    }
 
     public function getDatabase(): ?Database
     {

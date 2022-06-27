@@ -41,7 +41,7 @@ final class AdapterValidatorTest extends TestCase
             ->willReturn($this->constraintViolationBuilder);
         $encryptor = new Encryptor('test', 'aes-256-ctr', false, false, false);
         $encryptor->setSecretIv('test');
-        $helper = new FlysystemHelper($encryptor);
+        $helper = new FlysystemHelper($encryptor, 'path/to/project');
         $this->validator = new AdapterValidator($helper, $encryptor);
         $this->validator->initialize($this->context);
     }

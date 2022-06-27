@@ -72,12 +72,12 @@ final class BackupCrudController extends AbstractCrudController
             ->orderBy('entity.createdAt', 'DESC');
     }
 
-    public function downloadBackupAction(AdminContext $context, FlysystemHelper $flysystemHelper): Response
+    public function downloadBackupAction(AdminContext $context): Response
     {
         /** @var Backup $backup */
         $backup = $context->getEntity()->getInstance();
 
-        return $flysystemHelper->download($backup);
+        return $this->flysystemHelper->download($backup);
     }
 
     /**

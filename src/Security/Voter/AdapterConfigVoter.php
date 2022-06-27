@@ -36,7 +36,7 @@ final class AdapterConfigVoter extends Voter
             return false;
         }
 
-        /* @var AdapterConfig $subject */
+        \assert($subject instanceof AdapterConfig);
 
         // ... (check conditions and return true to grant permission) ...
         return match ($attribute) {
@@ -47,7 +47,7 @@ final class AdapterConfigVoter extends Voter
 
     private function canEditOrRemoveAdapter(AdapterConfig $adapterConfig): bool
     {
-        foreach ($adapterConfig->getDbases() as $dbase) {
+        foreach ($adapterConfig->getDatabases() as $dbase) {
             if ($dbase->getBackups()->count() > 0) {
                 return false;
             }

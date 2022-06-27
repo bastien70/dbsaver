@@ -34,7 +34,6 @@ final class AdapterValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, AdapterConfig::class);
         }
 
-        // @TODO vérifier que toutes les valeurs qui sont censées être remplies le sont bien
         if ($value instanceof S3Adapter && null !== $value->getS3PlainAccessSecret()) {
             $value->setS3AccessSecret($this->encryptor->encrypt($value->getS3PlainAccessSecret()));
         }

@@ -41,22 +41,22 @@ final class AdapterConfigTest extends TestCase
     public function testDbases(): void
     {
         $entity = new AdapterConfig();
-        self::assertCount(0, $entity->getDbases());
-        $entity->addDbase(new Database());
-        self::assertCount(1, $entity->getDbases());
-        $entity->removeDbase($entity->getDbases()->first());
-        self::assertCount(0, $entity->getDbases());
+        self::assertCount(0, $entity->getDatabases());
+        $entity->addDatabase(new Database());
+        self::assertCount(1, $entity->getDatabases());
+        $entity->removeDatabase($entity->getDatabases()->first());
+        self::assertCount(0, $entity->getDatabases());
     }
 
     public function testGetSavesCount(): void
     {
         $entity = new AdapterConfig();
         self::assertSame(0, $entity->getSavesCount());
-        $entity->addDbase(new Database());
+        $entity->addDatabase(new Database());
         self::assertSame(0, $entity->getSavesCount());
-        $entity->addDbase((new Database())->addBackup(new Backup()));
+        $entity->addDatabase((new Database())->addBackup(new Backup()));
         self::assertSame(1, $entity->getSavesCount());
-        $entity->removeDbase($entity->getDbases()->last());
+        $entity->removeDatabase($entity->getDatabases()->last());
         self::assertSame(0, $entity->getSavesCount());
     }
 }

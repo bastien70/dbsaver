@@ -33,16 +33,11 @@ class AdapterConfig
     private ?string $prefix = null;
 
     #[ORM\OneToMany(mappedBy: 'adapter', targetEntity: Database::class, orphanRemoval: true)]
-    private Collection $dbases;
+    private Collection $databases;
 
     public function __construct()
     {
-        $this->dbases = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->databases = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -72,27 +67,27 @@ class AdapterConfig
     /**
      * @return Collection<int, Database>
      */
-    public function getDbases(): Collection
+    public function getDatabases(): Collection
     {
-        return $this->dbases;
+        return $this->databases;
     }
 
-    public function addDbase(Database $dbase): self
+    public function addDatabase(Database $database): self
     {
-        if (!$this->dbases->contains($dbase)) {
-            $this->dbases[] = $dbase;
-            $dbase->setAdapter($this);
+        if (!$this->databases->contains($database)) {
+            $this->databases[] = $database;
+            $database->setAdapter($this);
         }
 
         return $this;
     }
 
-    public function removeDbase(Database $dbase): self
+    public function removeDatabase(Database $database): self
     {
-        if ($this->dbases->removeElement($dbase)) {
+        if ($this->databases->removeElement($database)) {
             // set the owning side to null (unless already changed)
-            if ($dbase->getAdapter() === $this) {
-                $dbase->setAdapter(null);
+            if ($database->getAdapter() === $this) {
+                $database->setAdapter(null);
             }
         }
 
@@ -103,7 +98,7 @@ class AdapterConfig
     {
         $count = 0;
 
-        foreach ($this->getDbases() as $dbase) {
+        foreach ($this->getDatabases() as $dbase) {
             $count += $dbase->getBackups()->count();
         }
 
