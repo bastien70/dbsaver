@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class S3AdapterResolver implements AdapterResolverInterface
 {
-    public const S3_SCALEWAY_ENDPOINT = 'https://s3.fr-par.scw.cloud';
-
     public function __construct(
         private readonly S3Adapter $adapterConfig,
         private readonly Encryptor $encryptor,
@@ -74,7 +72,7 @@ final class S3AdapterResolver implements AdapterResolverInterface
         if (($provider = $this->adapterConfig->getS3Provider()) !== S3Provider::AMAZON_AWS) {
             // Fill endpoint option by default value if Scaleway. None if AWS, and custom if other.
             $clientData['endpoint'] = match ($provider) {
-                S3Provider::SCALEWAY => self::S3_SCALEWAY_ENDPOINT,
+                S3Provider::SCALEWAY => sprintf('https://s3.%s.scw.cloud', $this->adapterConfig->getS3Region()),
                 S3Provider::OTHER => $this->adapterConfig->getS3Endpoint(),
                 default => throw new \Exception('Unexpected adapter provider value'),
             };
