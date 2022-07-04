@@ -45,13 +45,23 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v1
 
+      - name: Start minio
+      - run: |
+          docker-compose -f docker-compose.test.yaml up minio -d
+          docker-compose -f docker-compose.test.yaml up createbuckets -d
+
       - name: Load Doctrine fixtures
         run: |
           bin/console doctrine:database:create --if-not-exists --env=test
           bin/console doctrine:schema:drop --force --env=test
           bin/console doctrine:schema:create --env=test
           bin/console doctrine:schema:validate --env=test
-          bin/console app:fixtures:load --env=test
+          bin/console app:fixtures:load --env=test     
+
+      - name: Stop minio
+      - run: |
+          docker-compose -f docker-compose.test.yaml stop minio
+          docker-compose -f docker-compose.test.yaml stop createbuckets
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
