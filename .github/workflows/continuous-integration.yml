@@ -58,11 +58,6 @@ jobs:
           bin/console doctrine:schema:validate --env=test
           bin/console app:fixtures:load --env=test     
 
-      - name: Stop minio
-      - run: |
-          docker-compose -f docker-compose.test.yaml stop minio
-          docker-compose -f docker-compose.test.yaml stop createbuckets
-
       - name: Run PHPUnit
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
         if: matrix.php-version == '8.0'
@@ -72,6 +67,11 @@ jobs:
         if: matrix.php-version == '8.1'
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
+
+      - name: Stop minio
+      - run: |
+          docker-compose -f docker-compose.test.yaml stop minio
+          docker-compose -f docker-compose.test.yaml stop createbuckets
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
