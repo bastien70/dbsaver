@@ -23,8 +23,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
 final class DashboardController extends AbstractDashboardController
 {
@@ -36,7 +34,6 @@ final class DashboardController extends AbstractDashboardController
         private readonly EntityManagerInterface $em,
         private readonly LocalAdapterRepository $localAdapterRepository,
         private readonly S3AdapterRepository $s3AdapterRepository,
-        private readonly CacheInterface $cache,
     ) {
     }
 
@@ -77,21 +74,9 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('menu.home', 'fa fa-home');
         yield MenuItem::subMenu('menu.adapters.name', 'fas fa-bullseye')->setSubItems([
             MenuItem::linkToCrud('menu.adapters.submenu.s3', null, S3Adapter::class)
-                ->setBadge(
-                    $this->cache->get('s3_adapter_count', function (ItemInterface $item) {
-                        $item->expiresAfter(600);
-
-                        return $this->s3AdapterRepository->count([]) ?: null;
-                    })
-                ),
+                ->setBadge($this->s3AdapterRepository->count([]) ?: null),
             MenuItem::linkToCrud('menu.adapters.submenu.local', null, LocalAdapter::class)
-                ->setBadge(
-                    $this->cache->get('local_adapter_count', function (ItemInterface $item) {
-                        $item->expiresAfter(600);
-
-                        return $this->localAdapterRepository->count([]) ?: null;
-                    })
-                ),
+                ->setBadge($this->localAdapterRepository->count([]) ?: null),
         ]);
         yield MenuItem::linkToCrud('menu.databases', 'fas fa-database', Database::class);
         yield MenuItem::linkToCrud('menu.backups', 'fas fa-shield-alt', Backup::class);
