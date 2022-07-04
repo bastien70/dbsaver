@@ -10,6 +10,8 @@ use App\Entity\LocalAdapter;
 use App\Entity\S3Adapter;
 use App\Entity\User;
 use App\Helper\LocaleHelper;
+use App\Repository\LocalAdapterRepository;
+use App\Repository\S3AdapterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Menu\RouteMenuItem;
@@ -30,6 +32,8 @@ final class DashboardController extends AbstractDashboardController
     public function __construct(
         private readonly array $enabledLocales,
         private readonly EntityManagerInterface $em,
+        private readonly LocalAdapterRepository $localAdapterRepository,
+        private readonly S3AdapterRepository $s3AdapterRepository,
     ) {
     }
 
@@ -70,9 +74,9 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('menu.home', 'fa fa-home');
         yield MenuItem::subMenu('menu.adapters.name', 'fas fa-bullseye')->setSubItems([
             MenuItem::linkToCrud('menu.adapters.submenu.s3', null, S3Adapter::class)
-                ->setBadge($this->em->getRepository(S3Adapter::class)->count([]) ?: null),
+                ->setBadge($this->s3AdapterRepository->count([]) ?: null),
             MenuItem::linkToCrud('menu.adapters.submenu.local', null, LocalAdapter::class)
-                ->setBadge($this->em->getRepository(LocalAdapter::class)->count([]) ?: null),
+                ->setBadge($this->localAdapterRepository->count([]) ?: null),
         ]);
         yield MenuItem::linkToCrud('menu.databases', 'fas fa-database', Database::class);
         yield MenuItem::linkToCrud('menu.backups', 'fas fa-shield-alt', Backup::class);

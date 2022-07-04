@@ -39,7 +39,7 @@ final class BackupCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly FlysystemHelper $flysystemHelper
+        private readonly FlysystemHelper $flysystemHelper,
     ) {
     }
 

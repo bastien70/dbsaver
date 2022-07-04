@@ -10,7 +10,6 @@ use function fopen;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use function sprintf;
 use function stream_copy_to_stream;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -19,13 +18,12 @@ final class LocalAdapterResolver implements AdapterResolverInterface
 {
     public function __construct(
         private readonly LocalAdapter $adapterConfig,
-        private readonly string $projectDir
+        private readonly string $projectDir,
     ) {
     }
 
     public function getAdapter(): FilesystemAdapter
     {
-//        return new LocalFilesystemAdapter(__DIR__ . sprintf('/../../var/uploads/%s', $this->adapterConfig->getPrefix()));
         return new LocalFilesystemAdapter($this->projectDir . '/var/uploads/' . $this->adapterConfig->getPrefix());
     }
 
