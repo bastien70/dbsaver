@@ -46,7 +46,7 @@ jobs:
         uses: ramsey/composer-install@v1
 
       - name: Start minio
-      - run: |
+        run: |
           docker-compose -f docker-compose.test.yaml up minio -d
           docker-compose -f docker-compose.test.yaml up createbuckets -d
 
@@ -69,7 +69,7 @@ jobs:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
       - name: Stop minio
-      - run: |
+        run: |
           docker-compose -f docker-compose.test.yaml stop minio
           docker-compose -f docker-compose.test.yaml stop createbuckets
 
