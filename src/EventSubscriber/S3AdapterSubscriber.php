@@ -18,7 +18,7 @@ class S3AdapterSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly Encryptor $encryptor,
-        private readonly CacheInterface $cache
+        private readonly CacheInterface $cache,
     ) {
     }
 
