@@ -76,7 +76,7 @@ final class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('menu.adapters.submenu.s3', null, S3Adapter::class)
                 ->setBadge($this->s3AdapterRepository->count([])),
             MenuItem::linkToCrud('menu.adapters.submenu.local', null, LocalAdapter::class)
-                ->setBadge($this->localAdapterRepository->count([]) ?: null),
+                ->setBadge($this->localAdapterRepository->count([])),
         ]);
         yield MenuItem::linkToCrud('menu.databases', 'fas fa-database', Database::class);
         yield MenuItem::linkToCrud('menu.backups', 'fas fa-shield-alt', Backup::class);
