@@ -31,7 +31,7 @@ class LocalAdapterRepository extends ServiceEntityRepository
      */
     public function count(array $criteria): int
     {
-        return $this->cache->get('local_adapter_count', function (ItemInterface $item) use ($criteria) {
+        return $this->cache->get('local_adapter_count', function (ItemInterface $item) use ($criteria): int {
             $item->expiresAfter(600);
 
             return $this->_em->getUnitOfWork()->getEntityPersister($this->_entityName)->count($criteria);
