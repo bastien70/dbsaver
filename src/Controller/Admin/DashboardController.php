@@ -74,7 +74,7 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('menu.home', 'fa fa-home');
         yield MenuItem::subMenu('menu.adapters.name', 'fas fa-bullseye')->setSubItems([
             MenuItem::linkToCrud('menu.adapters.submenu.s3', null, S3Adapter::class)
-                ->setBadge($this->s3AdapterRepository->count([]) ?: null),
+                ->setBadge($this->s3AdapterRepository->count([])),
             MenuItem::linkToCrud('menu.adapters.submenu.local', null, LocalAdapter::class)
                 ->setBadge($this->localAdapterRepository->count([]) ?: null),
         ]);
