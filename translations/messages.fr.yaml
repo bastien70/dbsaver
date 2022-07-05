@@ -35,7 +35,6 @@ dashboard:
         docs: 'Documentation : <a href="%docs_link%">%docs_link%</a>'
     author:
         title: Auteur
-        website: Site internet
         description: Cette application a été développée par <b>%author%</b>.
 
 adapter:
