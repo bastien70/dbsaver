@@ -1,0 +1,305 @@
+version: '3'
+
+env:
+    # Shell
+    TTY: ''
+    UID:
+        sh: id -u
+    GID:
+        sh: id -g
+        
+    # Container
+    MAINTAINER: bastien70
+    CONTAINER: dbsaver
+    
+    # Docker Compose
+    DC_OVERRIDE: 'docker-compose.override.yml'
+    DC_NETWORK:
+        sh: echo "$(basename $PWD)_dbsaver_network"
+    
+    # Dotenv
+    DOTENV_BASE: .env
+    DOTENV_LOCAL:  .env.local
+    DOTENV_TEST: .env.test
+    DOTENV_TEST_LOCAL: .env.test.local
+
+tasks:
+    fixtures:
+        desc: Generate fixtures for dev environment
+        cmds:
+            - bin/console d:d:d --force --if-exists --quiet
+            - bin/console d:d:c --quiet
+            - bin/console d:s:u --force --quiet
+            - bin/console d:m:sync-metadata-storage --quiet
+            - bin/console d:m:v --add --all --quiet
+            - bin/console a:f:l --quiet
+
+    composer:
+        desc: Install PHP vendors
+        cmds:
+            - symfony composer install
+        sources:
+            - composer.lock
+        generates:
+            - vendor/**/*
+
+    start:
+        desc: Start Symfony server
+        cmds:
+            - symfony serve -d
+
+    stop:
+        desc: Stop Symfony server
+        cmds:
+            - symfony server:stop
+
+    test:
+        desc: Run tests
+        cmds:
+            - task: setup_tests
+            - symfony php vendor/bin/phpunit
+            - task: cleanup_tests
+
+    coverage:
+        desc: Run tests with coverage
+        cmds:
+            - task: setup_tests
+            - symfony php -dpcov.enabled=1 vendor/bin/phpunit --coverage-html=public/coverage
+            - task: cleanup_tests
+
+    setup_tests:
+        cmds:
+            - task: docker:up:test
+            - rm -rf var/cache/test/*
+            - bin/console d:d:d --force --if-exists --quiet --env=test
+            - bin/console d:d:c --quiet --env=test
+            - bin/console d:s:u --force --quiet --env=test
+            - bin/console a:f:l --quiet --env=test
+
+    cleanup_tests:
+        cmds:
+            - docker compose -f docker-compose.test.yaml stop
+
+    ci:
+        desc: Check code style, static analysis...
+        cmds:
+            - symfony composer ci
+
+    cs-fix:
+        desc: Fix code style
+        cmds:
+            - symfony composer cs:fix
+
+    install:
+        desc: Install project
+        cmds:
+            - task: composer
+            - bin/console app:post-install
+            - bin/console app:regenerate-app-secret
+            - bin/console doctrine:database:create
+            - bin/console doctrine:migrations:migrate --no-interaction
+            - bin/console app:make-user
+
+    update:
+        desc: Update project
+        cmds:
+            - git pull --rebase
+            - task: composer
+            - bin/console doctrine:migrations:migrate --no-interaction
+            - bin/console app:post-install --only-missing
+
+    # Docker commands
+    # Explicitly defining --env-file is needed due to bug https://github.com/docker/compose/issues/9521
+    docker:up:
+        desc: Start docker services
+        vars:
+            WAIT_TIMEOUT: '{{ default 30 .timeout}}'
+        cmds:
+            - |
+              SELECTED_SERVICES=""
+              if [ ! -z "{{.CLI_ARGS}}" ]; then
+                IFS=' ' list=({{.CLI_ARGS}}); SERVICES=(); for item in "${list[@]}"; do SERVICES+=($(echo "$item" | cut -d ":" -f 1)); done; SELECTED_SERVICES=$(IFS=' '; echo "${SERVICES[*]}");
+              fi
+            
+              DOTENV=$DOTENV_BASE; 
+              if [ -f $DOTENV_LOCAL ]; then 
+                DOTENV=$DOTENV_LOCAL
+              fi
+              
+              docker compose --env-file=$DOTENV up -d $SELECTED_SERVICES --build --force-recreate --remove-orphans
+              if [ ! -z "{{.CLI_ARGS}}" ]; then 
+                  docker run --network="$DC_NETWORK" -e TARGETS="{{.CLI_ARGS}}" -e TIMEOUT={{.WAIT_TIMEOUT}} --rm waisbrot/wait; 
+                else 
+                  docker run --network="$DC_NETWORK" -e TARGETS="mysql:3306 dbsaver:9000 mailer:1025 caddy:443" -e TIMEOUT={{.WAIT_TIMEOUT}} --rm waisbrot/wait; 
+              fi
+
+    docker:up:test:
+        desc: Start test docker services
+        vars:
+            TIMEOUT: '{{ default 30 .timeout}}'
+        cmds:
+            - |
+              SELECTED_SERVICES=""
+              if [ ! -z "{{.CLI_ARGS}}" ]; then
+                IFS=' ' list=({{.CLI_ARGS}}); SERVICES=(); for item in "${list[@]}"; do SERVICES+=($(echo "$item" | cut -d ":" -f 1)); done; SELECTED_SERVICES=$(IFS=' '; echo "${SERVICES[*]}");
+              fi
+              
+              DOTENV=$DOTENV_TEST; 
+              if [ -f $DOTENV_TEST_LOCAL ]; then 
+                DOTENV=$DOTENV_TEST_LOCAL
+              fi
+              
+              docker compose --env-file=$DOTENV -f docker-compose.test.yml up -d $SELECTED_SERVICES --build --force-recreate --remove-orphans
+              if [ ! -z "{{.CLI_ARGS}}" ]; then 
+                 docker run --network="$DC_NETWORK" -e TARGETS="{{.CLI_ARGS}}" -e TIMEOUT={{.WAIT_TIMEOUT}} --rm waisbrot/wait; 
+              else 
+                 docker run --network="$DC_NETWORK" -e TARGETS="mysql:3306 dbsaver:9000 mailer:1025 minio:9001" -e TIMEOUT={{.WAIT_TIMEOUT}} --rm waisbrot/wait; 
+              fi
+
+    docker:down:
+        desc: Stop docker services (use args=-v to remove volumes)
+        cmds:
+            - docker compose down --remove-orphans {{.CLI_ARGS}}
+
+    docker:down:test:
+        desc: Stop docker services
+        cmds:
+            - docker compose -f docker-compose.test.yml down --remove-orphans
+
+    docker:start:
+        desc: Stop docker services
+        cmds:
+            - docker compose start {{.CLI_ARGS}}
+
+    docker:stop:
+        desc: Stop docker services
+        cmds:
+            - docker compose stop {{.CLI_ARGS}}
+
+    docker:pull:
+        desc: Pull latest images
+        cmds:
+            - docker compose pull
+
+    docker:lint:
+        desc: Docker lint by Hadolint
+        cmds:
+            - docker run --rm -e HADOLINT_FAILURE_THRESHOLD=error hadolint/hadolint:v2.10.0-beta < Dockerfile
+
+    docker:security:
+        desc: Docker security check by Trivy
+        vars:
+            TAG: '{{default "latest" .tag}}'
+        cmds:
+            - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.cache/trivy:/tmp/.cache/ --name trivy_dbsaver aquasec/trivy:0.29.2 --cache-dir /tmp/.cache image $MAINTAINER/$CONTAINER:{{.TAG}}
+
+    docker:contribute:
+        desc: Contribution tests
+        cmds:
+            - task: docker:lint
+            - task: docker:security
+
+    docker:composer:install:
+        desc: Initial install of composer dependencies without the need of running app container
+        cmds:
+            - docker run --rm --user $UID:$GID -v $PWD:/app composer:2.3 composer install --no-interaction --prefer-dist --ignore-platform-reqs {{.CLI_ARGS}}
+
+    docker:app:build:
+        desc: Build Docker image
+        vars:
+            ENV: '{{default "dev" .env}}'
+            TAG: '{{default "dev" .tag}}'
+        cmds:
+            - DOCKER_BUILDKIT=1 docker build --target {{.ENV}} --tag $MAINTAINER/$CONTAINER:{{.TAG}} --tag $MAINTAINER/$CONTAINER:latest .
+
+    docker:app:login:
+        desc: Login to app container
+        cmds:
+            - docker compose exec $TTY $CONTAINER /bin/sh
+    
+    docker:app:create-user:
+        desc: Create a new user
+        cmds:
+            - docker compose exec $TTY $CONTAINER bin/console app:make-user
+
+    docker:app:logs:
+        desc: Tail logs of app container
+        cmds:
+            - docker compose tail -ft $CONTAINER
+
+    docker:app:composer:install:
+        desc: Docker composer install
+        cmds:
+            - docker compose exec $TTY $CONTAINER composer install --prefer-dist --no-progress --no-interaction --classmap-authoritative {{.CLI_ARGS}}
+
+    docker:app:composer:install:prod:
+        desc: Docker composer install
+        cmds:
+            - task docker:app:composer:install -- {{.CLI_ARGS}}
+
+    docker:app:composer:validate:
+        desc: Docker composer validate
+        cmds:
+            - docker compose exec $TTY $CONTAINER composer validate
+
+    docker:app:phpstan:
+        desc: Docker PHPStan
+        cmds:
+            - docker compose exec $TTY $CONTAINER vendor/bin/phpstan analyse --memory-limit 256M
+
+    docker:app:phpunit:
+        desc: Docker PHPUnit
+        cmds:
+            - docker compose exec --env XDEBUG_MODE=coverage --env SYMFONY_DEPRECATIONS_HELPER=disabled $TTY $CONTAINER vendor/bin/phpunit --coverage-clover=coverage.xml
+
+    docker:app:phpcs:dry:
+        desc: Docker PHPCS
+        cmds:
+            - docker compose exec $TTY $CONTAINER vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction
+
+    docker:app:phpcs:fix:
+        desc: Docker PHPCS fix
+        cmds:
+            - docker compose exec $TTY $CONTAINER vendor/bin/php-cs-fixer fix
+
+    docker:app:phpcs:ci:
+        desc: Docker PHPCS CI
+        cmds:
+            - docker compose exec $TTY $CONTAINER /bin/sh -c "vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction --format=checkstyle | vendor/bin/cs2pr"
+
+    docker:app:test:
+        desc: Docker complete flow for running unit tests with fixtures
+        cmds:
+            - task: docker:up:test
+            - task: docker:app:test:setup-db
+            - task: docker:app:test:setup-fixtures
+            - task: docker:app:phpunit
+            - task: docker:app:test:cleanup
+
+    docker:app:test:setup-db:
+        desc: Docker setup DB for tests
+        cmds:
+            - docker compose exec $TTY $CONTAINER bin/console doctrine:database:drop --force --if-exists --quiet
+            - docker compose exec $TTY $CONTAINER bin/console doctrine:database:create --quiet
+            - docker compose exec $TTY $CONTAINER bin/console doctrine:schema:create --quiet
+            - docker compose exec $TTY $CONTAINER bin/console doctrine:schema:validate --quiet
+
+    docker:app:test:setup-fixtures:
+        desc: Docker setup fixtures
+        cmds:
+            - docker compose exec $TTY $CONTAINER bin/console app:fixtures:load --quiet
+
+    docker:app:test:cleanup:
+        desc: Docker cleanup test
+        cmds:
+            - docker compose exec $TTY $CONTAINER bin/console doctrine:database:drop --force --if-exists --quiet
+            - docker compose exec $TTY $CONTAINER rm -rf var/cache/test/*
+
+    docker:app:contribute:
+        desc: Application contribution
+        cmds:
+            - task: docker:down
+            - task: docker:app:test
+            - task: docker:app:phpcs:dry
+            - task: docker:app:phpstan
+            - task: docker:up

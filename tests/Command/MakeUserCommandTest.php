@@ -22,7 +22,7 @@ final class MakeUserCommandTest extends KernelTestCase
 
         $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('User contact@test.com has been successfully created! You can now log in.', $output);
+        self::assertStringContainsString('User contact@test.com has been successfully created!', $output);
 
         $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();

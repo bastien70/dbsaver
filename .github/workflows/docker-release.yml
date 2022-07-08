@@ -1,0 +1,156 @@
+name: Docker Build | Prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_env:
+        description: 'Manual trigger for build production image'
+        required: true
+        default: main
+  release:
+    types: [ published ]
+
+env:
+  DOCKER_IMAGE: bastien70/dbsaver
+  DOCKER_IMAGE_TARGET_BASE: base
+  DOCKER_IMAGE_TARGET_DEV: dev
+  DOCKER_IMAGE_TARGET_PROD: prod
+
+jobs:
+  build-image-release:
+    name: Build production image
+    runs-on: ubuntu-20.04
+    env:
+      TTY: -T
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Task
+        uses: arduino/setup-task@v1
+
+      - name: Start containers
+        run: task docker:up -- dbsaver:9000 mysql:3306
+
+      - name: Install dependencies and assets for production image
+        run: task docker:app:composer:install:prod
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Linter
+      - name: Docker Linter
+        run: task docker:lint
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.DOCKER_IMAGE }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      # Base image
+      - name: Base | Build Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          pull: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+
+      - name: Base | Trivy Vulnerability Scan - Unknown, Low and Medium Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          severity: UNKNOWN,LOW,MEDIUM
+          exit-code: 0
+
+      - name: Base | Trivy Vulnerability Scan - High and Critical Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+      - name: Base | Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+
+      # Dev image
+      - name: Dev | Build Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          pull: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_DEV }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_DEV }}
+
+      - name: Dev | Trivy Vulnerability Scan - Unknown, Low and Medium Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          severity: UNKNOWN,LOW,MEDIUM
+          exit-code: 0
+
+      - name: Dev | Trivy Vulnerability Scan - High and Critical Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+      - name: Dev | Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_DEV }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_DEV }}
+
+      # Prod image
+      - name: Prod | Build Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_PROD }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Prod | Trivy Vulnerability Scan - Unknown, Low and Medium Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:latest
+          severity: UNKNOWN,LOW,MEDIUM
+          exit-code: 0
+
+      - name: Prod | Trivy Vulnerability Scan - High and Critical Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:latest
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+      - name: Prod | Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_PROD }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

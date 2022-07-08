@@ -1,0 +1,60 @@
+version: '3.9'
+
+x-app-volume: &app-volume .:/app
+
+x-env-file: &env-file
+  env_file:
+    - .env
+
+x-extends-from: &extend-from
+  file: common-services.yml
+
+services:
+  dbsaver:
+    image: bastien70/dbsaver:dev
+    extends:
+      <<: *extend-from
+      service: dbsaver-base
+    user: "${UID:-1000}:${GID:-1000}"
+    <<: *env-file
+    volumes:
+      - *app-volume
+    labels:
+      caddy: "dbsaver.local"
+      caddy.root: "* /app/public"
+      caddy.encode: "gzip"
+      caddy.php_fastcgi: "dbsaver:9000"
+      caddy.file_server:
+
+  mysql:
+    extends:
+      <<: *extend-from
+      service: mysql-base
+    <<: *env-file
+
+  mailer:
+    extends:
+      <<: *extend-from
+      service: mailer-base
+    labels:
+      caddy: "mail.dbsaver.local"
+      caddy.reverse_proxy: "mailer:1080"
+
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:2.7-alpine
+    environment:
+      CADDY_INGRESS_NETWORKS: "dbsaver_network"
+    ports:
+      - "444:443"
+    volumes:
+      - *app-volume
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - dbsaver_network
+
+volumes:
+  dbsaver_mysql:
+
+networks:
+  dbsaver_network:
+    driver: bridge

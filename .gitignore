@@ -1,8 +1,9 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
 /.env.*.local
+/.env.dev
+/.env.prod
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
@@ -10,20 +11,29 @@
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
-.phpunit.result.cache
+/coverage.xml
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
+###> symfony public ###
+/public/coverage
+/public/files/backups
+###< symfony public ###
+
+###> Taskfile ###
+/.task
+###< Taskfile ###
+
+###> Docker ###
+/.docker-compose.override.*
+###< Docker ###
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
+/.php-cs.result.xml
 ###< friendsofphp/php-cs-fixer ###
 
-/.task
-/public/coverage
-/public/files/backups
+###> IDE ###
+/.idea
+###< IDE ###

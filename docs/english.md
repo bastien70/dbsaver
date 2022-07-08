@@ -9,13 +9,15 @@
 
 *[Cliquez ici pour accéder à la documentation en français](french.md)*
 
-DbSaver is an application written by **Bastien LOUGHIN** allowing you to make automatic daily backups (and manual backups) for your MySQL databases.
+DbSaver is an application written by **Bastien LOUGHIN** allowing you to make automatic daily backups (and manual
+backups) for your MySQL databases.
 All you have to do is fill the credentials to access the databases, configure a CRON job... and it's done.
 Passwords will be automatically hashed.
 
 Then, using DbSaver, you can access your databases backups by browsing the **Backups** tab.
 
-Vous pourrez ensuite grâce à DbSaver accéder aux différentes sauvegardes de vos bases de données en vous rendant sur l'onglet **Sauvegardes**.
+Vous pourrez ensuite grâce à DbSaver accéder aux différentes sauvegardes de vos bases de données en vous rendant sur
+l'onglet **Sauvegardes**.
 Backups can be saved **locally** or on Amazon's cloud **AWS S3**.
 
 /!\ DbSaver only backups databases. Files (like image uploads) are not saved.
@@ -34,8 +36,7 @@ Backups can be saved **locally** or on Amazon's cloud **AWS S3**.
 1. [License](#license)
 1. [Contribute](#contribute)
 1. [Changelog](#changelog)
-    
-    
+
 ## Prerequisites <a name="prerequisites"></a>
 
 * PHP 8.1+
@@ -60,8 +61,28 @@ Requires [Symfony CLI](https://symfony.com/download) and [Task](https://taskfile
 1. `git clone https://github.com/bastien70/dbsaver.git`
 1. `cd dbsaver`
 1. `task install`
-1. If you want to run Docker containers (currently only for local emails with MailCatcher): `task docker-start` et `task docker-stop` (requires Docker and Docker Compose)
+1. If you want to run Docker containers (currently only for local emails with MailCatcher): `task docker-start`
+   et `task docker-stop` (requires Docker and Docker Compose)
 1. To start the server: `task start` (to stop it: `task stop`)
+
+## With Docker Compose 🐋
+
+Minimal example with [docker compose](https://docs.docker.com/compose/install/) for production.
+
+```yaml
+version: '3.9'
+
+services:
+  dbsaver:
+    image: bastien70/dbsaver:1.3
+    env_file:
+      - env.dbsaver
+    volumes:
+      - dbsaver_app:/app/public
+
+volumes:
+  dbsaver_app:
+```
 
 ## Configure the CRON job <a name="cron"></a>
 
@@ -85,13 +106,13 @@ Open file `[project]/config/packages/vich_uploader.yaml` and replace its content
 
 ```yaml
 vich_uploader:
-    db_driver: orm
-    mappings:
-        backups:
-            uri_prefix: /files/backups
-            upload_destination: '%kernel.project_dir%/public/files/backups'
-    metadata:
-        type: attribute
+  db_driver: orm
+  mappings:
+    backups:
+      uri_prefix: /files/backups
+      upload_destination: '%kernel.project_dir%/public/files/backups'
+  metadata:
+    type: attribute
 ```
 
 You also need to add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
@@ -117,14 +138,14 @@ Open file `[project]/config/packages/vich_uploader.yaml` and replace its content
 
 ```yaml
 vich_uploader:
-    db_driver: orm
-    storage: gaufrette
-    mappings:
-        backups:
-            uri_prefix: '%uploads_base_url%'
-            upload_destination: backup_fs
-    metadata:
-        type: attribute
+  db_driver: orm
+  storage: gaufrette
+  mappings:
+    backups:
+      uri_prefix: '%uploads_base_url%'
+      upload_destination: backup_fs
+  metadata:
+    type: attribute
 ```
 
 ## Use the application <a name="use-app"></a>
@@ -134,7 +155,8 @@ For the example the host will be `127.0.0.1:8000`.
 
 Access the app: https://127.0.0.1:8000/login
 
-You'll be asked to log in. Enter your account credentials (that you created using the `php bin/console app:make-user` command).
+You'll be asked to log in. Enter your account credentials (that you created using the `php bin/console app:make-user`
+command).
 
 ![Authentication](images/login-en.png?raw=true)
 
@@ -147,7 +169,8 @@ Fill your database information and submit.
 
 ![Add a database](images/database-create-en.png?raw=true)
 
-Then, for every database you add, you will be able to see its backups, update its credentials, delete the database from the app (and its backups) or launch a manual backup.
+Then, for every database you add, you will be able to see its backups, update its credentials, delete the database from
+the app (and its backups) or launch a manual backup.
 
 ![Database list](images/database-list-en.png?raw=true)
 
@@ -180,12 +203,14 @@ This application is protected by a MIT license: [LICENCE](../LICENSE).
 
 Before making a pull request, don't forget to run these commands (requires Task and Docker Compose):
 
-```bash
-task ci
-task test
+```shell
+task docker:app:contribute
 ```
 
-Note: you can run these commands without Task, have a look to the Taskfile.yml file to see which commands will run.
+For more information on how to start with development with Docker compose, please check the
+following [README](../docs/contribute/english.md).
+
+> Note: You can run these commands without Task, have a look to at Taskfile.yml file to see which commands will run.
 
 ## Changelog <a name="changelog"></a>
 

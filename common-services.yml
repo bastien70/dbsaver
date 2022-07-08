@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  dbsaver-base:
+    image: bastien70/dbsaver:dev
+    env_file:
+      - .env
+    networks:
+      - dbsaver_network
+
+  mysql-base:
+    image: mysql:8.0
+    env_file:
+      - .env
+    ports:
+      - "8011:3306"
+    volumes:
+      - dbsaver_mysql:/var/lib/mysql
+    networks:
+      - dbsaver_network
+
+  mailer-base:
+    image: schickling/mailcatcher:master
+    ports:
+      - "1027:1025"
+      - "1082:1080"
+    networks:
+      - dbsaver_network

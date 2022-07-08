@@ -61,6 +61,25 @@ Requiert [Symfony CLI](https://symfony.com/download) et [Task](https://taskfile.
 1. Si vous souhaitez lancer les conteneurs Docker (actuellement uniquement pour les mails en local avec MailCatcher) : `task docker-start` et `task docker-stop` (requiert Docker et Docker Compose)
 1. Pour démarrer le serveur : `task start` (pour l'arrêter : `task stop`)
 
+## With Docker Compose 🐋
+
+Exemple minimal avec [docker compose](https://docs.docker.com/compose/install/).
+
+```yaml
+version: '3.9'
+
+services:
+  dbsaver:
+    image: bastien70/dbsaver:1.3
+    env_file:
+      - env.dbsaver
+    volumes:
+      - dbsaver_app:/app/public
+
+volumes:
+  dbsaver_app:
+```
+
 ## Configuration de la tâche CRON <a name="cron"></a>
 
 Configurer une tâche CRON vous servira à lancer automatiquement et à la fréquence désirée, la sauvegarde de toutes vos bases de données.
@@ -179,12 +198,11 @@ Cette application est protégée par une licence MIT : [LICENCE](../LICENSE).
 
 Avant de faire une pull request, n'oubliez pas de lancer les vérifications d'usage (nécessite Task et Docker Compose) :
 
-```bash
-task ci
-task test
+```shell
+task docker:app:contribute
 ```
 
-Note : vous pouvez lancer ces commandes sans Task, regardez le fichier Taskfile.yml pour voir quelles commandes sont exécutées.
+Note : Vous pouvez lancer ces commandes sans Task, regardez le fichier Taskfile.yml pour voir quelles commandes sont exécutées.
 
 ## Changelog <a name="changelog"></a>
 
