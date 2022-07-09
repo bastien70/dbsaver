@@ -24,14 +24,14 @@ if [ "$1" = "php-fpm" ] || [ "$1" = "php" ]; then
 
   # Only create database and run migrations for non-test environments
   if [ "$APP_ENV" != "test" ]; then
-		echo "${CONTAINER_PREFIX} Check database connection..."
-		REACH_DATABASE_ATTEMPT=30
-		until [ $REACH_DATABASE_ATTEMPT -eq 0 ] || DATABASE_ERROR=$(bin/console dbal:run-sql "SELECT 1" 2>&1); do
-		  LAST_EXIT_CODE=$?
+    echo "${CONTAINER_PREFIX} Check database connection..."
+    REACH_DATABASE_ATTEMPT=30
+    until [ $REACH_DATABASE_ATTEMPT -eq 0 ] || DATABASE_ERROR=$(bin/console dbal:run-sql "SELECT 1" 2>&1); do
+      LAST_EXIT_CODE=$?
 
       SQL_RESPONSE_CODE=$(echo "$DATABASE_ERROR" | grep -Po 'SQLSTATE\[[A-Z0-9]{5}(?=\])]\s{1}\[\K[0-9]+(?=\])' | head -1)
-		  if [ -z "$SQL_RESPONSE_CODE" ]; then
-		    break;
+      if [ -z "$SQL_RESPONSE_CODE" ]; then
+        break
       fi
 
       if [ "$SQL_RESPONSE_CODE" -ne 2002 ]; then
@@ -41,10 +41,10 @@ if [ "$1" = "php-fpm" ] || [ "$1" = "php" ]; then
         fi
       fi
 
-			sleep 1
-			REACH_DATABASE_ATTEMPT=$((REACH_DATABASE_ATTEMPT - 1))
-			echo "${CONTAINER_PREFIX} Waiting for database connection... $REACH_DATABASE_ATTEMPT attempts left."
-		done
+      sleep 1
+      REACH_DATABASE_ATTEMPT=$((REACH_DATABASE_ATTEMPT - 1))
+      echo "${CONTAINER_PREFIX} Waiting for database connection... $REACH_DATABASE_ATTEMPT attempts left."
+    done
 
     if [ $REACH_DATABASE_ATTEMPT -eq 0 ]; then
       echo "$CONTAINER_PREFIX The database is either not up or reachable:"
