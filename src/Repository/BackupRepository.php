@@ -37,19 +37,13 @@ class BackupRepository extends ServiceEntityRepository
      */
     public function getActiveBackups(Database $database): array
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('b')
-            ->from(Backup::class, 'b')
-            ->innerJoin('b.database', 'd')
-            ->where(
-                $qb->expr()->eq(
-                    'd.id',
-                    $database->getId()
-                )
-            )
+        return $this->createQueryBuilder('b')
+            ->join('b.database', 'd')
+            ->andWhere('d.id = :databaseId')
+            ->setParameter('databaseId', $database->getId())
             ->orderBy('b.createdAt', 'DESC')
-            ->setMaxResults($database->getMaxBackups() - 1);
-
-        return $qb->getQuery()->getResult();
+            ->setMaxResults($database->getMaxBackups() - 1)
+            ->getQuery()
+            ->getResult();
     }
 }
