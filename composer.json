@@ -9,6 +9,7 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-xsl": "*",
         "aws/aws-sdk-php": "^3.224.4",
         "composer/package-versions-deprecated": "^1.11.99.5",
         "doctrine/annotations": "^1.13.2",
@@ -60,6 +61,7 @@
         "phpstan/phpstan-phpunit": "^1.1.1",
         "phpstan/phpstan-symfony": "^1.2.2",
         "phpunit/phpunit": "^9.5.20",
+        "staabm/annotate-pull-request-from-checkstyle": "^1.8",
         "symfony/browser-kit": "6.1.*",
         "symfony/css-selector": "6.1.*",
         "symfony/debug-bundle": "6.1.*",
@@ -114,16 +116,16 @@
             "@auto-scripts"
         ],
         "ci": [
-            "symfony console doctrine:schema:validate",
+            "bin/console doctrine:schema:validate",
             "@cs:dry",
             "@phpstan",
-            "symfony console lint:container",
-            "symfony console lint:twig templates",
-            "symfony console lint:yaml config translations"
+            "bin/console lint:container",
+            "bin/console lint:twig templates",
+            "bin/console lint:yaml config translations"
         ],
         "cs:dry": "php-cs-fixer fix --diff --dry-run --no-interaction",
         "cs:fix": "php-cs-fixer fix",
-        "phpstan": "vendor/bin/phpstan analyse"
+        "phpstan": "vendor/bin/phpstan analyse --memory-limit 256M"
     },
     "conflict": {
         "symfony/symfony": "*"

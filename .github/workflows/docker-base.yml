@@ -1,0 +1,104 @@
+name: Docker Build | Base & Dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_env:
+        description: 'Manual trigger for build base and dev image'
+        required: true
+        default: main
+  schedule:
+    - cron: '0 4 * * 0'
+
+env:
+  DOCKER_IMAGE: bastien70/dbsaver
+  DOCKER_IMAGE_TARGET_BASE: base
+  DOCKER_IMAGE_TARGET_DEV: dev
+
+jobs:
+  build-image:
+    name: Build base and dev image
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Task
+        uses: arduino/setup-task@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Linter
+      - name: Docker Linter
+        run: task docker:lint
+
+      # Base image
+      - name: Base | Build Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          pull: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+
+      - name: Base | Trivy Vulnerability Scan - Unknown, Low and Medium Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          severity: UNKNOWN,LOW,MEDIUM
+          exit-code: 0
+
+      - name: Base | Trivy Vulnerability Scan - High and Critical Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+      - name: Base | Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+
+      # Dev image
+      - name: Dev | Build Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_DEV }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_DEV }}
+
+      - name: Dev | Trivy Vulnerability Scan - Unknown, Low and Medium Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          severity: UNKNOWN,LOW,MEDIUM
+          exit-code: 0
+
+      - name: Dev | Trivy Vulnerability Scan - High and Critical Severity
+        uses: aquasecurity/trivy-action@0.5.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_BASE }}
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+      - name: Dev | Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          target: ${{ env.DOCKER_IMAGE_TARGET_DEV }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TARGET_DEV }}

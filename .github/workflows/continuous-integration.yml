@@ -10,58 +10,25 @@ on:
 
 jobs:
   phpunit:
-    name: PHPUnit (PHP ${{ matrix.php-version }})
+    name: PHPUnit
     runs-on: ubuntu-20.04
     env:
-      SYMFONY_DEPRECATIONS_HELPER: disabled
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3307:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-    strategy:
-      matrix:
-        php-version:
-          - '8.1'
+      TTY: -T
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          coverage: pcov
-          php-version: ${{ matrix.php-version }}
+      - name: Install Task
+        uses: arduino/setup-task@v1
+
+      - name: Run PHPunit tests
+        run: task docker:app:test
 
       - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
-
-      - name: Load Doctrine fixtures
-        run: |
-          bin/console doctrine:database:create --if-not-exists --env=test
-          bin/console doctrine:schema:drop --force --env=test
-          bin/console doctrine:schema:create --env=test
-          bin/console doctrine:schema:validate --env=test
-          bin/console app:fixtures:load --env=test
-
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
-        if: matrix.php-version == '8.0'
-
-      - name: Run PHPUnit with deprecations disabled
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
-        if: matrix.php-version == '8.1'
-        env:
-          SYMFONY_DEPRECATIONS_HELPER: disabled
+        run: task docker:app:composer:validate
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
+        with:
+          files: ./coverage.xml

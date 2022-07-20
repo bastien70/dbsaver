@@ -1,0 +1,65 @@
+version: '3.9'
+
+x-app-volume: &app-volume .:/app
+
+x-env-file: &env-file
+  env_file:
+    - .env.test
+
+x-extends-from: &extend-from
+  file: common-services.yml
+
+services:
+  dbsaver:
+    extends:
+      <<: *extend-from
+      service: dbsaver-base
+    user: "${UID:-1000}:${GID:-1000}"
+    <<: *env-file
+    volumes:
+      - *app-volume
+
+  mysql:
+    extends:
+      <<: *extend-from
+      service: mysql-base
+    <<: *env-file
+
+  mailer:
+    extends:
+      <<: *extend-from
+      service: mailer-base
+
+  minio:
+    image: minio/minio:RELEASE.2022-07-04T21-02-54Z
+    <<: *env-file
+    command: server /data --address ":9004" --console-address ":9001"
+    ports:
+      - "9004:9004"
+      - "9001:9001"
+    volumes:
+      - dbsaver_minio:/data
+    networks:
+      - dbsaver_network
+
+  createbuckets:
+    image: minio/mc:RELEASE.2022-06-26T18-51-48Z
+    <<: *env-file
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc mb $$MINIO_BUCKET;
+      /usr/bin/mc policy set public $$MINIO_BUCKET;
+      /usr/bin/mc alias set $$MINIO_ALIAS http://minio:9004 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD;
+      exit 0;"
+    networks:
+      - dbsaver_network
+
+volumes:
+  dbsaver_mysql:
+  dbsaver_minio:
+
+networks:
+  dbsaver_network:
+    driver: bridge
