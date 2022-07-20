@@ -30,10 +30,5 @@
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
-/.php-cs-fixer.cache
 /.php-cs.result.xml
 ###< friendsofphp/php-cs-fixer ###
-
-###> IDE ###
-/.idea
-###< IDE ###

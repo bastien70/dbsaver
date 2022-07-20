@@ -102,13 +102,14 @@ Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son
 
 ```yaml
 vich_uploader:
-    db_driver: orm
-    mappings:
-        backups:
-            uri_prefix: /files/backups
-            upload_destination: '%kernel.project_dir%/public/files/backups'
-    metatadata:
-        type: attribute
+   db_driver: orm
+   storage: gaufrette
+   mappings:
+      backups:
+         uri_prefix: '%uploads_base_url%'
+         upload_destination: backup_fs
+   metadata:
+      type: attribute
 ```
 
 Ajoutez/modifiez également la variable d'environnement `BACKUP_LOCAL` dans le fichier `.env.local` comme ceci :
@@ -134,14 +135,14 @@ Ouvrez le fichier `[projet]/config/packages/vich_uploader.yaml` et remplacez son
 
 ```yaml
 vich_uploader:
-    db_driver: orm
-    storage: gaufrette
-    mappings:
-        backups:
-            uri_prefix: '%uploads_base_url%'
-            upload_destination: backup_fs
-    metadata:
-        type: attribute
+   db_driver: orm
+   storage: gaufrette
+   mappings:
+      backups:
+         uri_prefix: '%uploads_base_url%'
+         upload_destination: backup_fs
+   metadata:
+      type: attribute
 ```
 
 ## Utiliser l'application <a name="use-app"></a>
@@ -202,7 +203,7 @@ Avant de faire une pull request, n'oubliez pas de lancer les vérifications d'us
 task docker:app:contribute
 ```
 
-Note : Vous pouvez lancer ces commandes sans Task, regardez le fichier Taskfile.yml pour voir quelles commandes sont exécutées.
+Note : vous pouvez lancer ces commandes sans Task, regardez le fichier Taskfile.yml pour voir quelles commandes sont exécutées.
 
 ## Changelog <a name="changelog"></a>
 

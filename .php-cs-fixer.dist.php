@@ -31,5 +31,5 @@ return (new PhpCsFixer\Config())
         'declare_strict_types' => true,
     ])
     ->setFinder($finder)
-    ->setCacheFile(__DIR__.'/.php-cs-fixer.cache')
+    ->setCacheFile(__DIR__.'/var/.php_cs.cache')
 ;

@@ -118,11 +118,11 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
     {
         $url = $this->getCrudActionUrl(Action::DELETE, self::USER_ROLE_ADMIN);
 
-        self::$client->request(Request::METHOD_GET, $url);
+        self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');
 
         $this->loginAsUser();
-        self::$client->request(Request::METHOD_GET, $url);
+        self::$client->request('GET', $url);
         $responseCode = self::$client->getResponse()->getStatusCode();
 
         // If not asserting for both 302 and 403, this will either fail locally or in the CI

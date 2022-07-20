@@ -106,13 +106,13 @@ Open file `[project]/config/packages/vich_uploader.yaml` and replace its content
 
 ```yaml
 vich_uploader:
-  db_driver: orm
-  mappings:
-    backups:
-      uri_prefix: /files/backups
-      upload_destination: '%kernel.project_dir%/public/files/backups'
-  metadata:
-    type: attribute
+   db_driver: orm
+   mappings:
+      backups:
+         uri_prefix: /files/backups
+         upload_destination: '%kernel.project_dir%/public/files/backups'
+   metadata:
+      type: attribute
 ```
 
 You also need to add/update the `BACKUP_LOCAL` environment variable in `.env.local` like this:
@@ -138,14 +138,14 @@ Open file `[project]/config/packages/vich_uploader.yaml` and replace its content
 
 ```yaml
 vich_uploader:
-  db_driver: orm
-  storage: gaufrette
-  mappings:
-    backups:
-      uri_prefix: '%uploads_base_url%'
-      upload_destination: backup_fs
-  metadata:
-    type: attribute
+   db_driver: orm
+   storage: gaufrette
+   mappings:
+      backups:
+         uri_prefix: '%uploads_base_url%'
+         upload_destination: backup_fs
+   metadata:
+      type: attribute
 ```
 
 ## Use the application <a name="use-app"></a>
