@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Entity\Backup;
 use App\Entity\Database;
+use App\Entity\LocalAdapter;
 use App\Repository\DatabaseRepository;
 use App\Service\BackupService;
 use App\Service\BackupStatus;
@@ -41,17 +42,20 @@ final class BackupCommand extends Command
             $io->progressStart($databasesCount);
 
             foreach ($databases as $database) {
-                $backupStatus = $this->backupService->backup($database, Backup::CONTEXT_AUTOMATIC);
-                if (BackupStatus::STATUS_OK === $backupStatus->getStatus()) {
-                    $database->setStatus(Database::STATUS_OK);
-                } else {
-                    $database->setStatus(Database::STATUS_ERROR);
-                    $errors[] = [
-                        'database' => $database,
-                        'message' => $backupStatus->getErrorMessage(),
-                    ];
+                if($database->getAdapter() instanceof LocalAdapter)
+                {
+                    $backupStatus = $this->backupService->backup($database, Backup::CONTEXT_AUTOMATIC);
+                    if (BackupStatus::STATUS_OK === $backupStatus->getStatus()) {
+                        $database->setStatus(Database::STATUS_OK);
+                    } else {
+                        $database->setStatus(Database::STATUS_ERROR);
+                        $errors[] = [
+                            'database' => $database,
+                            'message' => $backupStatus->getErrorMessage(),
+                        ];
+                    }
+                    $this->databaseRepository->save($database);
                 }
-                $this->databaseRepository->save($database);
                 $io->progressAdvance();
             }
 
