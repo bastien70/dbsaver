@@ -50,6 +50,8 @@ class BackupService
                 random_int(1000, 99999999),
             );
 
+            dump($filepath);
+
             // Launch backup
             $mysqldump->start($filepath);
 
