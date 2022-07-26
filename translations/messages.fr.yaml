@@ -36,6 +36,7 @@ dashboard:
     author:
         title: Auteur
         description: Cette application a été développée par <b>%author%</b>.
+        website: Site web
 
 adapter:
     admin_label:

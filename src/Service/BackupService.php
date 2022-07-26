@@ -9,6 +9,10 @@ use App\Entity\Database;
 use App\Helper\FlysystemHelper;
 use App\Repository\BackupRepository;
 use App\Repository\DatabaseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
@@ -109,18 +113,30 @@ class BackupService
 
     public function clean(Database $database): void
     {
-        $maxBackups = $database->getMaxBackups();
-        $backups = $database->getBackups();
+        $backupCollection = new ArrayCollection(
+            $this->backupRepository->getActiveBackups($database)
+        );
 
-        if (\count($backups) > $maxBackups) {
-            for ($i = $maxBackups, $iMax = \count($backups); $i < $iMax; ++$i) {
-                $deleteBackup = $backups[$i];
-                $this->flysystemHelper->remove($deleteBackup);
-                $this->manager->remove($deleteBackup);
-            }
+        $criteria = new Criteria();
+        $comparison = new Comparison(
+            'id',
+            Comparison::NIN,
+            $backupCollection->map(
+                function (Backup $backup) {
+                    return $backup->getId();
+                }
+            )->getValues()
+        );
+        $criteria->where($comparison);
+
+        /** @var Collection<int,Backup> $backupToBeDeletedCollection */
+        $backupToBeDeletedCollection = $database->getBackups()->matching($criteria);
+
+        foreach ($backupToBeDeletedCollection as $backup) {
+            $this->backupRepository->remove($backup);
         }
 
-        $this->manager->flush();
+        $this->backupRepository->flush();
     }
 
     /**
