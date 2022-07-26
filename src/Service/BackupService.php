@@ -133,6 +133,7 @@ class BackupService
         $backupToBeDeletedCollection = $database->getBackups()->matching($criteria);
 
         foreach ($backupToBeDeletedCollection as $backup) {
+            $this->flysystemHelper->remove($backup);
             $this->backupRepository->remove($backup);
         }
 
