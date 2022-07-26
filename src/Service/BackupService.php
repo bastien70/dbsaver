@@ -39,7 +39,6 @@ class BackupService
     public function backup(Database $database, string $context): BackupStatus
     {
         try {
-            dump('1');
             // Define mysqldump object
             $mysqldump = $this->defineMysqlDumpObject($database);
 
@@ -50,11 +49,10 @@ class BackupService
                 (new \DateTime())->format('d_m_y'),
                 random_int(1000, 99999999),
             );
-            dump('2');
 
             // Launch backup
             $mysqldump->start($filepath);
-            dump('3');
+
             // Get file infos
             $fileInfo = pathinfo($filepath);
 
@@ -67,8 +65,6 @@ class BackupService
                 true
             );
 
-            dump('4');
-
             // Create backup entity row and applied uploaded file
             $backup = new Backup();
 
@@ -78,14 +74,13 @@ class BackupService
                 ->setBackupFileName($fileInfo['basename'])
                 ->setBackupFileSize($uploadedFile->getSize())
                 ->setMimeType($uploadedFile->getMimeType());
-            dump('5');
+
             $this->manager->persist($backup);
             $this->manager->flush();
-            dump('6');
+
             // Delete temp file from local project
             $fileSystem = new \Symfony\Component\Filesystem\Filesystem();
             $fileSystem->remove($filepath);
-            dump('8');
 
             $backupStatus = new BackupStatus(BackupStatus::STATUS_OK);
         } catch (\Exception $e) {

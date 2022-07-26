@@ -68,7 +68,7 @@ final class DatabaseFactory extends ModelFactory
             'host' => 'localhost',
             'user' => 'root',
             'password' => $this->encryptor->encrypt('root'),
-            'name' => 'dbsaver',
+            'name' => 'dbsaver_test',
             'maxBackups' => self::faker()->numberBetween(5, 20),
             'status' => Database::STATUS_OK,
         ];
