@@ -20,6 +20,6 @@ final class BackupCommandTest extends KernelTestCase
 
         $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 errors happened', $output);
+        self::assertStringContainsString('2 errors happened', $output);
     }
 }
