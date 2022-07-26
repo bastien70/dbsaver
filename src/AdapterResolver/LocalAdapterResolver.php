@@ -24,7 +24,7 @@ final class LocalAdapterResolver implements AdapterResolverInterface
 
     public function getAdapter(): FilesystemAdapter
     {
-        return new LocalFilesystemAdapter($this->projectDir . '/varr/uploads/' . $this->adapterConfig->getPrefix());
+        return new LocalFilesystemAdapter($this->projectDir . '/var/uploads/' . $this->adapterConfig->getPrefix());
     }
 
     public function download(Backup $backup): StreamedResponse
