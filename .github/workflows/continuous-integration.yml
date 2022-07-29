@@ -47,8 +47,7 @@ jobs:
 
       - name: Start minio
         run: |
-          docker-compose -f docker-compose.test.yaml up -d minio
-          docker-compose -f docker-compose.test.yaml up -d createbuckets
+          docker-compose -f docker-compose.test.yaml up -d minio createbuckets
 
       - name: Load Doctrine fixtures
         run: |
@@ -71,7 +70,6 @@ jobs:
       - name: Stop minio
         run: |
           docker-compose -f docker-compose.test.yaml stop minio
-          docker-compose -f docker-compose.test.yaml stop createbuckets
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
