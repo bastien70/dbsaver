@@ -46,8 +46,7 @@ jobs:
         uses: ramsey/composer-install@v1
 
       - name: Start minio
-        run: |
-          docker-compose -f docker-compose.test.yaml up -d minio createbuckets
+        run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets
 
       - name: Load Doctrine fixtures
         run: |
