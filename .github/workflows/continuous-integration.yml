@@ -68,8 +68,7 @@ jobs:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
       - name: Stop minio
-        run: |
-          docker-compose -f docker-compose.test.yaml stop minio
+        run: docker-compose -f docker-compose.test.yaml stop minio
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
