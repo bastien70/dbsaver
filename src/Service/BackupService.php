@@ -43,8 +43,6 @@ class BackupService
     public function backup(Database $database, string $context): BackupStatus
     {
         try {
-            $params = $this->manager->getConnection()->getParams();
-            dump($params);
             // Define mysqldump object
             $mysqldump = $this->defineMysqlDumpObject($database);
 
