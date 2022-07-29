@@ -65,6 +65,7 @@ final class DatabaseFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
+            'port' => '3307',
             'host' => 'localhost',
             'user' => 'root',
             'password' => $this->encryptor->encrypt('root'),
