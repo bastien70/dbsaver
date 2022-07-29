@@ -53,14 +53,16 @@ class BackupService
                 random_int(1000, 99999999),
             );
 
-            dump($filepath);
-            dump('avant start');
             // Launch backup
+            $toto = new Filesystem();
+            dump('avant test dump');
+            $toto->dumpFile($filepath, 'titi');
+            dump('avant start');
             $mysqldump->start($filepath);
-            dump('avant pathinfo');
+
             // Get file infos
             $fileInfo = pathinfo($filepath);
-            dump('après pathinfo');
+
             // Generate Uploaded file
             $uploadedFile = new UploadedFile(
                 $filepath,
@@ -83,11 +85,10 @@ class BackupService
             $this->manager->persist($backup);
             $this->manager->flush();
 
-            dump('avant suppression');
             // Delete temp file from local project
             $fileSystem = new \Symfony\Component\Filesystem\Filesystem();
             $fileSystem->remove($filepath);
-            dump('après suppression');
+
             $backupStatus = new BackupStatus(BackupStatus::STATUS_OK);
         } catch (\Exception $e) {
             $backupStatus = new BackupStatus(BackupStatus::STATUS_FAIL, $e->getMessage());
