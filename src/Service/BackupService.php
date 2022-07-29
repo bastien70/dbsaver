@@ -6,7 +6,6 @@ namespace App\Service;
 
 use App\Entity\Backup;
 use App\Entity\Database;
-use App\Helper\DatabaseHelper;
 use App\Helper\FlysystemHelper;
 use App\Repository\BackupRepository;
 use App\Repository\DatabaseRepository;
@@ -18,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Symfony\Component\Filesystem\Filesystem;
+use function dump;
 use function file_get_contents;
 use function file_put_contents;
 use function pathinfo;
@@ -37,13 +37,14 @@ class BackupService
         private readonly MailerInterface $mailer,
         private readonly TranslatorInterface $translator,
         private readonly FlysystemHelper $flysystemHelper,
-        private readonly DatabaseHelper $databaseHelper
     ) {
     }
 
     public function backup(Database $database, string $context): BackupStatus
     {
         try {
+            $params = $this->manager->getConnection()->getParams();
+            dump($params);
             // Define mysqldump object
             $mysqldump = $this->defineMysqlDumpObject($database);
 
@@ -56,11 +57,6 @@ class BackupService
             );
 
             // Launch backup
-            $toto = new Filesystem();
-            dump('avant test dump');
-            $toto->dumpFile($filepath, 'titi');
-            dump(file_get_contents($filepath));
-            dump('avant start');
             $mysqldump->start($filepath);
 
             // Get file infos
@@ -169,10 +165,6 @@ class BackupService
      */
     private function defineMysqlDumpObject(Database $database): Mysqldump
     {
-        dump($database->getDsn(), $database->getUser(), $this->encryptor->decrypt($database->getPassword()));
-        dump('test de connexion');
-        dump($this->databaseHelper->isConnectionOk($database));
-        dump('avant retour de fonction defineMysqlDumpObject');
         return new Mysqldump(
             $database->getDsn(),
             $database->getUser(),
