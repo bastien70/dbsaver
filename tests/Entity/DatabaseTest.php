@@ -160,4 +160,52 @@ final class DatabaseTest extends TestCase
         $entity->setAdapter($adapter);
         self::assertSame($adapter, $entity->getAdapter());
     }
+
+    public function testResetAutoIncrement(): void
+    {
+        $entity = new Database();
+        self::assertFalse($entity->isResetAutoIncrement());
+        $entity->setResetAutoIncrement(true);
+        self::assertTrue($entity->isResetAutoIncrement());
+    }
+
+    public function testAddDropDatabase(): void
+    {
+        $entity = new Database();
+        self::assertFalse($entity->isAddDropDatabase());
+        $entity->setAddDropDatabase(true);
+        self::assertTrue($entity->isAddDropDatabase());
+    }
+
+    public function testAddDropTable(): void
+    {
+        $entity = new Database();
+        self::assertTrue($entity->isAddDropTable());
+        $entity->setAddDropTable(false);
+        self::assertFalse($entity->isAddDropTable());
+    }
+
+    public function testAddDropTrigger(): void
+    {
+        $entity = new Database();
+        self::assertTrue($entity->isAddDropTrigger());
+        $entity->setAddDropTrigger(false);
+        self::assertFalse($entity->isAddDropTrigger());
+    }
+
+    public function testAddLocks(): void
+    {
+        $entity = new Database();
+        self::assertTrue($entity->isAddLocks());
+        $entity->setAddLocks(false);
+        self::assertFalse($entity->isAddLocks());
+    }
+
+    public function testCompleteInsert(): void
+    {
+        $entity = new Database();
+        self::assertFalse($entity->isCompleteInsert());
+        $entity->setCompleteInsert(true);
+        self::assertTrue($entity->isCompleteInsert());
+    }
 }

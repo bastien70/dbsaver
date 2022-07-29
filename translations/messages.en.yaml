@@ -89,6 +89,9 @@ database:
         title: New database
     edit:
         title: Edit database settings
+    panel:
+        main_info: Main information
+        backup_options: Backup options
     action:
         new: Add a database
         launch_backup: Launch backup

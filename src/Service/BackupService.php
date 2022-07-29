@@ -163,9 +163,7 @@ class BackupService
             $database->getDsn(),
             $database->getUser(),
             $this->encryptor->decrypt($database->getPassword()),
-            [
-                'add-drop-table' => true,
-            ]
+            $database->getBackupOptions()
         );
     }
 }

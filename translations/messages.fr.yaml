@@ -89,6 +89,9 @@ database:
         title: Nouvelle base de données
     edit:
         title: Modifier les paramètres de la base de données
+    panel:
+        main_info: Informations principales
+        backup_options: Options de sauvegarde
     action:
         new: Ajouter une base de données
         launch_backup: Lancer une sauvegarde
