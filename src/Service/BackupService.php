@@ -16,6 +16,9 @@ use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
+use Symfony\Component\Filesystem\Filesystem;
+use function file_get_contents;
+use function file_put_contents;
 use function pathinfo;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -51,13 +54,13 @@ class BackupService
             );
 
             dump($filepath);
-
+            dump('avant start');
             // Launch backup
             $mysqldump->start($filepath);
-
+            dump('avant pathinfo');
             // Get file infos
             $fileInfo = pathinfo($filepath);
-
+            dump('après pathinfo');
             // Generate Uploaded file
             $uploadedFile = new UploadedFile(
                 $filepath,
@@ -80,10 +83,11 @@ class BackupService
             $this->manager->persist($backup);
             $this->manager->flush();
 
+            dump('avant suppression');
             // Delete temp file from local project
             $fileSystem = new \Symfony\Component\Filesystem\Filesystem();
             $fileSystem->remove($filepath);
-
+            dump('après suppression');
             $backupStatus = new BackupStatus(BackupStatus::STATUS_OK);
         } catch (\Exception $e) {
             $backupStatus = new BackupStatus(BackupStatus::STATUS_FAIL, $e->getMessage());
