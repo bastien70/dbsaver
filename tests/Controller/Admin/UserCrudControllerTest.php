@@ -24,7 +24,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         self::assertResponseIsSuccessful();
 
         $menuItems = $crawler->filter('#main-menu')->filter('.menu-item');
-        self::assertCount(6, $menuItems, 'Dashboard should contains 6 menu items with ROLE_USER');
+        self::assertCount(9, $menuItems, 'Dashboard should contains 6 menu items with ROLE_USER');
     }
 
     public function testCountMenuLinksWithAdminUser(): void
@@ -40,7 +40,7 @@ class UserCrudControllerTest extends AbstractCrudControllerTest
         self::assertResponseIsSuccessful();
 
         $menuItems = $crawler->filter('#main-menu')->filter('.menu-item');
-        self::assertCount(7, $menuItems, 'Dashboard should contains 7 menu items with ROLE_ADMIN');
+        self::assertCount(10, $menuItems, 'Dashboard should contains 7 menu items with ROLE_ADMIN');
     }
 
     public function testNewWithSimpleUser(): void

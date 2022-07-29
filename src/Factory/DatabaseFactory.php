@@ -7,6 +7,7 @@ namespace App\Factory;
 use App\Entity\Database;
 use App\Entity\User;
 use App\Repository\DatabaseRepository;
+use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -31,6 +32,12 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class DatabaseFactory extends ModelFactory
 {
+    public function __construct(
+        private readonly Encryptor $encryptor,
+    ) {
+        parent::__construct();
+    }
+
     /**
      * @param Proxy<User> $user
      */
@@ -39,18 +46,32 @@ final class DatabaseFactory extends ModelFactory
         return $this->addState(['owner' => $user]);
     }
 
+    public function withAdapter(Proxy $adapter): self
+    {
+        return $this->addState(['adapter' => $adapter]);
+    }
+
+    public function withBadPassword(): self
+    {
+        return $this->addState([
+            'password' => $this->encryptor->encrypt('bad_password'),
+            'status' => Database::STATUS_ERROR,
+        ]);
+    }
+
     /**
      * @return array<string, string|int>
      */
     protected function getDefaults(): array
     {
         return [
+            'port' => '3307',
             'host' => 'localhost',
-            'user' => self::faker()->userName(),
-            'password' => self::faker()->word(),
-            'name' => self::faker()->word(),
+            'user' => 'root',
+            'password' => $this->encryptor->encrypt('root'),
+            'name' => 'dbsaver_test',
             'maxBackups' => self::faker()->numberBetween(5, 20),
-            'status' => self::faker()->randomElement(Database::getAvailableStatuses()),
+            'status' => Database::STATUS_OK,
         ];
     }
 

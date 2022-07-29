@@ -45,6 +45,9 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v1
 
+      - name: Start minio
+        run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets
+
       - name: Load Doctrine fixtures
         run: |
           bin/console doctrine:database:create --if-not-exists --env=test
@@ -62,6 +65,9 @@ jobs:
         if: matrix.php-version == '8.1'
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
+
+      - name: Stop minio
+        run: docker-compose -f docker-compose.test.yaml stop minio
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2

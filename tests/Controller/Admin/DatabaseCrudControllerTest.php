@@ -42,16 +42,16 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
 
     public function testCheckConnection(): void
     {
-        $url = $this->getCrudActionUrl('checkConnection', 1);
+        $url = $this->getCrudActionUrl('checkConnection', 6);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');
 
-        $this->loginAsAdmin();
+        $this->loginAsUser();
         self::$client->request('GET', $url);
         self::assertResponseStatusCodeSame(403);
 
-        $this->loginAsUser();
+        $this->loginAsAdmin();
         self::$client->request('GET', $url);
         self::assertResponseRedirects();
         // We expect an error as parameters are randomized with fixtures.
@@ -61,16 +61,16 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
 
     public function testLaunchBackupAction(): void
     {
-        $url = $this->getCrudActionUrl('launchBackupAction', 1);
+        $url = $this->getCrudActionUrl('launchBackupAction', 6);
 
         self::$client->request('GET', $url);
         self::assertResponseRedirects('/login');
 
-        $this->loginAsAdmin();
+        $this->loginAsUser();
         self::$client->request('GET', $url);
         self::assertResponseStatusCodeSame(403);
 
-        $this->loginAsUser();
+        $this->loginAsAdmin();
         self::$client->request('GET', $url);
         self::assertResponseRedirects();
         // We expect an error as parameters are randomized with fixtures.

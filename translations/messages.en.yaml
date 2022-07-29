@@ -8,6 +8,7 @@ backup:
         context: Context
         created_at: Creation date
         filename: File name
+        adapter: Storage space
     admin_label:
         singular: Backup
         plural: Backups
@@ -30,14 +31,56 @@ dashboard:
         how_to: All you have to do is fill the credentials to access the databases, configure a CRON job... and it's done. Passwords will be automatically hashed.
         backups: |
             Then, using DbSaver, you can access your databases backups by browsing the <b>Backups</b> tab.
-            Backups can be saved <b>locally</b> or on Amazon's cloud <b>AWS S3</b>.
-            By default the app will save files locally.
-            To use AWS S3 please refer to the next section.
-        docs: 'Docs: <a href="%docs_link%">%docs_link%</a>'
+            Backups can be saved <b>locally</b> or on different cloud services using <b>S3</b> (AWS, Scaleway, ...).
+        docs: 'Documentation : <a href="%docs_link%">%docs_link%</a>'
     author:
         title: Author
         description: This application has been developed by <b>%author%</b>.
         website: Website
+
+adapter:
+    admin_label:
+        singular: Storage space
+        plural: Storage spaces
+    action:
+        new: Add storage space
+        edit: Update storage space
+    local:
+        index:
+            title: Local storage spaces
+        new:
+            title: New local storage space
+        edit:
+            title: Update local storage space parameters
+        field:
+            name: Name
+            prefix: Prefix
+            backups: Backups
+            help:
+                prefix: Backups will be placed in dbsaver/var/uploads/[prefix] folder
+    s3:
+        index:
+            title: S3 storage spaces
+        new:
+            title: New S3 storage space
+        edit:
+            title: Update S3 storage space parameters
+        field:
+            name: Name
+            prefix: Prefix
+            backups: Backups
+            access_id: Access ID
+            access_secret: Access Secret
+            bucket_name: Bucket name
+            region: Region
+            provider: Provider
+            storage_class: Storage class
+            endpoint: Endpoint
+            endpoint_default: Default value
+            help:
+                endpoint: Please complete this field only if you have selected 'Other' for the S3 region
+                storage_class: Choose a storage class from the list provided by your provider. If you chose the 'Other' provider, you will not be able to select a storage class. Your supplier's default will then be used.
+                access_secret: Secret keys will be encrypted and aren't displayed unhashed. They will be decrypted only when they are needed to connect to the storage space.
 
 database:
     index:
@@ -62,6 +105,7 @@ database:
         backups: Backups
         status: Status
         dsn: DSN
+        adapter: Storage space
     help:
         password: Passwords are hashed and aren't displayed unhashed. They will be unhashed only when necessary to launch backups.
     admin_label:
@@ -87,6 +131,11 @@ menu:
     users: Users
     switch_locale: Locale
     settings: Settings
+    adapters:
+        name: Storage spaces
+        submenu:
+            s3: S3
+            local: Local
 
 security:
     login:
@@ -147,3 +196,9 @@ reset_password:
             repeat_password: Repeat Password
         flash_success: 'Your password has been reset! You can now log in.'
         flash_error: 'A problem occurred while validating your reset request: %message%'
+
+enum:
+    s3_provider:
+        amazon_aws: Amazon S3
+        scaleway: Scaleway
+        other: Other

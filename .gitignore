@@ -5,6 +5,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/data/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###

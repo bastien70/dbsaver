@@ -66,6 +66,11 @@ class Database implements \Stringable
     #[ORM\Column(type: Types::STRING, length: 10)]
     private string $status = self::STATUS_UNKNOWN;
 
+    #[ORM\ManyToOne(targetEntity: AdapterConfig::class, inversedBy: 'databases')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
+    private ?AdapterConfig $adapter = null;
+
     public function __construct()
     {
         $this->backups = new ArrayCollection();
@@ -270,5 +275,17 @@ class Database implements \Stringable
             $this->port,
             $this->name,
         );
+    }
+
+    public function getAdapter(): ?AdapterConfig
+    {
+        return $this->adapter;
+    }
+
+    public function setAdapter(?AdapterConfig $adapter): self
+    {
+        $this->adapter = $adapter;
+
+        return $this;
     }
 }

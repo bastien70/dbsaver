@@ -1,2 +1,3 @@
 'Database connection test errored: "{{ error }}".': 'Database connection test errored: "{{ error }}".'
 reset_password.reset.field.plain_password.invalid_message: The password fields must match.
+adapter.s3.endpoint.invalid_message: This value can not be null if selected provider is 'Other'
