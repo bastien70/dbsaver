@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\Backup;
 use App\Entity\Database;
+use App\Helper\DatabaseHelper;
 use App\Helper\FlysystemHelper;
 use App\Repository\BackupRepository;
 use App\Repository\DatabaseRepository;
@@ -36,6 +37,7 @@ class BackupService
         private readonly MailerInterface $mailer,
         private readonly TranslatorInterface $translator,
         private readonly FlysystemHelper $flysystemHelper,
+        private readonly DatabaseHelper $databaseHelper
     ) {
     }
 
@@ -57,6 +59,7 @@ class BackupService
             $toto = new Filesystem();
             dump('avant test dump');
             $toto->dumpFile($filepath, 'titi');
+            dump(file_get_contents($filepath));
             dump('avant start');
             $mysqldump->start($filepath);
 
@@ -166,6 +169,10 @@ class BackupService
      */
     private function defineMysqlDumpObject(Database $database): Mysqldump
     {
+        dump($database->getDsn(), $database->getUser(), $this->encryptor->decrypt($database->getPassword()));
+        dump('test de connexion');
+        dump($this->databaseHelper->isConnectionOk($database));
+        dump('avant retour de fonction defineMysqlDumpObject');
         return new Mysqldump(
             $database->getDsn(),
             $database->getUser(),
