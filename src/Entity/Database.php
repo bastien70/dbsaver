@@ -78,7 +78,7 @@ class Database implements \Stringable
     private bool $addDropDatabase = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $addDropTable = true;
+    private bool $addDropTable = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $addDropTrigger = true;

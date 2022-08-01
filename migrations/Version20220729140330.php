@@ -16,7 +16,7 @@ final class Version20220729140330 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE `database` ADD reset_auto_increment TINYINT(1) DEFAULT FALSE NOT NULL, ADD add_drop_database TINYINT(1) DEFAULT FALSE NOT NULL, ADD add_drop_table TINYINT(1) DEFAULT TRUE NOT NULL, ADD add_drop_trigger TINYINT(1) DEFAULT TRUE NOT NULL, ADD add_locks TINYINT(1) DEFAULT TRUE NOT NULL, ADD complete_insert TINYINT(1) DEFAULT FALSE NOT NULL');
+        $this->addSql('ALTER TABLE `database` ADD reset_auto_increment TINYINT(1) DEFAULT FALSE NOT NULL, ADD add_drop_database TINYINT(1) DEFAULT FALSE NOT NULL, ADD add_drop_table TINYINT(1) DEFAULT FALSE NOT NULL, ADD add_drop_trigger TINYINT(1) DEFAULT TRUE NOT NULL, ADD add_locks TINYINT(1) DEFAULT TRUE NOT NULL, ADD complete_insert TINYINT(1) DEFAULT FALSE NOT NULL');
     }
 
     public function down(Schema $schema): void
