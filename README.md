@@ -14,7 +14,7 @@ Passwords will be automatically hashed.
 Then, using DbSaver, you can access your databases backups by browsing the **Backups** tab.
 
 You can then use DbSaver to access databases backups by going to the **Backups** tab.
-Backups can be saved **locally** or in **S3 cloud** (AWS, Scaleway, ...)
+Backups can be saved **locally** or in **S3 cloud** (AWS, Scaleway, ...).
 
 /!\ DbSaver only backups databases. Files (like image uploads) are not saved.
 
