@@ -26,8 +26,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -212,6 +214,7 @@ final class DatabaseCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addPanel('database.panel.main_info', 'fas fa-info-circle');
         yield TextField::new('name', 'database.field.name')
             ->hideOnIndex()
             ->setColumns(4);
@@ -258,5 +261,32 @@ final class DatabaseCrudController extends AbstractCrudController
                 Database::STATUS_UNKNOWN => 'secondary',
             ])
             ->hideOnForm();
+
+        if (Crud::PAGE_INDEX !== $pageName) {
+            yield FormField::addPanel('database.panel.backup_options', 'fas fa-gear');
+
+            yield BooleanField::new('options.resetAutoIncrement', 'database.field.options.reset_auto_increment')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+            yield BooleanField::new('options.addDropDatabase', 'database.field.options.add_drop_database')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+
+            yield FormField::addRow();
+            yield BooleanField::new('options.addDropTable', 'database.field.options.add_drop_table')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+            yield BooleanField::new('options.addDropTrigger', 'database.field.options.add_drop_trigger')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+
+            yield FormField::addRow();
+            yield BooleanField::new('options.addLocks', 'database.field.options.add_locks')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+            yield BooleanField::new('options.completeInsert', 'database.field.options.complete_insert')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+        }
     }
 }

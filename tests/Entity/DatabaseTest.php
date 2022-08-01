@@ -160,4 +160,47 @@ final class DatabaseTest extends TestCase
         $entity->setAdapter($adapter);
         self::assertSame($adapter, $entity->getAdapter());
     }
+
+    public function testOptions(): void
+    {
+        $entity = new Database();
+        self::assertNotNull($entity->getOptions());
+    }
+
+    public function testGetBackupOptions(): void
+    {
+        $entity = new Database();
+
+        self::assertSame(
+            [
+                'add-drop-table' => false,
+                'add-drop-database' => false,
+                'add-drop-trigger' => true,
+                'add-locks' => true,
+                'complete-insert' => false,
+                'reset-auto-increment' => false,
+            ],
+            $entity->getBackupOptions()
+        );
+
+        $options = $entity->getOptions();
+        $options->setAddDropTable(true)
+            ->setAddDropDatabase(true)
+            ->setAddDropTrigger(false)
+            ->setAddLocks(false)
+            ->setCompleteInsert(true)
+            ->setResetAutoIncrement(true);
+
+        self::assertSame(
+            [
+                'add-drop-table' => true,
+                'add-drop-database' => true,
+                'add-drop-trigger' => false,
+                'add-locks' => false,
+                'complete-insert' => true,
+                'reset-auto-increment' => true,
+            ],
+            $entity->getBackupOptions()
+        );
+    }
 }
