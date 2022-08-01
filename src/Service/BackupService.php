@@ -155,6 +155,25 @@ class BackupService
     }
 
     /**
+     * @return Database[]
+     */
+    public function getDatabasesToBackup(): array
+    {
+        $databases = $this->getDatabases();
+        $databasesToBackup = [];
+
+        foreach ($databases as $database) {
+            $backupTask = $database->getBackupTask();
+
+            if ($backupTask->matchWithToday()) {
+                $databasesToBackup[] = $database;
+            }
+        }
+
+        return $databasesToBackup;
+    }
+
+    /**
      * @throws \Exception
      */
     private function defineMysqlDumpObject(Database $database): Mysqldump

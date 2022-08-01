@@ -32,7 +32,7 @@ final class BackupCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $databases = $this->backupService->getDatabases();
+        $databases = $this->backupService->getDatabasesToBackup();
         $databasesCount = \count($databases);
 
         if ($databasesCount > 0) {
@@ -44,6 +44,8 @@ final class BackupCommand extends Command
                 $backupStatus = $this->backupService->backup($database, Backup::CONTEXT_AUTOMATIC);
                 if (BackupStatus::STATUS_OK === $backupStatus->getStatus()) {
                     $database->setStatus(Database::STATUS_OK);
+                    $backupTask = $database->getBackupTask();
+                    $backupTask->setNextIteration($backupTask->calculateNextIteration());
                 } else {
                     $database->setStatus(Database::STATUS_ERROR);
                     $errors[] = [

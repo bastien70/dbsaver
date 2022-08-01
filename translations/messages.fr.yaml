@@ -1,3 +1,6 @@
+global:
+    date_format: d-m-Y
+    easy_admin_date_format: dd-MM-Y
 backup:
     index:
         title: Liste des sauvegardes
@@ -89,6 +92,9 @@ database:
         title: Nouvelle base de données
     edit:
         title: Modifier les paramètres de la base de données
+    panel:
+        main_info: Informations principales
+        task_configuration: Configuration de la périodicité des sauvegardes
     action:
         new: Ajouter une base de données
         launch_backup: Lancer une sauvegarde
@@ -106,6 +112,11 @@ database:
         status: Statut
         dsn: DSN
         adapter: Espace de stockage
+        backup_task:
+            periodicity_number: Chaque
+            periodicity: Périodicité
+            start_from: Commencer à partir du
+            next_iteration: Prochain
     help:
         password: Les mots de passe seront cryptés et n'apparaîtront pas en clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour lancer les sauvegardes.
     admin_label:
@@ -202,3 +213,24 @@ enum:
         amazon_aws: Amazon S3
         scaleway: Scaleway
         other: Autre
+    backup_task_periodicity:
+        prefix:
+            singular: Chaque
+            masculine_plural: Tous les
+            feminine_plural: Toutes les
+        suffix:
+            singular:
+                day: jour
+                week: semaine
+                month: mois
+                year: année
+            plural:
+                day: jours
+                week: semaines
+                month: mois
+                year: années
+        select:
+            day: jour(s)
+            week: semaine(s)
+            month: mois(s)
+            year: année(s)

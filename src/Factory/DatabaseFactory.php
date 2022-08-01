@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Factory;
 
 use App\Entity\Database;
+use App\Entity\Enum\BackupTaskPeriodicity;
 use App\Entity\User;
 use App\Repository\DatabaseRepository;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
@@ -73,6 +74,19 @@ final class DatabaseFactory extends ModelFactory
             'maxBackups' => self::faker()->numberBetween(5, 20),
             'status' => Database::STATUS_OK,
         ];
+    }
+
+    protected function initialize(): self
+    {
+        return $this
+            ->afterInstantiate(function (Database $database): void {
+                $backupTask = $database->getBackupTask();
+                $backupTask->setPeriodicity(BackupTaskPeriodicity::WEEK)
+                    ->setPeriodicityNumber(1)
+                    ->setStartFrom(new \DateTime('-1 day'))
+                    ->setNextIteration(new \DateTime('-1 day'));
+            })
+            ;
     }
 
     protected static function getClass(): string
