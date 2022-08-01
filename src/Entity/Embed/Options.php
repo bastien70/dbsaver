@@ -28,7 +28,7 @@ class Options
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $completeInsert = false;
 
-    public function isResetAutoIncrement(): ?bool
+    public function isResetAutoIncrement(): bool
     {
         return $this->resetAutoIncrement;
     }
@@ -40,7 +40,7 @@ class Options
         return $this;
     }
 
-    public function isAddDropDatabase(): ?bool
+    public function isAddDropDatabase(): bool
     {
         return $this->addDropDatabase;
     }
@@ -52,7 +52,7 @@ class Options
         return $this;
     }
 
-    public function isAddDropTable(): ?bool
+    public function isAddDropTable(): bool
     {
         return $this->addDropTable;
     }
@@ -64,7 +64,7 @@ class Options
         return $this;
     }
 
-    public function isAddDropTrigger(): ?bool
+    public function isAddDropTrigger(): bool
     {
         return $this->addDropTrigger;
     }
@@ -76,7 +76,7 @@ class Options
         return $this;
     }
 
-    public function isAddLocks(): ?bool
+    public function isAddLocks(): bool
     {
         return $this->addLocks;
     }
@@ -88,7 +88,7 @@ class Options
         return $this;
     }
 
-    public function isCompleteInsert(): ?bool
+    public function isCompleteInsert(): bool
     {
         return $this->completeInsert;
     }
