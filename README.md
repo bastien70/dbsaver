@@ -147,7 +147,7 @@ task ci
 task test
 ```
 
-Note: you can run these commands without Task, have a look to the Taskfile.yml file to see which commands will run.
+Note: you can run these commands without Task, have a look to the [Taskfile.yaml](Taskfile.yaml) file to see which commands will run.
 
 ## Changelog <a name="changelog"></a>
 
