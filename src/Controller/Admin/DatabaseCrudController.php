@@ -265,7 +265,6 @@ final class DatabaseCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX !== $pageName) {
             yield FormField::addPanel('database.panel.backup_options', 'fas fa-gear');
 
-            yield FormField::addRow();
             yield BooleanField::new('resetAutoIncrement', 'Reset auto increment')
                 ->renderAsSwitch(false)
                 ->setColumns(6);
