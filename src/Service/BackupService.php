@@ -163,7 +163,7 @@ class BackupService
             $database->getDsn(),
             $database->getUser(),
             $this->encryptor->decrypt($database->getPassword()),
-            $database->getBackupOptions()
+            $database->getBackupOptions(),
         );
     }
 }
