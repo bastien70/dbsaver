@@ -151,4 +151,4 @@ Note: you can run these commands without Task, have a look to the Taskfile.yml f
 
 ## Changelog <a name="changelog"></a>
 
-See the [changelog](../CHANGELOG.md).
+See the [changelog](CHANGELOG.md).
