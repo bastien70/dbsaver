@@ -109,6 +109,13 @@ database:
         status: Statut
         dsn: DSN
         adapter: Espace de stockage
+        options:
+            reset_auto_increment: Reset auto increment
+            add_drop_database: Add drop database
+            add_drop_table: Add drop table
+            add_drop_trigger: Add drop trigger
+            add_locks: Add locks
+            complete_insert: Complete insert
     help:
         password: Les mots de passe seront cryptés et n'apparaîtront pas en clair. Ils seront décryptés uniquement lorsqu'ils seront nécessaires pour lancer les sauvegardes.
     admin_label:

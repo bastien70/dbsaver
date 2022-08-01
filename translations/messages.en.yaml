@@ -109,6 +109,13 @@ database:
         status: Status
         dsn: DSN
         adapter: Storage space
+        options:
+            reset_auto_increment: Reset auto increment
+            add_drop_database: Add drop database
+            add_drop_table: Add drop table
+            add_drop_trigger: Add drop trigger
+            add_locks: Add locks
+            complete_insert: Complete insert
     help:
         password: Passwords are hashed and aren't displayed unhashed. They will be unhashed only when necessary to launch backups.
     admin_label:
