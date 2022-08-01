@@ -180,9 +180,9 @@ final class DatabaseTest extends TestCase
     public function testAddDropTable(): void
     {
         $entity = new Database();
-        self::assertTrue($entity->isAddDropTable());
-        $entity->setAddDropTable(false);
         self::assertFalse($entity->isAddDropTable());
+        $entity->setAddDropTable(true);
+        self::assertTrue($entity->isAddDropTable());
     }
 
     public function testAddDropTrigger(): void
@@ -215,7 +215,7 @@ final class DatabaseTest extends TestCase
 
         self::assertSame(
             [
-                'add-drop-table' => true,
+                'add-drop-table' => false,
                 'add-drop-database' => false,
                 'add-drop-trigger' => true,
                 'add-locks' => true,
@@ -225,7 +225,7 @@ final class DatabaseTest extends TestCase
             $entity->getBackupOptions()
         );
 
-        $entity->setAddDropTable(false)
+        $entity->setAddDropTable(true)
             ->setAddDropDatabase(true)
             ->setAddDropTrigger(false)
             ->setAddLocks(false)
@@ -234,7 +234,7 @@ final class DatabaseTest extends TestCase
 
         self::assertSame(
             [
-                'add-drop-table' => false,
+                'add-drop-table' => true,
                 'add-drop-database' => true,
                 'add-drop-trigger' => false,
                 'add-locks' => false,
