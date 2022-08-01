@@ -161,52 +161,10 @@ final class DatabaseTest extends TestCase
         self::assertSame($adapter, $entity->getAdapter());
     }
 
-    public function testResetAutoIncrement(): void
+    public function testOptions(): void
     {
         $entity = new Database();
-        self::assertFalse($entity->isResetAutoIncrement());
-        $entity->setResetAutoIncrement(true);
-        self::assertTrue($entity->isResetAutoIncrement());
-    }
-
-    public function testAddDropDatabase(): void
-    {
-        $entity = new Database();
-        self::assertFalse($entity->isAddDropDatabase());
-        $entity->setAddDropDatabase(true);
-        self::assertTrue($entity->isAddDropDatabase());
-    }
-
-    public function testAddDropTable(): void
-    {
-        $entity = new Database();
-        self::assertFalse($entity->isAddDropTable());
-        $entity->setAddDropTable(true);
-        self::assertTrue($entity->isAddDropTable());
-    }
-
-    public function testAddDropTrigger(): void
-    {
-        $entity = new Database();
-        self::assertTrue($entity->isAddDropTrigger());
-        $entity->setAddDropTrigger(false);
-        self::assertFalse($entity->isAddDropTrigger());
-    }
-
-    public function testAddLocks(): void
-    {
-        $entity = new Database();
-        self::assertTrue($entity->isAddLocks());
-        $entity->setAddLocks(false);
-        self::assertFalse($entity->isAddLocks());
-    }
-
-    public function testCompleteInsert(): void
-    {
-        $entity = new Database();
-        self::assertFalse($entity->isCompleteInsert());
-        $entity->setCompleteInsert(true);
-        self::assertTrue($entity->isCompleteInsert());
+        self::assertNotNull($entity->getOptions());
     }
 
     public function testGetBackupOptions(): void
@@ -225,7 +183,8 @@ final class DatabaseTest extends TestCase
             $entity->getBackupOptions()
         );
 
-        $entity->setAddDropTable(true)
+        $options = $entity->getOptions();
+        $options->setAddDropTable(true)
             ->setAddDropDatabase(true)
             ->setAddDropTrigger(false)
             ->setAddLocks(false)

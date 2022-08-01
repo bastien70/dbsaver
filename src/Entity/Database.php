@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Embed\Options;
 use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\DatabaseRepository;
 use DateTimeImmutable;
@@ -71,26 +72,12 @@ class Database implements \Stringable
     #[Assert\NotBlank]
     private ?AdapterConfig $adapter = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $resetAutoIncrement = false;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $addDropDatabase = false;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $addDropTable = false;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $addDropTrigger = true;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $addLocks = true;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $completeInsert = false;
+    #[ORM\Embedded(class: Options::class)]
+    private Options $options;
 
     public function __construct()
     {
+        $this->options = new Options();
         $this->backups = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
     }
@@ -307,78 +294,6 @@ class Database implements \Stringable
         return $this;
     }
 
-    public function isResetAutoIncrement(): ?bool
-    {
-        return $this->resetAutoIncrement;
-    }
-
-    public function setResetAutoIncrement(bool $resetAutoIncrement): self
-    {
-        $this->resetAutoIncrement = $resetAutoIncrement;
-
-        return $this;
-    }
-
-    public function isAddDropDatabase(): ?bool
-    {
-        return $this->addDropDatabase;
-    }
-
-    public function setAddDropDatabase(bool $addDropDatabase): self
-    {
-        $this->addDropDatabase = $addDropDatabase;
-
-        return $this;
-    }
-
-    public function isAddDropTable(): ?bool
-    {
-        return $this->addDropTable;
-    }
-
-    public function setAddDropTable(bool $addDropTable): self
-    {
-        $this->addDropTable = $addDropTable;
-
-        return $this;
-    }
-
-    public function isAddDropTrigger(): ?bool
-    {
-        return $this->addDropTrigger;
-    }
-
-    public function setAddDropTrigger(bool $addDropTrigger): self
-    {
-        $this->addDropTrigger = $addDropTrigger;
-
-        return $this;
-    }
-
-    public function isAddLocks(): ?bool
-    {
-        return $this->addLocks;
-    }
-
-    public function setAddLocks(bool $addLocks): self
-    {
-        $this->addLocks = $addLocks;
-
-        return $this;
-    }
-
-    public function isCompleteInsert(): ?bool
-    {
-        return $this->completeInsert;
-    }
-
-    public function setCompleteInsert(bool $completeInsert): self
-    {
-        $this->completeInsert = $completeInsert;
-
-        return $this;
-    }
-
     /**
      * Returns an array of options for the mysqldump command.
      *
@@ -387,12 +302,24 @@ class Database implements \Stringable
     public function getBackupOptions(): array
     {
         return [
-            'add-drop-table' => $this->addDropTable,
-            'add-drop-database' => $this->addDropDatabase,
-            'add-drop-trigger' => $this->addDropTrigger,
-            'add-locks' => $this->addLocks,
-            'complete-insert' => $this->completeInsert,
-            'reset-auto-increment' => $this->resetAutoIncrement,
+            'add-drop-table' => $this->options->isAddDropTable(),
+            'add-drop-database' => $this->options->isAddDropDatabase(),
+            'add-drop-trigger' => $this->options->isAddDropTrigger(),
+            'add-locks' => $this->options->isAddLocks(),
+            'complete-insert' => $this->options->isCompleteInsert(),
+            'reset-auto-increment' => $this->options->isResetAutoIncrement(),
         ];
+    }
+
+    public function getOptions(): Options
+    {
+        return $this->options;
+    }
+
+    public function setOptions(Options $options): self
+    {
+        $this->options = $options;
+
+        return $this;
     }
 }

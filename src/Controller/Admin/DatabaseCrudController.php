@@ -265,26 +265,26 @@ final class DatabaseCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX !== $pageName) {
             yield FormField::addPanel('database.panel.backup_options', 'fas fa-gear');
 
-            yield BooleanField::new('resetAutoIncrement', 'Reset auto increment')
+            yield BooleanField::new('options.resetAutoIncrement', 'Reset auto increment')
                 ->renderAsSwitch(false)
                 ->setColumns(6);
-            yield BooleanField::new('addDropDatabase', 'Add drop database')
-                ->renderAsSwitch(false)
-                ->setColumns(6);
-
-            yield FormField::addRow();
-            yield BooleanField::new('addDropTable', 'Add drop table')
-                ->renderAsSwitch(false)
-                ->setColumns(6);
-            yield BooleanField::new('addDropTrigger', 'Add drop trigger')
+            yield BooleanField::new('options.addDropDatabase', 'Add drop database')
                 ->renderAsSwitch(false)
                 ->setColumns(6);
 
             yield FormField::addRow();
-            yield BooleanField::new('addLocks', 'Add locks')
+            yield BooleanField::new('options.addDropTable', 'Add drop table')
                 ->renderAsSwitch(false)
                 ->setColumns(6);
-            yield BooleanField::new('completeInsert', 'Complete insert')
+            yield BooleanField::new('options.addDropTrigger', 'Add drop trigger')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+
+            yield FormField::addRow();
+            yield BooleanField::new('options.addLocks', 'Add locks')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+            yield BooleanField::new('options.completeInsert', 'Complete insert')
                 ->renderAsSwitch(false)
                 ->setColumns(6);
         }
