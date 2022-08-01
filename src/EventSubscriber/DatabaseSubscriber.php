@@ -38,6 +38,9 @@ class DatabaseSubscriber implements EventSubscriberInterface
 
         $this->handleDatabasePasswordChange($entity);
 
+        $backupTask = $entity->getBackupTask();
+        $backupTask->setNextIteration($backupTask->getStartFrom());
+
         $user = $this->security->getUser();
         \assert($user instanceof User);
         $entity->setOwner($user);
