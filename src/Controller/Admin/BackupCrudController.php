@@ -8,7 +8,6 @@ use App\Entity\AdapterConfig;
 use App\Entity\Backup;
 use App\Entity\User;
 use App\Helper\FlysystemHelper;
-use App\Security\Voter\BackupVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -65,10 +64,6 @@ final class BackupCrudController extends AbstractCrudController
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         return $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
-            ->join('entity.database', 'database')
-            ->join('database.owner', 'owner')
-            ->andWhere('owner.id = :user')
-            ->setParameter('user', $this->getUser()->getId())
             ->orderBy('entity.createdAt', 'DESC');
     }
 
@@ -96,8 +91,6 @@ final class BackupCrudController extends AbstractCrudController
 
         return $actions
             ->add(Crud::PAGE_INDEX, $downloadBackupAction)
-            ->setPermission('downloadBackup', BackupVoter::CAN_SHOW_BACKUP)
-            ->setPermission(Action::DELETE, BackupVoter::CAN_SHOW_BACKUP)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ->remove(Crud::PAGE_INDEX, Action::EDIT)
             ->disable(Action::NEW, Action::EDIT)

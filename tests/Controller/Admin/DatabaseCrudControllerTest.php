@@ -17,7 +17,7 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);
-        self::assertResponseStatusCodeSame(403);
+        self::assertResponseIsSuccessful();
 
         $this->loginAsUser();
         self::$client->request('GET', $url);
@@ -33,7 +33,7 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);
-        self::assertResponseStatusCodeSame(403);
+        self::assertResponseRedirects();
 
         $this->loginAsUser();
         self::$client->request('GET', $url);
@@ -49,7 +49,9 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
 
         $this->loginAsUser();
         self::$client->request('GET', $url);
-        self::assertResponseStatusCodeSame(403);
+        self::assertResponseRedirects();
+        $crawler = self::$client->followRedirect();
+        self::assertCount(1, $crawler->filter('.alert-danger'));
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);
@@ -68,7 +70,10 @@ final class DatabaseCrudControllerTest extends AbstractCrudControllerTest
 
         $this->loginAsUser();
         self::$client->request('GET', $url);
-        self::assertResponseStatusCodeSame(403);
+        self::assertResponseRedirects();
+        // We expect an error as parameters are randomized with fixtures.
+        $crawler = self::$client->followRedirect();
+        self::assertCount(1, $crawler->filter('.alert-danger'));
 
         $this->loginAsAdmin();
         self::$client->request('GET', $url);
