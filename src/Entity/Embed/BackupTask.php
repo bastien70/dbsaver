@@ -22,7 +22,7 @@ class BackupTask
 
     #[ORM\Column(type: Types::INTEGER)]
     #[Assert\Type(type: 'integer')]
-    #[Assert\Count(min: 1)]
+    #[Assert\Range(min: 1)]
     private ?int $periodicityNumber = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
