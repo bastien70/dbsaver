@@ -12,7 +12,6 @@ use App\Entity\Embed\BackupTask;
 use App\Entity\Enum\BackupTaskPeriodicity;
 use App\Entity\User;
 use App\Helper\DatabaseHelper;
-use App\Security\Voter\DatabaseVoter;
 use App\Service\BackupService;
 use App\Service\BackupStatus;
 use DateTime;
@@ -84,16 +83,12 @@ final class DatabaseCrudController extends AbstractCrudController
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         return $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
-            ->join('entity.owner', 'owner')
-            ->andWhere('owner.id = :user')
-            ->setParameter('user', $this->getUser()->getId())
             ->orderBy('entity.createdAt', 'DESC');
     }
 
     public function launchBackupAction(AdminContext $context): Response
     {
         $database = $context->getEntity()->getInstance();
-        $this->denyAccessUnlessGranted(DatabaseVoter::CAN_SHOW_DATABASE, $database);
 
         $backupStatus = $this->backupService->backup($database, Backup::CONTEXT_MANUAL);
         $this->backupService->clean($database);
@@ -115,7 +110,6 @@ final class DatabaseCrudController extends AbstractCrudController
     {
         /** @var Database $database */
         $database = $context->getEntity()->getInstance();
-        $this->denyAccessUnlessGranted(DatabaseVoter::CAN_SHOW_DATABASE, $database);
 
         $url = $this->adminUrlGenerator->setController(BackupCrudController::class)
             ->setAction(Action::INDEX)
@@ -135,7 +129,6 @@ final class DatabaseCrudController extends AbstractCrudController
     {
         /** @var Database $database */
         $database = $context->getEntity()->getInstance();
-        $this->denyAccessUnlessGranted(DatabaseVoter::CAN_SHOW_DATABASE, $database);
 
         if ($this->databaseHelper->isConnectionOk($database)) {
             $this->addFlash('success', new TranslatableMessage('database.check_connection.flash_success', ['%database%' => $database->getName()]));
@@ -191,11 +184,6 @@ final class DatabaseCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $launchBackupAction)
             ->add(Crud::PAGE_INDEX, $showDatabaseBackupsAction)
             ->add(Crud::PAGE_INDEX, $checkConnectionAction)
-            ->setPermission(Action::DELETE, DatabaseVoter::CAN_SHOW_DATABASE)
-            ->setPermission(Action::EDIT, DatabaseVoter::CAN_SHOW_DATABASE)
-            ->setPermission('launchBackup', DatabaseVoter::CAN_SHOW_DATABASE)
-            ->setPermission('showDatabaseBackups', DatabaseVoter::CAN_SHOW_DATABASE)
-            ->setPermission('checkConnection', DatabaseVoter::CAN_SHOW_DATABASE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
                 return $action->setLabel('database.action.new');
