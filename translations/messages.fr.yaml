@@ -94,6 +94,7 @@ database:
         title: Modifier les paramètres de la base de données
     panel:
         main_info: Informations principales
+        backup_options: Options de sauvegarde
         task_configuration: Configuration de la périodicité des sauvegardes
     action:
         new: Ajouter une base de données
@@ -112,6 +113,13 @@ database:
         status: Statut
         dsn: DSN
         adapter: Espace de stockage
+        options:
+            reset_auto_increment: Reset auto increment
+            add_drop_database: Add drop database
+            add_drop_table: Add drop table
+            add_drop_trigger: Add drop trigger
+            add_locks: Add locks
+            complete_insert: Complete insert
         backup_task:
             periodicity_number: Chaque
             periodicity: Périodicité

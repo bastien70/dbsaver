@@ -94,6 +94,7 @@ database:
         title: Edit database settings
     panel:
         main_info: Main information
+        backup_options: Backup options
         task_configuration: Backups periodicity configuration
     action:
         new: Add a database
@@ -112,6 +113,13 @@ database:
         status: Status
         dsn: DSN
         adapter: Storage space
+        options:
+            reset_auto_increment: Reset auto increment
+            add_drop_database: Add drop database
+            add_drop_table: Add drop table
+            add_drop_trigger: Add drop trigger
+            add_locks: Add locks
+            complete_insert: Complete insert
         backup_task:
             periodicity_number: Every
             periodicity: Periodicity

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Embed\BackupTask;
+use App\Entity\Embed\Options;
 use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\DatabaseRepository;
 use DateTimeImmutable;
@@ -75,9 +76,13 @@ class Database implements \Stringable
     #[ORM\Embedded(class: BackupTask::class)]
     private BackupTask $backupTask;
 
+    #[ORM\Embedded(class: Options::class)]
+    private Options $options;
+
     public function __construct()
     {
         $this->backupTask = new BackupTask();
+        $this->options = new Options();
         $this->backups = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
     }
@@ -290,6 +295,35 @@ class Database implements \Stringable
     public function setAdapter(?AdapterConfig $adapter): self
     {
         $this->adapter = $adapter;
+
+        return $this;
+    }
+
+    /**
+     * Returns an array of options for the mysqldump command.
+     *
+     * @return array{add-drop-table: bool, add-drop-database: bool, add-drop-trigger: bool, add-locks: bool, complete-insert: bool, reset-auto-increment: bool}
+     */
+    public function getBackupOptions(): array
+    {
+        return [
+            'add-drop-table' => $this->options->isAddDropTable(),
+            'add-drop-database' => $this->options->isAddDropDatabase(),
+            'add-drop-trigger' => $this->options->isAddDropTrigger(),
+            'add-locks' => $this->options->isAddLocks(),
+            'complete-insert' => $this->options->isCompleteInsert(),
+            'reset-auto-increment' => $this->options->isResetAutoIncrement(),
+        ];
+    }
+
+    public function getOptions(): Options
+    {
+        return $this->options;
+    }
+
+    public function setOptions(Options $options): self
+    {
+        $this->options = $options;
 
         return $this;
     }

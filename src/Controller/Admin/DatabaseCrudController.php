@@ -28,6 +28,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -273,6 +274,33 @@ final class DatabaseCrudController extends AbstractCrudController
                 Database::STATUS_UNKNOWN => 'secondary',
             ])
             ->hideOnForm();
+
+        if (Crud::PAGE_INDEX !== $pageName) {
+            yield FormField::addPanel('database.panel.backup_options', 'fas fa-gear');
+
+            yield BooleanField::new('options.resetAutoIncrement', 'database.field.options.reset_auto_increment')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+            yield BooleanField::new('options.addDropDatabase', 'database.field.options.add_drop_database')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+
+            yield FormField::addRow();
+            yield BooleanField::new('options.addDropTable', 'database.field.options.add_drop_table')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+            yield BooleanField::new('options.addDropTrigger', 'database.field.options.add_drop_trigger')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+
+            yield FormField::addRow();
+            yield BooleanField::new('options.addLocks', 'database.field.options.add_locks')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+            yield BooleanField::new('options.completeInsert', 'database.field.options.complete_insert')
+                ->renderAsSwitch(false)
+                ->setColumns(6);
+        }
 
         if (Crud::PAGE_INDEX !== $pageName) {
             yield FormField::addPanel('database.panel.task_configuration', 'fa-solid fa-calendar');
