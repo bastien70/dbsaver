@@ -11,22 +11,24 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Embeddable;
 use function sprintf;
-use function strtotime;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Embeddable]
 class BackupTask
 {
     #[ORM\Column(type: Types::STRING, length: 255, enumType: BackupTaskPeriodicity::class)]
+    #[Assert\NotBlank]
     private ?BackupTaskPeriodicity $periodicity = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     #[Assert\Type(type: 'integer')]
     #[Assert\Range(min: 1)]
+    #[Assert\NotBlank]
     private ?int $periodicityNumber = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\GreaterThanOrEqual(value: 'tomorrow')]
+    #[Assert\NotBlank]
     private ?DateTimeInterface $startFrom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -80,13 +82,6 @@ class BackupTask
         return $this;
     }
 
-    public function matchWithToday(): bool
-    {
-        $today = new DateTime();
-
-        return strtotime($today->format('d-m-Y')) >= strtotime($this->getNextIteration()->format('d-m-Y'));
-    }
-
     public function calculateNextIteration(): DateTime|bool
     {
         $currentIteration = new DateTime();
@@ -124,10 +119,6 @@ class BackupTask
 
     private function getNextIterationStringAdd(float $value, string $string): string
     {
-        if ($value > 1) {
-            $string .= 's';
-        }
-
         return sprintf('+ %s %s', $value, $string);
     }
 }

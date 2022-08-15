@@ -46,21 +46,6 @@ class BackupTaskTest extends TestCase
         self::assertSame($tomorrow, $entity->getNextIteration());
     }
 
-    public function testMatchWithToday(): void
-    {
-        $entity = new BackupTask();
-        $today = new DateTimeImmutable();
-        $entity->setNextIteration($today);
-        self::assertTrue($entity->matchWithToday());
-
-        $entity->setNextIteration(new DateTimeImmutable('2030-01-01 00:00:00'));
-        self::assertFalse($entity->matchWithToday());
-
-        // Because if the nextIteration is less than the current date, it must be updated, so run the iteration. So she match
-        $entity->setNextIteration(new DateTimeImmutable('1970-01-01 00:00:00'));
-        self::assertTrue($entity->matchWithToday());
-    }
-
     public function testCalculateNextIteration(): void
     {
         $entity = new BackupTask();

@@ -32,7 +32,7 @@ final class BackupCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $databases = $this->backupService->getDatabasesToBackup();
+        $databases = $this->databaseRepository->getDatabasesToBackup();
         $databasesCount = \count($databases);
 
         if ($databasesCount > 0) {
