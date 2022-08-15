@@ -17,11 +17,11 @@ final class Version20220801120509 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE `database` ADD backup_task_periodicity VARCHAR(255) NOT NULL, ADD backup_task_periodicity_number INT NOT NULL, ADD backup_task_start_from DATETIME NOT NULL, ADD backup_task_next_iteration DATETIME NOT NULL');
-        $this->addSql('UPDATE `database` SET backup_task_periodicity = :periodicity;', ['periodicity' => BackupTaskPeriodicity::WEEK->value]);
-        $this->addSql('UPDATE `database` SET backup_task_periodicity_number = 1;');
-        $this->addSql('UPDATE `database` SET backup_task_start_from = :start_from;', ['start_from' => (new \DateTime())->format('Y-m-d')]);
-        $this->addSql('UPDATE `database` SET backup_task_next_iteration = :next_iteration;', ['next_iteration' => (new \DateTime('+1 week'))->format('Y-m-d')]);
+        $this->addSql('ALTER TABLE `database` ADD backup_task_periodicity VARCHAR(255) NOT NULL DEFAULT :periodicity, ADD backup_task_periodicity_number INT NOT NULL DEFAULT 1, ADD backup_task_start_from DATETIME NOT NULL DEFAULT :start_from, ADD backup_task_next_iteration DATETIME NOT NULL DEFAULT :next_iteration', [
+            'periodicity' => BackupTaskPeriodicity::WEEK->value,
+            'start_from' => (new \DateTime())->format('Y-m-d'),
+            'next_iteration' => (new \DateTime('+1 week'))->format('Y-m-d'),
+        ]);
     }
 
     public function down(Schema $schema): void
