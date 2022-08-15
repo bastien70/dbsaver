@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Embed\Options;
 use App\Entity\Embed\BackupTask;
+use App\Entity\Embed\Options;
 use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\DatabaseRepository;
 use DateTimeImmutable;
