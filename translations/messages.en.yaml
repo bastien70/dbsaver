@@ -1,3 +1,6 @@
+global:
+    date_format: Y-m-d
+    easy_admin_date_format: Y-MM-dd
 backup:
     index:
         title: Backup list
@@ -92,6 +95,7 @@ database:
     panel:
         main_info: Main information
         backup_options: Backup options
+        task_configuration: Backups periodicity configuration
     action:
         new: Add a database
         launch_backup: Launch backup
@@ -116,6 +120,11 @@ database:
             add_drop_trigger: Add drop trigger
             add_locks: Add locks
             complete_insert: Complete insert
+        backup_task:
+            periodicity_number: Every
+            periodicity: Periodicity
+            start_from: Start from
+            next_iteration: Next
     help:
         password: Passwords are hashed and aren't displayed unhashed. They will be unhashed only when necessary to launch backups.
     admin_label:
@@ -212,3 +221,24 @@ enum:
         amazon_aws: Amazon S3
         scaleway: Scaleway
         other: Other
+    backup_task_periodicity:
+        prefix:
+            singular: Each
+            masculine_plural: Every
+            feminine_plural: Every
+        suffix:
+            singular:
+                day: day
+                week: week
+                month: month
+                year: year
+            plural:
+                day: days
+                week: weeks
+                month: months
+                year: years
+        select:
+            day: day(s)
+            week: week(s)
+            month: month(s)
+            year: year(s)

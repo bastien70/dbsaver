@@ -6,6 +6,7 @@ namespace App\Tests\Helper;
 
 use App\Entity\Backup;
 use App\Entity\Database;
+use App\Entity\Enum\BackupTaskPeriodicity;
 use App\Entity\Enum\S3Provider;
 use App\Entity\LocalAdapter;
 use App\Entity\S3Adapter;
@@ -131,6 +132,8 @@ class FlysystemHelperTest extends KernelTestCase
             ->setAdapter($s3Adapter)
             ->setOwner(UserFactory::random()->object());
 
+        $this->setBackupTask($database);
+
         $this->manager->persist($database);
 
         return BackupFactory::new()
@@ -155,11 +158,22 @@ class FlysystemHelperTest extends KernelTestCase
             ->setAdapter($localAdapter)
             ->setOwner(UserFactory::random()->object());
 
+        $this->setBackupTask($database);
+
         $this->manager->persist($database);
 
         return BackupFactory::new()
             ->withDatabase($database)
             ->create()
             ->object();
+    }
+
+    private function setBackupTask(Database $database): void
+    {
+        $backupTask = $database->getBackupTask();
+        $backupTask->setPeriodicity(BackupTaskPeriodicity::WEEK)
+            ->setPeriodicityNumber(1)
+            ->setStartFrom(new \DateTime('-1 day'))
+            ->setNextIteration(new \DateTime('-1 day'));
     }
 }

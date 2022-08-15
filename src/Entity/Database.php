@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Embed\Options;
+use App\Entity\Embed\BackupTask;
 use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\DatabaseRepository;
 use DateTimeImmutable;
@@ -72,11 +73,15 @@ class Database implements \Stringable
     #[Assert\NotBlank]
     private ?AdapterConfig $adapter = null;
 
+    #[ORM\Embedded(class: BackupTask::class)]
+    private BackupTask $backupTask;
+
     #[ORM\Embedded(class: Options::class)]
     private Options $options;
 
     public function __construct()
     {
+        $this->backupTask = new BackupTask();
         $this->options = new Options();
         $this->backups = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
@@ -319,6 +324,18 @@ class Database implements \Stringable
     public function setOptions(Options $options): self
     {
         $this->options = $options;
+
+        return $this;
+    }
+
+    public function getBackupTask(): BackupTask
+    {
+        return $this->backupTask;
+    }
+
+    public function setBackupTask(BackupTask $backupTask): self
+    {
+        $this->backupTask = $backupTask;
 
         return $this;
     }
