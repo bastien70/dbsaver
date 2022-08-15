@@ -26,4 +26,16 @@ class DatabaseRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($database);
         $this->getEntityManager()->flush();
     }
+
+    /**
+     * @return Database[]
+     */
+    public function getDatabasesToBackup(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.backupTask.nextIteration <= :now')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
 }

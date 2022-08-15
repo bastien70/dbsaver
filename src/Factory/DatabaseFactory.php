@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Factory;
 
 use App\Entity\Database;
+use App\Entity\Embed\BackupTask;
+use App\Entity\Enum\BackupTaskPeriodicity;
 use App\Entity\User;
 use App\Repository\DatabaseRepository;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
+use Zenstruck\Foundry\AnonymousFactory;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -60,7 +63,7 @@ final class DatabaseFactory extends ModelFactory
     }
 
     /**
-     * @return array<string, string|int>
+     * @return array<string, int|string|Proxy<object>>
      */
     protected function getDefaults(): array
     {
@@ -72,6 +75,12 @@ final class DatabaseFactory extends ModelFactory
             'name' => 'dbsaver_test',
             'maxBackups' => self::faker()->numberBetween(5, 20),
             'status' => Database::STATUS_OK,
+            'backupTask' => AnonymousFactory::new(BackupTask::class)->create([
+                'periodicity' => BackupTaskPeriodicity::WEEK,
+                'periodicityNumber' => 1,
+                'startFrom' => new \DateTime('-1 day'),
+                'nextIteration' => new \DateTime('-1 day'),
+            ]),
         ];
     }
 

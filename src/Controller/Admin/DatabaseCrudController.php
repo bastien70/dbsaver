@@ -8,11 +8,14 @@ use App\Admin\Field\BadgeField;
 use App\Entity\AdapterConfig;
 use App\Entity\Backup;
 use App\Entity\Database;
+use App\Entity\Embed\BackupTask;
+use App\Entity\Enum\BackupTaskPeriodicity;
 use App\Entity\User;
 use App\Helper\DatabaseHelper;
 use App\Security\Voter\DatabaseVoter;
 use App\Service\BackupService;
 use App\Service\BackupStatus;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -27,7 +30,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -36,8 +41,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use function sprintf;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @method User|null getUser()
@@ -49,6 +56,7 @@ final class DatabaseCrudController extends AbstractCrudController
         private readonly AdminUrlGenerator $adminUrlGenerator,
         private readonly DatabaseHelper $databaseHelper,
         private readonly EntityManagerInterface $em,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -212,6 +220,7 @@ final class DatabaseCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addPanel('database.panel.main_info', 'fas fa-info-circle');
         yield TextField::new('name', 'database.field.name')
             ->hideOnIndex()
             ->setColumns(4);
@@ -244,8 +253,26 @@ final class DatabaseCrudController extends AbstractCrudController
             })
             ->hideOnForm();
 
-        yield DateTimeField::new('createdAt', 'database.field.created_at')
-            ->setFormat('dd-MM-Y HH:mm')
+        yield BadgeField::new('backupTask', 'database.field.backup_task.periodicity')
+            ->formatValue(function (BackupTask $backupTask) {
+                $plural = $backupTask->getPeriodicityNumber() > 1;
+
+                return sprintf(
+                    '%s %s %s',
+                    $this->translator->trans($backupTask->getDescriptionPrefixTranslation()),
+                    $plural ? $backupTask->getPeriodicityNumber() : null,
+                    $this->translator->trans($backupTask->getDescriptionSuffixTranslation())
+                );
+            })
+            ->hideOnForm();
+        yield BadgeField::new('backupTask.nextIteration', 'database.field.backup_task.next_iteration')
+            ->formatValue(function ($value) {
+                return $value->format($this->translator->trans('global.date_format'));
+            })
+            ->hideOnForm();
+
+        yield DateField::new('createdAt', 'database.field.created_at')
+            ->setFormat($this->translator->trans('global.easy_admin_date_format'))
             ->hideOnForm();
         yield ChoiceField::new('status', 'database.field.status')
             ->setChoices(array_combine(
@@ -258,5 +285,24 @@ final class DatabaseCrudController extends AbstractCrudController
                 Database::STATUS_UNKNOWN => 'secondary',
             ])
             ->hideOnForm();
+
+        if (Crud::PAGE_INDEX !== $pageName) {
+            yield FormField::addPanel('database.panel.task_configuration', 'fa-solid fa-calendar');
+            yield IntegerField::new('backupTask.periodicityNumber', 'database.field.backup_task.periodicity_number')
+                ->setFormTypeOption('attr', ['min' => 1, 'step' => 1])
+                ->setColumns(4);
+            yield ChoiceField::new('backupTask.periodicity', 'database.field.backup_task.periodicity')
+                ->setChoices(BackupTaskPeriodicity::cases())
+                ->setFormTypeOption('choice_label', function (?BackupTaskPeriodicity $periodicity) {
+                    return $this->translator->trans($periodicity?->formLabel());
+                })
+                ->setFormTypeOption('choice_value', function (?BackupTaskPeriodicity $periodicity) {
+                    return $periodicity?->value;
+                })
+                ->setColumns(4);
+            yield DateField::new('backupTask.startFrom', 'database.field.backup_task.start_from')
+                ->setFormTypeOption('attr', ['min' => (new DateTime('tomorrow'))->format('Y-m-d')])
+                ->setColumns(4);
+        }
     }
 }
