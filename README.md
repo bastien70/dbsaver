@@ -64,7 +64,10 @@ Requires [Symfony CLI](https://symfony.com/download) and [Task](https://taskfile
 
 ## Configure the CRON job <a name="cron"></a>
 
-Configuring a CRON job allows you to automatically backup databases at the frequency of your choice.
+Configure the CRON task allowing you to activate the verification of backups to be made. **Set it to run every day**.
+
+When you add databases, you can each time configure the periodicity of the backups to be made.
+Therefore, if you have configured a database so that a backup is made every week, the CRON task will check the current date and compare it with the date of the last backup of your database, in order to decide whether to establish a backup or not.
 
 Here is the command to run: `php bin/console app:backup`
 
@@ -103,7 +106,11 @@ You will find this storage space in the list.
 ### Manage databases <a name="databases"></a>
 
 To create a database, click the `Databases` tab, then the `Add a database` button.
-Fill your database information and submit.
+Fill your database information.
+
+Then, check the **backup options** according to your needs.
+
+Finally, configure the **periodicity** at which a backup must be executed for your database (example: every day, every 2 weeks, every 3 months, ...)
 
 ![Add a database](docs/images/database-create.png?raw=true)
 
