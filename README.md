@@ -67,7 +67,7 @@ Requires [Symfony CLI](https://symfony.com/download) and [Task](https://taskfile
 Configure the CRON task allows you to activate the verification of backups to be made. **Set it up to run every day**.
 
 When you add databases, you can each time configure the periodicity of the backups to be made.
-Therefore, if you have configured a database so that a backup is made every week, the CRON task will check the current date and compare it with the date of the last backup of your database, in order to decide whether to establish a backup or not.
+The CRON task will automatically fetch the databases that need to be backed up and perform the automatic backup.
 
 Here is the command to run: `php bin/console app:backup`
 
