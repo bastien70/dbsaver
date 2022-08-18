@@ -108,7 +108,8 @@ You will find this storage space in the list.
 To create a database, click the `Databases` tab, then the `Add a database` button.
 Fill your database information.
 
-Then, check the **backup options** according to your needs.
+Then, check the **backup options** 
+to your needs.
 
 Finally, configure the **periodicity** at which a backup must be executed for your database (example: every day, every 2 weeks, every 3 months, ...)
 
@@ -118,7 +119,6 @@ Then, for every database you add, you will be able to see its backups, update it
 
 ![Database list](docs/images/database-list.png?raw=true)
 
-According to the frequency of the CRON job you configured, automatic backups will be performed.
 
 ### Manage backups <a name="backups"></a>
 
