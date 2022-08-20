@@ -10,20 +10,27 @@ on:
 
 jobs:
   phpstan:
-    name: PHPStan
+    name: PHPStan (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-20.04
-    env:
-      TTY: -T
+
+    strategy:
+      matrix:
+        php-version:
+          - '8.1'
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Install Task
-        uses: arduino/setup-task@v1
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          php-version: ${{ matrix.php-version }}
+          tools: cs2pr
 
-      - name: Start app container
-        run: task docker:up:test -- dbsaver:9000
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v1
 
       - name: Run PHPStan
-        run: task docker:app:phpstan
+        run: 'vendor/bin/phpstan analyse --error-format=checkstyle | cs2pr'
