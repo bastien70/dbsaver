@@ -15,16 +15,6 @@ jobs:
     env:
       SYMFONY_DEPRECATIONS_HELPER: disabled
 
-#    services:
-#      mysql:
-#        image: mysql:8.0
-#        env:
-#          MYSQL_ROOT_PASSWORD: root
-#          MYSQL_DATABASE: test_db
-#        ports:
-#          - 3307:3306
-#        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       matrix:
         php-version:
@@ -48,11 +38,8 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v1
 
-      -   name: Start mariadb
-          run: docker-compose -f docker-compose.test.yaml up -d mariadb
-
-      - name: Start minio
-        run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets
+      -   name: Start docker services
+          run: docker-compose -f docker-compose.test.yaml up -d
 
       - name: Load Doctrine fixtures
         run: |
@@ -72,11 +59,8 @@ jobs:
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
-      - name: Stop minio
-        run: docker-compose -f docker-compose.test.yaml stop minio
-
-      - name: Stop mariadb
-        run: docker-compose -f docker-compose.test.yaml stop mariadb
+      - name: Stop docker services
+        run: docker-compose -f docker-compose.test.yaml stop
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
