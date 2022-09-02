@@ -26,8 +26,6 @@ jobs:
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
-        env:
-          runner: self-hosted
         with:
           coverage: pcov
           php-version: ${{ matrix.php-version }}
