@@ -9,6 +9,7 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-mysqli": "*",
         "aws/aws-sdk-php": "^3.224.4",
         "composer/package-versions-deprecated": "^1.11.99.5",
         "doctrine/annotations": "^1.13.2",

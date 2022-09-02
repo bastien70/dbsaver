@@ -20,6 +20,6 @@ final class FileProviderTest extends TestCase
     public function testGetSqlFile(): void
     {
         $file = $this->fileProvider->getSqlFile();
-        self::assertStringContainsString('CREATE TABLE user', $file->getContent());
+        self::assertStringContainsString('CREATE TABLE `post`', $file->getContent());
     }
 }

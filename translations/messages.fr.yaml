@@ -1,3 +1,8 @@
+confirm-modal:
+    title: Voulez-vous continuer ?
+    body: Cette action est irréversible.
+    action:
+        continue: Continuer
 global:
     date_format: d-m-Y
     easy_admin_date_format: dd-MM-Y
@@ -6,6 +11,10 @@ backup:
         title: Liste des sauvegardes
     action:
         download: Télécharger
+        import:
+            title: Importer
+            flash_success: La sauvegarde a bien été restaurée !
+            flash_error: "Une erreur est survenue lors de la restauration de la sauvegarde : '%message%'."
     field:
         database: Base de données
         context: Contexte

@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
+use mysqli;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use function pathinfo;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
@@ -107,6 +108,45 @@ class BackupService
         }
 
         return $backupStatus;
+    }
+
+    /**
+     * Restore the backup. Return true if success.
+     */
+    public function import(Backup $backup): bool
+    {
+        $content = $this->flysystemHelper->getContent($backup);
+        $database = $backup->getDatabase();
+
+        $mysqlHost = $database->getHost();
+        $mysqlUser = $database->getUser();
+        $mysqlPassword = $this->encryptor->decrypt($database->getPassword());
+        $mysqlDatabase = $database->getName();
+        $mysqlPort = $database->getPort();
+
+        $conn = new mysqli($mysqlHost, $mysqlUser, $mysqlPassword, $mysqlDatabase, $mysqlPort);
+
+        $query = '';
+        $temp = tmpfile();
+        fwrite($temp, $content);
+        $sqlScript = file(stream_get_meta_data($temp)['uri']);
+
+        foreach ($sqlScript as $line) {
+            $startWith = substr(trim($line), 0, 2);
+            $endWith = substr(trim($line), -1, 1);
+
+            if (empty($line) || '--' === $startWith || '//' === $startWith) {
+                continue;
+            }
+
+            $query = $query . $line;
+            if (';' === $endWith) {
+                mysqli_query($conn, $query);
+                $query = '';
+            }
+        }
+
+        return true;
     }
 
     public function clean(Database $database): void

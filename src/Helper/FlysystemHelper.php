@@ -77,6 +77,14 @@ final class FlysystemHelper
         $filesystem->write($backup->getBackupFileName(), $backup->getBackupFile()->getContent());
     }
 
+    public function getContent(Backup $backup): string
+    {
+        $adapter = $this->getAdapter($backup->getDatabase()->getAdapter());
+        $filesystem = new Filesystem($adapter);
+
+        return $filesystem->read($backup->getBackupFileName());
+    }
+
     public function download(Backup $backup): Response
     {
         $adapterConfig = $backup->getDatabase()->getAdapter();

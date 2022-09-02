@@ -1,0 +1,23 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{%  block content_footer_wrapper %}
+    <div id="modal-confirm" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4>{{ 'confirm-modal.title'|trans }}</h4>
+                    <p>{{ 'confirm-modal.body'|trans }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">
+                        <span class="btn-label">{{ 'action.cancel'|trans([], 'EasyAdminBundle') }}</span>
+                    </button>
+
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary" id="modal-confirm-button">
+                        <span class="btn-label">{{ 'confirm-modal.action.continue'|trans() }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

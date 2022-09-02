@@ -1,3 +1,8 @@
+confirm-modal:
+    title: Do you want to continue ?
+    body: This action is irreversible.
+    action:
+        continue: Continue
 global:
     date_format: Y-m-d
     easy_admin_date_format: Y-MM-dd
@@ -6,6 +11,10 @@ backup:
         title: Backup list
     action:
         download: Download
+        import:
+            title: Import
+            flash_success: Backup successfully restored!
+            flash_error: "An error happened during the backup restoration : '%message%'."
     field:
         database: Database
         context: Context
