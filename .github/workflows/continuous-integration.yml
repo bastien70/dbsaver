@@ -20,7 +20,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: db_test
+          MYSQL_DATABASE: test_db
         ports:
           - 3307:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -45,6 +45,9 @@ jobs:
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v1
+
+      - name: Install test_db SQL
+        run: docker exec -i mysql_1  mysql -uroot  -proot  test_db< ../../src/Faker/Provider/fixture.sql
 
       - name: Start minio
         run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets
