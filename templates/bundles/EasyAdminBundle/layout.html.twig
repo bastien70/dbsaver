@@ -5,16 +5,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h4>{{ 'confirm-modal.title'|trans }}</h4>
-                    <p>{{ 'confirm-modal.body'|trans }}</p>
+                    <h4>{{ 'confirm_modal.title'|trans }}</h4>
+                    <p>{{ 'confirm_modal.body'|trans }}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">
-                        <span class="btn-label">{{ 'action.cancel'|trans([], 'EasyAdminBundle') }}</span>
+                        <span class="btn-label">{{ 'action.cancel'|trans(domain = 'EasyAdminBundle') }}</span>
                     </button>
 
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary" id="modal-confirm-button">
-                        <span class="btn-label">{{ 'confirm-modal.action.continue'|trans() }}</span>
+                        <span class="btn-label">{{ 'confirm_modal.action.continue'|trans }}</span>
                     </button>
                 </div>
             </div>
