@@ -1,5 +1,5 @@
 confirm-modal:
-    title: Do you want to continue ?
+    title: Do you want to continue?
     body: This action is irreversible.
     action:
         continue: Continue
