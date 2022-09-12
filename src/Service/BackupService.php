@@ -13,9 +13,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
-use mysqli;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use function pathinfo;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
@@ -124,7 +124,14 @@ class BackupService
         $mysqlDatabase = $database->getName();
         $mysqlPort = $database->getPort();
 
-        $conn = new mysqli($mysqlHost, $mysqlUser, $mysqlPassword, $mysqlDatabase, $mysqlPort);
+        $conn = DriverManager::getConnection([
+            'dbname' => $mysqlDatabase,
+            'user' => $mysqlUser,
+            'password' => $mysqlPassword,
+            'host' => $mysqlHost,
+            'driver' => 'mysqli',
+            'port' => $mysqlPort,
+        ]);
 
         $query = '';
         $temp = tmpfile();
@@ -141,7 +148,7 @@ class BackupService
 
             $query = $query . $line;
             if (';' === $endWith) {
-                mysqli_query($conn, $query);
+                $conn->executeStatement($query);
                 $query = '';
             }
         }
