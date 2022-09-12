@@ -3,6 +3,7 @@ confirm-modal:
     body: This action is irreversible.
     action:
         continue: Continue
+
 global:
     date_format: Y-m-d
     easy_admin_date_format: Y-MM-dd
