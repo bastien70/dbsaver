@@ -1,4 +1,4 @@
-confirm-modal:
+confirm_modal:
     title: Do you want to continue?
     body: This action is irreversible.
     action:
