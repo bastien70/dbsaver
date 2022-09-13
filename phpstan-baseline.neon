@@ -18,9 +18,9 @@ parameters:
 		-
 			message: "#^Call to an undefined method App\\\\Entity\\\\AdapterConfig\\:\\:setS3BucketName\\(\\)\\.$#"
 			count: 2
-			path: tests/Helper/FlysystemHelperTest.php
+			path: tests/Fixtures/DataProvider.php
 
 		-
-			message: "#^Method App\\\\Tests\\\\Helper\\\\FlysystemHelperTest\\:\\:getLocalS3Adapter\\(\\)\\ should return App\\\\Entity\\\\LocalAdapter but returns App\\\\Entity\\\\AdapterConfig.$#"
+			message: "#^Method App\\\\Tests\\\\Fixtures\\\\DataProvider\\:\\:getLocalS3Adapter\\(\\)\\ should return App\\\\Entity\\\\LocalAdapter but returns App\\\\Entity\\\\AdapterConfig.$#"
 			count: 1
-			path: tests/Helper/FlysystemHelperTest.php
+			path: tests/Fixtures/DataProvider.php

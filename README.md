@@ -126,7 +126,7 @@ To access your databases backups, click the `Backups` tab.
 
 ![Backup list](docs/images/backup-list.png?raw=true)
 
-You will be able to download or delete a backup.
+You will be able to download, restore or delete a backup.
 
 ## Update the application <a name="update-app"></a>
 

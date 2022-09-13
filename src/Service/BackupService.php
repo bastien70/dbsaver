@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
@@ -107,6 +108,47 @@ class BackupService
         }
 
         return $backupStatus;
+    }
+
+    public function import(Backup $backup): void
+    {
+        $content = $this->flysystemHelper->getContent($backup);
+        $database = $backup->getDatabase();
+
+        $mysqlHost = $database->getHost();
+        $mysqlUser = $database->getUser();
+        $mysqlPassword = $this->encryptor->decrypt($database->getPassword());
+        $mysqlDatabase = $database->getName();
+        $mysqlPort = $database->getPort();
+
+        $conn = DriverManager::getConnection([
+            'dbname' => $mysqlDatabase,
+            'user' => $mysqlUser,
+            'password' => $mysqlPassword,
+            'host' => $mysqlHost,
+            'driver' => 'mysqli',
+            'port' => $mysqlPort,
+        ]);
+
+        $query = '';
+        $temp = tmpfile();
+        fwrite($temp, $content);
+        $sqlScript = file(stream_get_meta_data($temp)['uri']);
+
+        foreach ($sqlScript as $line) {
+            $startWith = substr(trim($line), 0, 2);
+            $endWith = substr(trim($line), -1, 1);
+
+            if (empty($line) || '--' === $startWith || '//' === $startWith) {
+                continue;
+            }
+
+            $query = $query . $line;
+            if (';' === $endWith) {
+                $conn->executeStatement($query);
+                $query = '';
+            }
+        }
     }
 
     public function clean(Database $database): void

@@ -6,6 +6,7 @@ namespace App\Factory;
 
 use App\Entity\Database;
 use App\Entity\Embed\BackupTask;
+use App\Entity\Embed\Options;
 use App\Entity\Enum\BackupTaskPeriodicity;
 use App\Entity\User;
 use App\Repository\DatabaseRepository;
@@ -80,6 +81,10 @@ final class DatabaseFactory extends ModelFactory
                 'periodicityNumber' => 1,
                 'startFrom' => new \DateTime('-1 day'),
                 'nextIteration' => new \DateTime('-1 day'),
+            ]),
+            'options' => AnonymousFactory::new(Options::class)->create([
+                'addDropTable' => true,
+                'addDropDatabase' => true,
             ]),
         ];
     }

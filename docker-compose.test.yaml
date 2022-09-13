@@ -7,6 +7,10 @@ services:
             - '3307:3306'
         environment:
             MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: test_db
+        volumes:
+            - ./src/Faker/Provider/fixture.sql:/docker-entrypoint-initdb.d/fixture.sql
+            - db_data:/var/lib/mysql
     minio:
         image: minio/minio
         environment:
@@ -30,3 +34,6 @@ services:
             /usr/bin/mc policy set public myminio/somebucketname;
             exit 0;
             "
+            
+volumes:
+    db_data:
