@@ -30,6 +30,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -43,6 +44,7 @@ final class BackupCrudController extends AbstractCrudController
         private readonly TranslatorInterface $translator,
         private readonly FlysystemHelper $flysystemHelper,
         private readonly BackupService $backupService,
+        private readonly AdminUrlGenerator $adminUrlGenerator,
     ) {
     }
 
@@ -91,7 +93,11 @@ final class BackupCrudController extends AbstractCrudController
             $this->addFlash('danger', new TranslatableMessage('backup.action.import.flash_error', ['%message%' => $e->getMessage()]));
         }
 
-        return $this->redirect($context->getReferrer() ?? $this->generateUrl('admin'));
+        $url = $this->adminUrlGenerator->setController(self::class)
+            ->setAction(Action::INDEX)
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 
     /**
