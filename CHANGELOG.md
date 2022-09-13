@@ -2,11 +2,24 @@
 
 ## [Unreleased](https://github.com/bastien70/dbsaver/tree/HEAD)
 
-[Full Changelog](https://github.com/bastien70/dbsaver/compare/2.0.0...HEAD)
+[Full Changelog](https://github.com/bastien70/dbsaver/compare/2.1.0...HEAD)
+
+**Implemented enhancements:**
+
+- \[Feature\] Add backup restoration support [\#75](https://github.com/bastien70/dbsaver/issues/75)
+
+## [2.1.0](https://github.com/bastien70/dbsaver/tree/2.1.0) (2022-09-13)
+
+[Full Changelog](https://github.com/bastien70/dbsaver/compare/2.0.0...2.1.0)
 
 **Implemented enhancements:**
 
 - \[Feature\] Add backups options support [\#4](https://github.com/bastien70/dbsaver/issues/4)
+- Added backup restoration support [\#76](https://github.com/bastien70/dbsaver/pull/76) ([bastien70](https://github.com/bastien70))
+
+**Merged pull requests:**
+
+- Updated documentation [\#74](https://github.com/bastien70/dbsaver/pull/74) ([bastien70](https://github.com/bastien70))
 
 ## [2.0.0](https://github.com/bastien70/dbsaver/tree/2.0.0) (2022-08-15)
 
