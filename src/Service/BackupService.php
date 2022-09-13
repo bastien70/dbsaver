@@ -110,9 +110,6 @@ class BackupService
         return $backupStatus;
     }
 
-    /**
-     * Restore the backup. Return true if success.
-     */
     public function import(Backup $backup): void
     {
         $content = $this->flysystemHelper->getContent($backup);
