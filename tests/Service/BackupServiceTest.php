@@ -52,15 +52,15 @@ class BackupServiceTest extends KernelTestCase
 
     public function testImportBackupWithLocalAdapter(): void
     {
+        self::expectNotToPerformAssertions();
         $backup = $this->dataProvider->getBackupFromLocalAdapter('test_db');
         $this->backupService->import($backup);
-        self::expectNotToPerformAssertions();
     }
 
     public function testImportBackupWithS3Adapter(): void
     {
+        self::expectNotToPerformAssertions();
         $backup = $this->dataProvider->getBackupFromS3Adapter('test_db');
         $this->backupService->import($backup);
-        self::expectNotToPerformAssertions();
     }
 }
