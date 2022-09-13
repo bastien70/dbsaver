@@ -113,7 +113,7 @@ class BackupService
     /**
      * Restore the backup. Return true if success.
      */
-    public function import(Backup $backup): bool
+    public function import(Backup $backup): void
     {
         $content = $this->flysystemHelper->getContent($backup);
         $database = $backup->getDatabase();
@@ -152,8 +152,6 @@ class BackupService
                 $query = '';
             }
         }
-
-        return true;
     }
 
     public function clean(Database $database): void
