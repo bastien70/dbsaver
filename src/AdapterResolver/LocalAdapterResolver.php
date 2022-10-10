@@ -6,11 +6,15 @@ namespace App\AdapterResolver;
 
 use App\Entity\Backup;
 use App\Entity\LocalAdapter;
+
 use function fopen;
+
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+
 use function stream_copy_to_stream;
+
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 

@@ -33,12 +33,12 @@ tasks:
     docker-start:
         desc: Start Docker images
         cmds:
-            - docker-compose up -d
+            - docker compose up -d
 
     docker-stop:
         desc: Stop Docker images
         cmds:
-            - docker-compose stop
+            - docker compose stop
 
     test:
         desc: Run tests
@@ -56,7 +56,7 @@ tasks:
 
     setup_tests:
         cmds:
-            - docker-compose -f docker-compose.test.yaml up -d
+            - docker compose -f docker-compose.test.yaml up -d
             - rm -rf var/cache/test/*
             - symfony console d:d:d --force --if-exists --quiet --env=test
             - symfony console d:d:c --quiet --env=test
@@ -65,7 +65,7 @@ tasks:
 
     cleanup_tests:
         cmds:
-            - docker-compose -f docker-compose.test.yaml stop
+            - docker compose -f docker-compose.test.yaml stop
 
     ci:
         desc: Check code style, static analysis...

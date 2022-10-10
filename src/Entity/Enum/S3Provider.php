@@ -9,6 +9,7 @@ enum S3Provider: string
     case AMAZON_AWS = 'amazon_aws';
     case SCALEWAY = 'scaleway';
     case OTHER = 'other';
+
     public function getText(): string
     {
         return match ($this) {

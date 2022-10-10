@@ -10,6 +10,7 @@ enum S3StorageClass: string
     case AWS_INTELLIGENT_TIERCING = 'INTELLIGENT_TIERCING';
     case SCALEWAY_ONEZONE_IA = 'ONEZONE_IA';
     case SCALEWAY_GLACIER = 'GLACIER';
+
     /**
      * @return S3StorageClass[]
      */
