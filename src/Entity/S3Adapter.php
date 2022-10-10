@@ -15,7 +15,7 @@ use function sprintf;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Adapter(groups: ['eee'])]
+#[Adapter(groups: ['Submit'])]
 #[ORM\Entity(repositoryClass: S3AdapterRepository::class)]
 class S3Adapter extends AdapterConfig
 {
