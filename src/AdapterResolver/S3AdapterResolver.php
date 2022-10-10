@@ -11,7 +11,9 @@ use Aws\S3\S3Client;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\FilesystemAdapter;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
+
 use function sprintf;
+
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 

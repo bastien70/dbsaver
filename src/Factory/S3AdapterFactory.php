@@ -15,20 +15,20 @@ use Zenstruck\Foundry\RepositoryProxy;
 /**
  * @extends ModelFactory<S3Adapter>
  *
- * @method static          S3Adapter|Proxy createOne(array $attributes = [])
- * @method static          S3Adapter[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static          S3Adapter|Proxy find(object|array|mixed $criteria)
- * @method static          S3Adapter|Proxy findOrCreate(array $attributes)
- * @method static          S3Adapter|Proxy first(string $sortedField = 'id')
- * @method static          S3Adapter|Proxy last(string $sortedField = 'id')
- * @method static          S3Adapter|Proxy random(array $attributes = [])
- * @method static          S3Adapter|Proxy randomOrCreate(array $attributes = [])
- * @method static          S3Adapter[]|Proxy[] all()
- * @method static          S3Adapter[]|Proxy[] findBy(array $attributes)
- * @method static          S3Adapter[]|Proxy[] randomSet(int $number, array $attributes = [])
- * @method static          S3Adapter[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
- * @method static          S3AdapterRepository|RepositoryProxy repository()
- * @method S3Adapter|Proxy create(array|callable $attributes = [])
+ * @method static S3Adapter|Proxy                     createOne(array $attributes = [])
+ * @method static S3Adapter[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
+ * @method static S3Adapter|Proxy                     find(object|array|mixed $criteria)
+ * @method static S3Adapter|Proxy                     findOrCreate(array $attributes)
+ * @method static S3Adapter|Proxy                     first(string $sortedField = 'id')
+ * @method static S3Adapter|Proxy                     last(string $sortedField = 'id')
+ * @method static S3Adapter|Proxy                     random(array $attributes = [])
+ * @method static S3Adapter|Proxy                     randomOrCreate(array $attributes = [])
+ * @method static S3Adapter[]|Proxy[]                 all()
+ * @method static S3Adapter[]|Proxy[]                 findBy(array $attributes)
+ * @method static S3Adapter[]|Proxy[]                 randomSet(int $number, array $attributes = [])
+ * @method static S3Adapter[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
+ * @method static S3AdapterRepository|RepositoryProxy repository()
+ * @method        S3Adapter|Proxy                     create(array|callable $attributes = [])
  */
 final class S3AdapterFactory extends ModelFactory
 {

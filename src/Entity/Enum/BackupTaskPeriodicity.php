@@ -10,6 +10,7 @@ enum BackupTaskPeriodicity: string
     case WEEK = 'week';
     case MONTH = 'month';
     case YEAR = 'year';
+
     public function formLabel(): string
     {
         return match ($this) {

@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\LocalAdapterRepository;
 use App\Validator\Adapter;
 use Doctrine\ORM\Mapping as ORM;
+
 use function sprintf;
 
 #[Adapter]

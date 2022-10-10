@@ -9,8 +9,10 @@ use App\Entity\Enum\S3Provider;
 use App\Entity\Enum\S3StorageClass;
 use App\Entity\S3Adapter;
 use App\Security\Voter\AdapterConfigVoter;
+
 use function array_combine;
 use function array_map;
+
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -198,7 +200,8 @@ final class S3AdapterCrudController extends AbstractCrudController
             ->setRequired(false)
             ->onlyOnForms();
 
-        yield TextField::new('storageClass.value', 'adapter.s3.field.storage_class')
+        yield ChoiceField::new('storageClass', 'adapter.s3.field.storage_class')
+            ->formatValue(static fn ($item, S3Adapter $adapter): ?string => $adapter->getStorageClass()?->value)
             ->hideOnForm();
 
         yield BadgeField::new('savesCount', 'adapter.s3.field.backups')
