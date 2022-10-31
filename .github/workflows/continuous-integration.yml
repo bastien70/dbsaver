@@ -36,6 +36,8 @@ jobs:
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--ignore-platform-reqs"
 
       -   name: Start mariadb
           run: docker-compose -f docker-compose.test.yaml up -d mariadb
