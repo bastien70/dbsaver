@@ -19,10 +19,11 @@ jobs:
       matrix:
         php-version:
           - '8.1'
+          - '8.2'
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -34,7 +35,9 @@ jobs:
         run: composer validate
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--ignore-platform-reqs"
 
       -   name: Start mariadb
           run: docker-compose -f docker-compose.test.yaml up -d mariadb
@@ -50,13 +53,8 @@ jobs:
           bin/console doctrine:schema:validate --env=test
           bin/console app:fixtures:load --env=test
 
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
-        if: matrix.php-version == '8.0'
-
       - name: Run PHPUnit with deprecations disabled
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
-        if: matrix.php-version == '8.1'
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
@@ -67,4 +65,4 @@ jobs:
         run: docker-compose -f docker-compose.test.yaml stop mariadb
 
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
