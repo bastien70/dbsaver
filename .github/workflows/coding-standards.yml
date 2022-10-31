@@ -30,7 +30,7 @@ jobs:
           tools: cs2pr
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v
+        uses: ramsey/composer-install@v2
 
       - name: Run PHP CS Fixer
         run: 'vendor/bin/php-cs-fixer fix --dry-run --format=checkstyle | cs2pr'
