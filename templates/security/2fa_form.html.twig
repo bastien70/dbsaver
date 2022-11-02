@@ -1,0 +1,76 @@
+{% extends '@EasyAdmin/page/login_minimal.html.twig' %}
+{% block page_title '2fa_form.title'|trans %}
+{% block body_class 'page-login' %}
+
+{% block wrapper_wrapper %}
+    {% include '@EasyAdmin/flash_messages.html.twig' %}
+
+    <div class="login-wrapper">
+        <header class="main-header">
+            <div id="header-logo">
+                <div class="logo logo-long">
+                    {{ '2fa_form.title'|trans }}
+                </div>
+            </div>
+        </header>
+
+        <section class="content">
+            {# Authentication errors #}
+            {% if authenticationError %}
+                <div class="alert alert-danger mb-3" role="alert">
+                    <i class="fas fa-ban flex-shrink-0 me-2"></i>
+                    {{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}
+                </div>
+            {% endif %}
+
+            {# Let the user select the authentication method #}
+            {% if availableTwoFactorProviders|length > 1 %}
+                <p>{{ 'choose_provider'|trans({}, 'SchebTwoFactorBundle') }} :
+                    {% for provider in availableTwoFactorProviders %}
+                        <a href="{{ path('2fa_login', { 'preferProvider': provider }) }}">{{ provider }}</a>
+                    {% endfor %}
+                </p>
+            {% endif %}
+
+            {# Display current two-factor provider #}
+            <form class="form" action="{{ checkPathUrl ? checkPathUrl: path(checkPathRoute) }}" method="post">
+                <div class="mb-3">
+                    <label for="_auth_code" class="form-label">{{ 'auth_code'|trans({}, 'SchebTwoFactorBundle') }}</label>
+                    <input
+                        id="_auth_code"
+                        class="form-control"
+                        type="text"
+                        name="{{ authCodeParameterName }}"
+                        autocomplete="one-time-code"
+                        autofocus
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                    />
+                </div>
+
+                {% if displayTrustedOption %}
+                    <p class="widget"><label for="_trusted"><input id="_trusted" type="checkbox" name="{{ trustedParameterName }}" /> {{ "trusted"|trans({}, 'SchebTwoFactorBundle') }}</label></p>
+                {% endif %}
+                {% if isCsrfProtectionEnabled %}
+                    <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
+                {% endif %}
+
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-fw fa-check"></i>
+                        {{ "login"|trans({}, 'SchebTwoFactorBundle') }}
+                    </button>
+
+                    {# The logout link gives the user a way out if they can't complete two-factor authentication #}
+                    <a href="{{ logoutPath }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-fw fa-arrow-left"></i>
+                        {{ 'cancel'|trans({}, 'SchebTwoFactorBundle') }}
+                    </a>
+                </div>
+            </form>
+
+            <script src="{{ asset('login.js', constant('EasyCorp\\Bundle\\EasyAdminBundle\\Asset\\AssetPackage::PACKAGE_NAME')) }}"></script>
+        </section>
+    </div>
+
+{% endblock wrapper_wrapper %}

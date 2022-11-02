@@ -33,6 +33,10 @@ security:
                 lifetime: 31536000 # 1 year in seconds
                 path: /
 
+            two_factor:
+                auth_form_path: 2fa_login
+                check_path: 2fa_login_check
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -42,8 +46,10 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+         - { path: ^/logout, roles: PUBLIC_ACCESS }
          - { path: ^/login, roles: PUBLIC_ACCESS }
          - { path: ^/reset-password, roles: PUBLIC_ACCESS }
+         - { path: ^/2fa, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
          - { path: ^/, roles: ROLE_USER }
 
 when@test:

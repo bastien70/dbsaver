@@ -135,6 +135,15 @@
     "laminas/laminas-code": {
         "version": "4.5.0"
     },
+    "leapt/core-bundle": {
+        "version": "4.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.2",
+            "ref": "3a70ffc856464fc26a5d421983a84e2fc64a55fe"
+        }
+    },
     "lorenzo/pinky": {
         "version": "1.0.5"
     },
@@ -244,6 +253,19 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
+    },
+    "scheb/2fa-bundle": {
+        "version": "6.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "1e6f68089146853a790b5da9946fc5974f6fcd49"
+        },
+        "files": [
+            "config/packages/scheb_2fa.yaml",
+            "config/routes/scheb_2fa.yaml"
+        ]
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"

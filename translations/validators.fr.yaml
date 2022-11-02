@@ -1,3 +1,4 @@
 'Database connection test errored: "{{ error }}".': 'Le test de connexion à la base de données a échoué : "{{ error }}".'
 reset_password.reset.field.plain_password.invalid_message: Les mots de passe doivent être identiques.
 adapter.s3.endpoint.invalid_message: Cette valeur ne peut pas être nulle si le fournisseur sélectionné est 'Autre'.
+'The code is invalid.': Le code est invalide.

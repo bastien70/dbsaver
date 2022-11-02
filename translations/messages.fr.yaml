@@ -204,6 +204,34 @@ user:
         receive_automatic_emails: Recevoir les emails automatiques
         submit: Enregistrer les paramètres
         flash_success: Les nouveaux paramètres ont été enregistrés.
+        form_title: Modifier vos paramètres
+        2fa:
+            title: Authentification à deux facteurs
+            enable: Activer l'authentification à deux facteurs
+            disable: Désactiver l'authentification à deux facteurs
+    enable_2fa:
+        already_enabled: L'authentification à deux facteurs est déjà activée.
+        title: Activer l'authentification à deux facteurs
+        intro: Pour activer l'authentification à deux facteurs, scannez le code QR suivant avec votre application 2FA (Authy, Google Authenticator...).
+        code: Saisissez le code de sécurité généré par l'application d'authentification
+        submit: Activer l'authentification à deux facteurs
+        cancel: Annuler
+        qr_code: QR Code
+        flash_success: L'authentification à deux facteurs a été activée avec succès.
+    disable_2fa:
+        not_enabled: L'authentification à deux facteurs est n'est pas activée.
+        title: Désactiver l'authentification à deux facteurs
+        intro: Êtes-vous sûr·e de vouloir désactiver l'authentification à deux facteurs ? La sécurité de votre compte en sera amoindrie.
+        submit: Désactiver l'authentification à deux facteurs
+        cancel: Annuler
+        flash_success: L'authentification à deux facteurs a été désactivée avec succès.
+
+2fa_form:
+    title: Authentification à deux facteurs
+    email: Adresse mail
+    password: Mot de passe
+    remember_me: Rester connecté(e)
+    submit: Connexion
 
 reset_password:
     forgotten_password: Mot de passe oublié

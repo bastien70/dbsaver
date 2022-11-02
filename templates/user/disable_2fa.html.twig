@@ -1,0 +1,18 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title 'user.disable_2fa.title'|trans %}
+
+{% block page_content %}
+    <p>{{ 'user.disable_2fa.intro'|trans }}</p>
+
+    {{ form_start(form) }}
+        <button type="submit" class="btn btn-danger me-1">
+            <i class="fas fa-fw fa-unlock"></i>
+            {{ 'user.disable_2fa.submit'|trans }}
+        </button>
+
+        <a href="{{ ea_url().setRoute('app_user_settings') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-fw fa-arrow-left"></i>
+            {{ 'user.disable_2fa.cancel'|trans }}
+        </a>
+    {{ form_end(form) }}
+{% endblock page_content %}
