@@ -7,7 +7,7 @@
 
     {{ form_start(form) }}
         <div class="row">
-            {{ form_row(form.code, { row_attr: { class: 'col col-md-6' } }) }}
+            {{ form_row(form.code, { row_attr: { class: 'col col-md-6' }, attr: { autofocus: '' } }) }}
         </div>
 
         <img src="{{ get_qr_code_from_string(qr_code) }}" alt="{{ 'user.enable_2fa.qr_code'|trans }}" class="mt-2" style="width: 300px;">
