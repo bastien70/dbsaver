@@ -3,23 +3,55 @@
 {% block page_title 'user.settings.title'|trans %}
 {% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
 {% block page_content %}
-    {{ form_start(form) }}
-        <div class="row">
-            {{ form_row(form.locale, { 'row_attr': { 'class': 'col-12 col-md-3' } }) }}
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <h3>{{ 'user.settings.form_title'|trans }}</h3>
+
+            {{ form_start(form) }}
+                {{ form_row(form.locale) }}
+                {{ form_row(form.currentPassword) }}
+                {{ form_row(form.newPassword) }}
+                {{ form_row(form.receiveAutomaticEmails) }}
+
+                <p>
+                    <button type="submit" class="btn btn-primary" name="_submit">
+                        <i class="fas fa-fw fa-check"></i>
+                        {{ 'user.settings.submit'|trans }}
+                    </button>
+                </p>
+            {{ form_end(form) }}
         </div>
+        <div class="col-12 col-md-4">
+            <h3 class="mb-4">{{ 'user.settings.2fa.title'|trans }}</h3>
 
-        <div class="row">
-            {{ form_row(form.currentPassword, { 'row_attr': { 'class': 'col-12 col-md-3' } }) }}
-            {{ form_row(form.newPassword, { 'row_attr': { 'class': 'col-12 col-md-3' } }) }}
+            <p>
+                {{ 'user.settings.2fa.status.title'|trans }}
+                <span class="badge bg-{{ app.user.totpAuthenticationEnabled ? 'success' : 'danger' }}">
+                    {{ "user.settings.2fa.status.#{app.user.totpAuthenticationEnabled ? 'active' : 'inactive'}"|trans }}
+                </span>
+            </p>
+
+            {% if app.user.totpAuthenticationEnabled %}
+                <a href="{{ ea_url().setRoute('app_user_view_backup_codes') }}" class="btn btn-outline-primary me-2 mb-2">
+                    <i class="fas fa-fw fa-list"></i>
+                    {{ 'user.settings.2fa.view_backup_codes'|trans }}
+                </a>
+
+                <a href="{{ ea_url().setRoute('app_user_disable_2fa') }}" class="btn btn-outline-danger me-2 mb-2">
+                    <i class="fas fa-fw fa-lock-open"></i>
+                    {{ 'user.settings.2fa.disable'|trans }}
+                </a>
+
+                <a href="{{ ea_url().setRoute('app_user_invalidate_trusted_devices') }}" class="btn btn-outline-warning">
+                    <i class="fas fa-fw fa-trash"></i>
+                    {{ 'user.settings.2fa.invalidate_trusted_devices'|trans }}
+                </a>
+            {% else %}
+                <a href="{{ ea_url().setRoute('app_user_enable_2fa') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-fw fa-lock"></i>
+                    {{ 'user.settings.2fa.enable'|trans }}
+                </a>
+            {% endif %}
         </div>
-
-        {{ form_row(form.receiveAutomaticEmails) }}
-
-        <p>
-            <button type="submit" class="btn btn-primary" name="_submit">
-                <i class="fas fa-fw fa-check"></i>
-                {{ 'user.settings.submit'|trans }}
-            </button>
-        </p>
-    {{ form_end(form) }}
+    </div>
 {% endblock %}

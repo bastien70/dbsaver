@@ -1,0 +1,27 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title 'user.enable_2fa.title'|trans %}
+{% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{% block page_content %}
+    <p>{{ 'user.enable_2fa.intro'|trans }}</p>
+
+    {{ form_start(form) }}
+        <div class="row">
+            {{ form_row(form.code, { row_attr: { class: 'col col-md-6' }, attr: { autofocus: '' } }) }}
+        </div>
+
+        <img src="{{ get_qr_code_from_string(qr_code) }}" alt="{{ 'user.enable_2fa.qr_code'|trans }}" class="mt-2" style="width: 300px;">
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary me-1">
+                <i class="fas fa-fw fa-lock"></i>
+                {{ 'user.enable_2fa.submit'|trans }}
+            </button>
+
+            <a href="{{ ea_url().setRoute('app_user_settings') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-fw fa-arrow-left"></i>
+                {{ 'user.enable_2fa.cancel'|trans }}
+            </a>
+        </div>
+    {{ form_end(form) }}
+{% endblock page_content %}

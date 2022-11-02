@@ -1,0 +1,30 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title 'user.view_backup_codes.title'|trans %}
+
+{% block page_content %}
+    <p>{{ 'user.view_backup_codes.intro'|trans }}</p>
+
+    {% if app.user.backupCodes|length > 0 %}
+        <ul>
+            {% for backup_code in app.user.backupCodes %}
+                <li>{{ backup_code }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info">{{ 'user.view_backup_codes.none'|trans }}</div>
+    {% endif %}
+
+    <div class="mt-3">
+        <form method="post" action="{{ ea_url().setRoute('app_user_generate_backup_code') }}">
+            <button type="submit" class="btn btn-primary me-1">
+                <i class="fas fa-fw fa-plus"></i>
+                {{ 'user.view_backup_codes.generate_new_code'|trans }}
+            </button>
+
+            <a href="{{ ea_url().setRoute('app_user_settings') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-fw fa-arrow-left"></i>
+                {{ 'user.view_backup_codes.back'|trans }}
+            </a>
+        </form>
+    </div>
+{% endblock page_content %}
