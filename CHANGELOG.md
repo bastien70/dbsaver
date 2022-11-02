@@ -1,12 +1,23 @@
 # Changelog
 
-## [Unreleased](https://github.com/bastien70/dbsaver/tree/HEAD)
 
-[Full Changelog](https://github.com/bastien70/dbsaver/compare/2.1.0...HEAD)
+## [2.2.0](https://github.com/bastien70/dbsaver/tree/2.2.0) (2022-11-02)
+
+[Full Changelog](https://github.com/bastien70/dbsaver/compare/2.1.0...2.2.0)
 
 **Implemented enhancements:**
 
+- \[Feature\] Add 2fa support [\#78](https://github.com/bastien70/dbsaver/issues/78)
 - \[Feature\] Add backup restoration support [\#75](https://github.com/bastien70/dbsaver/issues/75)
+- \[Feature\] Add docker image [\#59](https://github.com/bastien70/dbsaver/issues/59)
+
+**Merged pull requests:**
+
+- Add support for 2FA [\#82](https://github.com/bastien70/dbsaver/pull/82) ([jmsche](https://github.com/jmsche))
+- Test CI against PHP 8.2 & upgrade actions [\#81](https://github.com/bastien70/dbsaver/pull/81) ([jmsche](https://github.com/jmsche))
+- Docker compose: add MariaDB & minio images [\#80](https://github.com/bastien70/dbsaver/pull/80) ([jmsche](https://github.com/jmsche))
+- Upgrade Symfony to 6.1.7 & other vendors [\#79](https://github.com/bastien70/dbsaver/pull/79) ([jmsche](https://github.com/jmsche))
+- Improvements [\#77](https://github.com/bastien70/dbsaver/pull/77) ([jmsche](https://github.com/jmsche))
 
 ## [2.1.0](https://github.com/bastien70/dbsaver/tree/2.1.0) (2022-09-13)
 
