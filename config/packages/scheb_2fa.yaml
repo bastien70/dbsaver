@@ -7,3 +7,5 @@ scheb_two_factor:
         enabled: true
         issuer: 'DbSaver'
         template: security/2fa_form.html.twig
+    trusted_device:
+        enabled: true

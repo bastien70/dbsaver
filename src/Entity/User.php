@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\TrustedDeviceInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable, TwoFactorInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable, TwoFactorInterface, TrustedDeviceInterface
 {
     use PrimaryKeyTrait;
 
@@ -63,6 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $totpEnabled = false;
+
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $trustedTokenVersion = 0;
 
     public function __construct()
     {
@@ -255,5 +259,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         \assert(\is_string($this->totpSecret));
 
         return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
+    }
+
+    public function invalidateTrustedTokenVersion(): void
+    {
+        ++$this->trustedTokenVersion;
+    }
+
+    public function getTrustedTokenVersion(): int
+    {
+        return $this->trustedTokenVersion;
     }
 }

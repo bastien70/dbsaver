@@ -209,6 +209,7 @@ user:
             title: Authentification à deux facteurs
             enable: Activer l'authentification à deux facteurs
             disable: Désactiver l'authentification à deux facteurs
+            invalidate_trusted_devices: Invalider les appareils de confiance
     enable_2fa:
         already_enabled: L'authentification à deux facteurs est déjà activée.
         title: Activer l'authentification à deux facteurs
@@ -225,6 +226,9 @@ user:
         submit: Désactiver l'authentification à deux facteurs
         cancel: Annuler
         flash_success: L'authentification à deux facteurs a été désactivée avec succès.
+    invalidate_trusted_devices:
+        not_enabled: L'authentification à deux facteurs est n'est pas activée.
+        flash_success: Les appareils de confiance ont été invalidés.
 
 2fa_form:
     title: Authentification à deux facteurs

@@ -209,6 +209,7 @@ user:
             title: Two-factor authentication
             enable: Enable two-factor authentication
             disable: Disable two-factor authentication
+            invalidate_trusted_devices: Invalidate trusted devices
     enable_2fa:
         already_enabled: The two-factor authentication is already enabled.
         title: Enable two-factor authentication
@@ -225,6 +226,9 @@ user:
         submit: Disable two-factor authentication
         cancel: Cancel
         flash_success: The two-factor authentication has been successfully disabled.
+    invalidate_trusted_devices:
+        not_enabled: Two-factor authentication is not enabled.
+        flash_success: Trusted devices have been invalidated.
 
 2fa_form:
     title: Two-factor authentication

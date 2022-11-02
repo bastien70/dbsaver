@@ -52,7 +52,7 @@ final class UserController extends AbstractController
             $this->userRepository->save($user);
             $this->addFlash('success', new TranslatableMessage('user.settings.flash_success'));
 
-            return $this->redirect($this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl());
+            return $this->redirectToSettings();
         }
 
         return $this->renderForm('user/settings.html.twig', [
@@ -67,7 +67,7 @@ final class UserController extends AbstractController
         if ($user->isTotpAuthenticationEnabled()) {
             $this->addFlash('danger', new TranslatableMessage('user.enable_2fa.already_enabled'));
 
-            return $this->redirect($this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl());
+            return $this->redirectToSettings();
         }
 
         if (null === $user->getTotpSecret()) {
@@ -84,7 +84,7 @@ final class UserController extends AbstractController
             $this->userRepository->save($user);
             $this->addFlash('success', new TranslatableMessage('user.enable_2fa.flash_success'));
 
-            return $this->redirect($this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl());
+            return $this->redirectToSettings();
         }
 
         return $this->renderForm('user/enable_2fa.html.twig', [
@@ -100,7 +100,7 @@ final class UserController extends AbstractController
         if (!$user->isTotpAuthenticationEnabled()) {
             $this->addFlash('danger', new TranslatableMessage('user.disable_2fa.not_enabled'));
 
-            return $this->redirect($this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl());
+            return $this->redirectToSettings();
         }
 
         $form = $this->createForm(DisableTwoFactorAuthenticationType::class);
@@ -112,11 +112,31 @@ final class UserController extends AbstractController
             $this->userRepository->save($user);
             $this->addFlash('success', new TranslatableMessage('user.disable_2fa.flash_success'));
 
-            return $this->redirect($this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl());
+            return $this->redirectToSettings();
         }
 
         return $this->renderForm('user/disable_2fa.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    #[Route('/invalidate-trusted-devices', name: 'invalidate_trusted_devices', methods: ['GET'])]
+    public function invalidateTrustedDevices(UserInterface $user): Response
+    {
+        \assert($user instanceof User);
+        if (!$user->isTotpAuthenticationEnabled()) {
+            $this->addFlash('danger', new TranslatableMessage('user.invalidate_trusted_devices.not_enabled'));
+        } else {
+            $user->invalidateTrustedTokenVersion();
+            $this->userRepository->save($user);
+            $this->addFlash('success', new TranslatableMessage('user.invalidate_trusted_devices.flash_success'));
+        }
+
+        return $this->redirectToSettings();
+    }
+
+    private function redirectToSettings(): Response
+    {
+        return $this->redirect($this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl());
     }
 }

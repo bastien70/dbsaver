@@ -24,6 +24,7 @@
         "phpdocumentor/reflection-docblock": "^5.3.0",
         "scheb/2fa-bundle": "^6.3",
         "scheb/2fa-totp": "^6.3",
+        "scheb/2fa-trusted-device": "^6.3",
         "sensio/framework-extra-bundle": "^6.2.8",
         "sixlive/dotenv-editor": "^2.0.0",
         "symfony/asset": "6.1.*",

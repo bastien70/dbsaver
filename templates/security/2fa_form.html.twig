@@ -45,11 +45,14 @@
                         autofocus
                         inputmode="numeric"
                         pattern="[0-9]*"
-                    />
+                    >
                 </div>
 
                 {% if displayTrustedOption %}
-                    <p class="widget"><label for="_trusted"><input id="_trusted" type="checkbox" name="{{ trustedParameterName }}" /> {{ "trusted"|trans({}, 'SchebTwoFactorBundle') }}</label></p>
+                    <div class="form-check form-switch mb-3 ps-0">
+                        <input class="form-check-input" type="checkbox" role="switch" id="_trusted" name="{{ trustedParameterName }}">
+                        <label class="form-check-label" for="_trusted">{{ 'trusted'|trans({}, 'SchebTwoFactorBundle') }}</label>
+                    </div>
                 {% endif %}
                 {% if isCsrfProtectionEnabled %}
                     <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
