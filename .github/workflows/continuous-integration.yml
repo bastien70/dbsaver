@@ -30,6 +30,7 @@ jobs:
         with:
           coverage: pcov
           php-version: ${{ matrix.php-version }}
+          extensions: gd
 
       - name: Validate composer.json and composer.lock
         run: composer validate
