@@ -27,4 +27,31 @@ final class UserControllerTest extends AbstractControllerTest
         $crawler = self::$client->followRedirect();
         self::assertCount(1, $crawler->filter('.alert-success'));
     }
+
+    public function testEnable2fa(): void
+    {
+        $url = $this->adminUrlGenerator->setRoute('app_user_enable_2fa')->generateUrl();
+
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects('/login');
+
+        $this->loginAsUser();
+        self::$client->request('GET', $url);
+        self::assertResponseIsSuccessful();
+    }
+
+    public function testDisable2fa(): void
+    {
+        $url = $this->adminUrlGenerator->setRoute('app_user_disable_2fa')->generateUrl();
+        $settingsUrl = $this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl();
+
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects('/login');
+
+        $this->loginAsUser();
+        self::$client->request('GET', $url);
+        self::assertResponseRedirects($settingsUrl);
+        $crawler = self::$client->followRedirect();
+        self::assertCount(1, $crawler->filter('.alert-danger'));
+    }
 }

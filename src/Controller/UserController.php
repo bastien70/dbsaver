@@ -78,7 +78,6 @@ final class UserController extends AbstractController
         $model = new EnableTwoFactorAuthenticationModel($user);
         $form = $this->createForm(EnableTwoFactorAuthenticationType::class, $model);
         $form->handleRequest($request);
-        dump($request->request->all(), $form->isSubmitted(), $form->getData());
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setTotpEnabled(true);
