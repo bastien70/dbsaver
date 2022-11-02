@@ -61,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $totpSecret = null;
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $totpEnabled = false;
+
     public function __construct()
     {
         $this->databases = new ArrayCollection();
@@ -227,9 +230,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         $this->totpSecret = $totpSecret;
     }
 
+    public function isTotpEnabled(): bool
+    {
+        return $this->totpEnabled;
+    }
+
+    public function setTotpEnabled(bool $totpEnabled): void
+    {
+        $this->totpEnabled = $totpEnabled;
+    }
+
     public function isTotpAuthenticationEnabled(): bool
     {
-        return null !== $this->totpSecret;
+        return true === $this->totpEnabled && null !== $this->totpSecret;
     }
 
     public function getTotpAuthenticationUsername(): string

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Model\EnableTwoFactorAuthenticationModel;
 use App\Form\Model\SettingsModel;
 use App\Form\Type\DisableTwoFactorAuthenticationType;
 use App\Form\Type\EnableTwoFactorAuthenticationType;
@@ -69,11 +70,18 @@ final class UserController extends AbstractController
             return $this->redirect($this->adminUrlGenerator->setRoute('app_user_settings')->generateUrl());
         }
 
-        $user->setTotpSecret($this->totpAuthenticator->generateSecret());
-        $form = $this->createForm(EnableTwoFactorAuthenticationType::class, $user);
+        if (null === $user->getTotpSecret()) {
+            $user->setTotpSecret($this->totpAuthenticator->generateSecret());
+            $this->userRepository->save($user);
+        }
+
+        $model = new EnableTwoFactorAuthenticationModel($user);
+        $form = $this->createForm(EnableTwoFactorAuthenticationType::class, $model);
         $form->handleRequest($request);
+        dump($request->request->all(), $form->isSubmitted(), $form->getData());
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setTotpEnabled(true);
             $this->userRepository->save($user);
             $this->addFlash('success', new TranslatableMessage('user.enable_2fa.flash_success'));
 
@@ -101,6 +109,7 @@ final class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setTotpSecret(null);
+            $user->setTotpEnabled(false);
             $this->userRepository->save($user);
             $this->addFlash('success', new TranslatableMessage('user.disable_2fa.flash_success'));
 

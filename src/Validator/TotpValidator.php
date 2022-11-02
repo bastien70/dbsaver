@@ -4,36 +4,35 @@ declare(strict_types=1);
 
 namespace App\Validator;
 
-use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
+use App\Form\Model\EnableTwoFactorAuthenticationModel;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class TotpValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
-        private readonly TokenStorageInterface $tokenStorage,
     ) {
     }
 
     /**
-     * @param string|null $value
+     * @param EnableTwoFactorAuthenticationModel $value
      */
     public function validate($value, Constraint $constraint): void
     {
-        \assert($constraint instanceof Totp);
-        if (null === $value || '' === $value) {
+        if (!$constraint instanceof Totp) {
+            throw new UnexpectedTypeException($constraint, Totp::class);
+        }
+
+        if (!$value instanceof EnableTwoFactorAuthenticationModel || null === $value->code) {
             return;
         }
 
-        $user = $this->tokenStorage->getToken()?->getUser();
-        \assert($user instanceof TwoFactorInterface);
-
-        if (!$this->totpAuthenticator->checkCode($user, $value)) {
+        if (!$this->totpAuthenticator->checkCode($value->user, $value->code)) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $value)
+                ->atPath('code')
                 ->addViolation();
         }
     }
