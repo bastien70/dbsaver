@@ -24,7 +24,19 @@
         <div class="col-12 col-md-4">
             <h3 class="mb-4">{{ 'user.settings.2fa.title'|trans }}</h3>
 
+            <p>
+                {{ 'user.settings.2fa.status.title'|trans }}
+                <span class="badge bg-{{ app.user.totpAuthenticationEnabled ? 'success' : 'danger' }}">
+                    {{ "user.settings.2fa.status.#{app.user.totpAuthenticationEnabled ? 'active' : 'inactive'}"|trans }}
+                </span>
+            </p>
+
             {% if app.user.totpAuthenticationEnabled %}
+                <a href="{{ ea_url().setRoute('app_user_view_backup_codes') }}" class="btn btn-outline-primary me-2 mb-2">
+                    <i class="fas fa-fw fa-list"></i>
+                    {{ 'user.settings.2fa.view_backup_codes'|trans }}
+                </a>
+
                 <a href="{{ ea_url().setRoute('app_user_disable_2fa') }}" class="btn btn-outline-danger me-2 mb-2">
                     <i class="fas fa-fw fa-lock-open"></i>
                     {{ 'user.settings.2fa.disable'|trans }}

@@ -22,6 +22,7 @@
         "leapt/core-bundle": "^4.6",
         "nzo/url-encryptor-bundle": "^6.2.2",
         "phpdocumentor/reflection-docblock": "^5.3.0",
+        "scheb/2fa-backup-code": "^6.3",
         "scheb/2fa-bundle": "^6.3",
         "scheb/2fa-totp": "^6.3",
         "scheb/2fa-trusted-device": "^6.3",

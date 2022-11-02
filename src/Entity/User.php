@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable, TwoFactorInterface, TrustedDeviceInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable, TwoFactorInterface, TrustedDeviceInterface, BackupCodeInterface
 {
     use PrimaryKeyTrait;
 
@@ -67,6 +68,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     #[ORM\Column(type: Types::INTEGER)]
     private int $trustedTokenVersion = 0;
+
+    /**
+     * @var array<string>
+     */
+    #[ORM\Column(type: Types::JSON)]
+    private array $backupCodes = [];
 
     public function __construct()
     {
@@ -269,5 +276,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     public function getTrustedTokenVersion(): int
     {
         return $this->trustedTokenVersion;
+    }
+
+    /**
+     * Check if it is a valid backup code.
+     */
+    public function isBackupCode(string $code): bool
+    {
+        return \in_array($code, $this->backupCodes, true);
+    }
+
+    public function invalidateBackupCode(string $code): void
+    {
+        $key = array_search($code, $this->backupCodes, true);
+        if (false !== $key) {
+            unset($this->backupCodes[$key]);
+        }
+    }
+
+    public function addBackUpCode(string $backUpCode): void
+    {
+        if (!\in_array($backUpCode, $this->backupCodes, true)) {
+            $this->backupCodes[] = $backUpCode;
+        }
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getBackupCodes(): array
+    {
+        return $this->backupCodes;
     }
 }

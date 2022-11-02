@@ -9,3 +9,5 @@ scheb_two_factor:
         template: security/2fa_form.html.twig
     trusted_device:
         enabled: true
+    backup_codes:
+        enabled: true

@@ -98,7 +98,7 @@ final class UserController extends AbstractController
     {
         \assert($user instanceof User);
         if (!$user->isTotpAuthenticationEnabled()) {
-            $this->addFlash('danger', new TranslatableMessage('user.disable_2fa.not_enabled'));
+            $this->addFlash('danger', new TranslatableMessage('user.error_2fa_not_enabled'));
 
             return $this->redirectToSettings();
         }
@@ -125,7 +125,7 @@ final class UserController extends AbstractController
     {
         \assert($user instanceof User);
         if (!$user->isTotpAuthenticationEnabled()) {
-            $this->addFlash('danger', new TranslatableMessage('user.invalidate_trusted_devices.not_enabled'));
+            $this->addFlash('danger', new TranslatableMessage('user.error_2fa_not_enabled'));
         } else {
             $user->invalidateTrustedTokenVersion();
             $this->userRepository->save($user);
@@ -133,6 +133,36 @@ final class UserController extends AbstractController
         }
 
         return $this->redirectToSettings();
+    }
+
+    #[Route('/backup-codes', name: 'view_backup_codes', methods: ['GET'])]
+    public function viewBackupCodes(UserInterface $user): Response
+    {
+        \assert($user instanceof User);
+        if (!$user->isTotpAuthenticationEnabled()) {
+            $this->addFlash('danger', new TranslatableMessage('user.error_2fa_not_enabled'));
+
+            return $this->redirectToSettings();
+        }
+
+        return $this->render('user/view_backup_codes.html.twig');
+    }
+
+    #[Route('/backup-codes/generate', name: 'generate_backup_code', methods: ['POST'])]
+    public function generateBackupCode(UserInterface $user): Response
+    {
+        \assert($user instanceof User);
+        if (!$user->isTotpAuthenticationEnabled()) {
+            $this->addFlash('danger', new TranslatableMessage('user.error_2fa_not_enabled'));
+
+            return $this->redirectToSettings();
+        }
+
+        $user->addBackUpCode(bin2hex(random_bytes(16)));
+        $this->userRepository->save($user);
+        $this->addFlash('success', new TranslatableMessage('user.generate_backup_code.flash_success'));
+
+        return $this->redirect($this->adminUrlGenerator->setRoute('app_user_view_backup_codes')->generateUrl());
     }
 
     private function redirectToSettings(): Response
