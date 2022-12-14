@@ -14,13 +14,6 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
-
-use function random_int;
-
-use RuntimeException;
-
-use function sprintf;
-
 use Symfony\Component\HttpFoundation\Response;
 
 final class FlysystemHelper
@@ -38,7 +31,7 @@ final class FlysystemHelper
         try {
             $adapter = $this->getAdapter($adapterConfig);
             $filesystem = new Filesystem($adapter);
-            $fileNameTest = sprintf('dbsaver-check-%s.txt', random_int(1, 9999));
+            $fileNameTest = \sprintf('dbsaver-check-%s.txt', \random_int(1, 9999));
             $filesystem->write($fileNameTest, 'DbSaver test file. Will be immediately removed.');
             $filesystem->delete($fileNameTest);
 
@@ -96,7 +89,7 @@ final class FlysystemHelper
         return match (true) {
             $adapterConfig instanceof LocalAdapter => (new LocalAdapterResolver($adapterConfig, $this->projectDir))->download($backup),
             $adapterConfig instanceof S3Adapter => (new S3AdapterResolver($adapterConfig, $this->encryptor))->download($backup),
-            default => throw new RuntimeException('Adapter not supported'),
+            default => throw new \RuntimeException('Adapter not supported'),
         };
     }
 
@@ -105,7 +98,7 @@ final class FlysystemHelper
         return match (true) {
             $adapterConfig instanceof S3Adapter => (new S3AdapterResolver($adapterConfig, $this->encryptor))->getAdapter(),
             $adapterConfig instanceof LocalAdapter => (new LocalAdapterResolver($adapterConfig, $this->projectDir))->getAdapter(),
-            default => throw new RuntimeException('Adapter not supported'),
+            default => throw new \RuntimeException('Adapter not supported'),
         };
     }
 }

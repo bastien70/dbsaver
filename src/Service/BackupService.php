@@ -17,9 +17,6 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
-
-use function pathinfo;
-
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Mailer\MailerInterface;
@@ -57,7 +54,7 @@ class BackupService
             $mysqldump->start($filepath);
 
             // Get file infos
-            $fileInfo = pathinfo($filepath);
+            $fileInfo = \pathinfo($filepath);
 
             // Generate Uploaded file
             $uploadedFile = new UploadedFile(

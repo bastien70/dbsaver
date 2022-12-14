@@ -6,15 +6,9 @@ namespace App\AdapterResolver;
 
 use App\Entity\Backup;
 use App\Entity\LocalAdapter;
-
-use function fopen;
-
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-
-use function stream_copy_to_stream;
-
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -36,9 +30,9 @@ final class LocalAdapterResolver implements AdapterResolverInterface
         $response = new StreamedResponse(function () use ($backup) {
             $adapter = $this->getAdapter();
             $filesystem = new Filesystem($adapter);
-            $outputStream = fopen('php://output', 'w');
+            $outputStream = \fopen('php://output', 'w');
             $fileStream = $filesystem->readStream($backup->getBackupFileName());
-            stream_copy_to_stream($fileStream, $outputStream);
+            \stream_copy_to_stream($fileStream, $outputStream);
         });
 
         $response->headers->set('Content-Type', $backup->getMimeType());

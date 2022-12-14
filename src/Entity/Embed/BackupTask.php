@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace App\Entity\Embed;
 
 use App\Entity\Enum\BackupTaskPeriodicity;
-use DateTime;
-use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Embeddable;
-
-use function sprintf;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Embeddable]
@@ -31,10 +26,10 @@ class BackupTask
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\GreaterThanOrEqual(value: 'tomorrow')]
     #[Assert\NotBlank]
-    private ?DateTimeInterface $startFrom = null;
+    private ?\DateTimeInterface $startFrom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $nextIteration = null;
+    private ?\DateTimeInterface $nextIteration = null;
 
     public function getPeriodicity(): ?BackupTaskPeriodicity
     {
@@ -60,33 +55,33 @@ class BackupTask
         return $this;
     }
 
-    public function getStartFrom(): ?DateTimeInterface
+    public function getStartFrom(): ?\DateTimeInterface
     {
         return $this->startFrom;
     }
 
-    public function setStartFrom(DateTimeInterface $startFrom): self
+    public function setStartFrom(\DateTimeInterface $startFrom): self
     {
         $this->startFrom = $startFrom;
 
         return $this;
     }
 
-    public function getNextIteration(): ?DateTimeInterface
+    public function getNextIteration(): ?\DateTimeInterface
     {
         return $this->nextIteration;
     }
 
-    public function setNextIteration(?DateTimeInterface $nextIteration): self
+    public function setNextIteration(?\DateTimeInterface $nextIteration): self
     {
         $this->nextIteration = $nextIteration;
 
         return $this;
     }
 
-    public function calculateNextIteration(): DateTime|bool
+    public function calculateNextIteration(): \DateTime|bool
     {
-        $currentIteration = new DateTime();
+        $currentIteration = new \DateTime();
         $currentIteration->setTime(0, 0);
 
         return $currentIteration->modify(
@@ -113,14 +108,14 @@ class BackupTask
     public function getDescriptionSuffixTranslation(): string
     {
         if (1 === $this->periodicityNumber) {
-            return sprintf('enum.backup_task_periodicity.suffix.singular.%s', $this->periodicity->value);
+            return \sprintf('enum.backup_task_periodicity.suffix.singular.%s', $this->periodicity->value);
         }
 
-        return sprintf('enum.backup_task_periodicity.suffix.plural.%s', $this->periodicity->value);
+        return \sprintf('enum.backup_task_periodicity.suffix.plural.%s', $this->periodicity->value);
     }
 
     private function getNextIterationStringAdd(float $value, string $string): string
     {
-        return sprintf('+ %s %s', $value, $string);
+        return \sprintf('+ %s %s', $value, $string);
     }
 }

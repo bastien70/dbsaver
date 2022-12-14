@@ -10,9 +10,6 @@ use App\Repository\S3AdapterRepository;
 use App\Validator\Adapter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
-use function sprintf;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Adapter(groups: ['Submit'])]
@@ -51,7 +48,7 @@ class S3Adapter extends AdapterConfig
 
     public function __toString(): string
     {
-        return sprintf('S3 (%s)', $this->getName());
+        return \sprintf('S3 (%s)', $this->getName());
     }
 
     public function getS3AccessId(): ?string
