@@ -47,7 +47,7 @@ final class S3AdapterResolver implements AdapterResolverInterface
 
         $cmd = $client->getCommand('GetObject', [
             'Bucket' => $this->adapterConfig->getS3BucketName(),
-            'Key' => \sprintf('%s/%s', $this->adapterConfig->getPrefix(), $backup->getBackupFileName()),
+            'Key' => sprintf('%s/%s', $this->adapterConfig->getPrefix(), $backup->getBackupFileName()),
             'ResponseContentType' => $backup->getMimeType(),
             'ResponseContentDisposition' => $disposition,
         ]);
@@ -71,7 +71,7 @@ final class S3AdapterResolver implements AdapterResolverInterface
         if (($provider = $this->adapterConfig->getS3Provider()) !== S3Provider::AMAZON_AWS) {
             // Fill endpoint option by default value if Scaleway. None if AWS, and custom if other.
             $clientData['endpoint'] = match ($provider) {
-                S3Provider::SCALEWAY => \sprintf('https://s3.%s.scw.cloud', $this->adapterConfig->getS3Region()),
+                S3Provider::SCALEWAY => sprintf('https://s3.%s.scw.cloud', $this->adapterConfig->getS3Region()),
                 S3Provider::OTHER => $this->adapterConfig->getS3Endpoint(),
                 default => throw new \Exception('Unexpected adapter provider value'),
             };

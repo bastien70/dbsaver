@@ -48,8 +48,8 @@ final class S3AdapterCrudController extends AbstractCrudController
             ->add(TextFilter::new('prefix', 'adapter.s3.field.prefix'))
             ->add(TextFilter::new('s3BucketName', 'adapter.s3.field.bucket_name'))
             ->add(ChoiceFilter::new('s3Provider', 'adapter.s3.field.provider')
-                ->setChoices(\array_combine(
-                    \array_map(fn (S3Provider $s3Provider): string => $s3Provider->getText(), S3Provider::cases()),
+                ->setChoices(array_combine(
+                    array_map(fn (S3Provider $s3Provider): string => $s3Provider->getText(), S3Provider::cases()),
                     S3Provider::cases(),
                 ))
                 ->setFormTypeOption('translation_domain', 'messages')
@@ -57,8 +57,8 @@ final class S3AdapterCrudController extends AbstractCrudController
             ->add(TextFilter::new('s3Region', 'adapter.s3.field.region'))
             ->add(TextFilter::new('s3Endpoint', 'adapter.s3.field.endpoint'))
             ->add(ChoiceFilter::new('storageClass', 'adapter.s3.field.storage_class')
-                ->setChoices(\array_combine(
-                    \array_map(fn (S3StorageClass $s3StorageClass): string => $s3StorageClass->value, S3StorageClass::cases()),
+                ->setChoices(array_combine(
+                    array_map(fn (S3StorageClass $s3StorageClass): string => $s3StorageClass->value, S3StorageClass::cases()),
                     S3StorageClass::cases(),
                 ))
             );

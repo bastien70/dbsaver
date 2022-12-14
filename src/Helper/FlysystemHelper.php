@@ -31,7 +31,7 @@ final class FlysystemHelper
         try {
             $adapter = $this->getAdapter($adapterConfig);
             $filesystem = new Filesystem($adapter);
-            $fileNameTest = \sprintf('dbsaver-check-%s.txt', \random_int(1, 9999));
+            $fileNameTest = sprintf('dbsaver-check-%s.txt', random_int(1, 9999));
             $filesystem->write($fileNameTest, 'DbSaver test file. Will be immediately removed.');
             $filesystem->delete($fileNameTest);
 

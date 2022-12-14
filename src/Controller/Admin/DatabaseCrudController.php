@@ -244,7 +244,7 @@ final class DatabaseCrudController extends AbstractCrudController
             ->formatValue(function (BackupTask $backupTask) {
                 $plural = $backupTask->getPeriodicityNumber() > 1;
 
-                return \sprintf(
+                return sprintf(
                     '%s %s %s',
                     $this->translator->trans($backupTask->getDescriptionPrefixTranslation()),
                     $plural ? $backupTask->getPeriodicityNumber() : null,

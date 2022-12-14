@@ -108,14 +108,14 @@ class BackupTask
     public function getDescriptionSuffixTranslation(): string
     {
         if (1 === $this->periodicityNumber) {
-            return \sprintf('enum.backup_task_periodicity.suffix.singular.%s', $this->periodicity->value);
+            return sprintf('enum.backup_task_periodicity.suffix.singular.%s', $this->periodicity->value);
         }
 
-        return \sprintf('enum.backup_task_periodicity.suffix.plural.%s', $this->periodicity->value);
+        return sprintf('enum.backup_task_periodicity.suffix.plural.%s', $this->periodicity->value);
     }
 
     private function getNextIterationStringAdd(float $value, string $string): string
     {
-        return \sprintf('+ %s %s', $value, $string);
+        return sprintf('+ %s %s', $value, $string);
     }
 }

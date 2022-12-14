@@ -54,7 +54,7 @@ class BackupService
             $mysqldump->start($filepath);
 
             // Get file infos
-            $fileInfo = \pathinfo($filepath);
+            $fileInfo = pathinfo($filepath);
 
             // Generate Uploaded file
             $uploadedFile = new UploadedFile(

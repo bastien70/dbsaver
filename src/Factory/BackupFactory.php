@@ -45,7 +45,7 @@ final class BackupFactory extends ModelFactory
             'context' => self::faker()->randomElement([Backup::CONTEXT_AUTOMATIC, Backup::CONTEXT_MANUAL]),
             'backupFile' => self::faker()->getSqlFile(),
             'database' => DatabaseFactory::random(),
-            'backupFileName' => \sprintf('backup_%s.sql', self::faker()->numberBetween(1, 9999)),
+            'backupFileName' => sprintf('backup_%s.sql', self::faker()->numberBetween(1, 9999)),
             'backupFileSize' => 462320,
             'mimeType' => 'text/plain',
         ];

@@ -48,7 +48,7 @@ class S3Adapter extends AdapterConfig
 
     public function __toString(): string
     {
-        return \sprintf('S3 (%s)', $this->getName());
+        return sprintf('S3 (%s)', $this->getName());
     }
 
     public function getS3AccessId(): ?string

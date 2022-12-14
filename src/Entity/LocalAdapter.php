@@ -14,6 +14,6 @@ class LocalAdapter extends AdapterConfig
 {
     public function __toString(): string
     {
-        return \sprintf('Local (%s)', $this->getName());
+        return sprintf('Local (%s)', $this->getName());
     }
 }
