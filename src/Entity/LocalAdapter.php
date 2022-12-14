@@ -8,8 +8,6 @@ use App\Repository\LocalAdapterRepository;
 use App\Validator\Adapter;
 use Doctrine\ORM\Mapping as ORM;
 
-use function sprintf;
-
 #[Adapter]
 #[ORM\Entity(repositoryClass: LocalAdapterRepository::class)]
 class LocalAdapter extends AdapterConfig

@@ -10,9 +10,6 @@ use App\Repository\S3AdapterRepository;
 use App\Validator\Adapter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
-use function sprintf;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Adapter(groups: ['Submit'])]

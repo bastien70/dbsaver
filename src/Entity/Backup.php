@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\BackupRepository;
-use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -45,7 +44,7 @@ class Backup implements \Stringable
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function __toString(): string
@@ -70,7 +69,7 @@ class Backup implements \Stringable
         $this->backupFile = $backupFile;
 
         if ($backupFile) {
-            $this->updatedAt = new DateTimeImmutable();
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;

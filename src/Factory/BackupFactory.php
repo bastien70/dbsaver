@@ -7,9 +7,6 @@ namespace App\Factory;
 use App\Entity\Backup;
 use App\Entity\Database;
 use App\Repository\BackupRepository;
-
-use function sprintf;
-
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;

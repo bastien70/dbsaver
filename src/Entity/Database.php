@@ -8,7 +8,6 @@ use App\Entity\Embed\BackupTask;
 use App\Entity\Embed\Options;
 use App\Entity\Traits\PrimaryKeyTrait;
 use App\Repository\DatabaseRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -84,7 +83,7 @@ class Database implements \Stringable
         $this->backupTask = new BackupTask();
         $this->options = new Options();
         $this->backups = new ArrayCollection();
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function __toString(): string

@@ -6,8 +6,6 @@ namespace App\Tests\Entity\Embed;
 
 use App\Entity\Embed\BackupTask;
 use App\Entity\Enum\BackupTaskPeriodicity;
-use DateTime;
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class BackupTaskTest extends TestCase
@@ -32,7 +30,7 @@ class BackupTaskTest extends TestCase
     {
         $entity = new BackupTask();
         self::assertNull($entity->getStartFrom());
-        $tomorrow = new DateTime('tomorrow');
+        $tomorrow = new \DateTime('tomorrow');
         $entity->setStartFrom($tomorrow);
         self::assertSame($tomorrow, $entity->getStartFrom());
     }
@@ -41,7 +39,7 @@ class BackupTaskTest extends TestCase
     {
         $entity = new BackupTask();
         self::assertNull($entity->getNextIteration());
-        $tomorrow = new DateTime('tomorrow');
+        $tomorrow = new \DateTime('tomorrow');
         $entity->setNextIteration($tomorrow);
         self::assertSame($tomorrow, $entity->getNextIteration());
     }
@@ -51,7 +49,7 @@ class BackupTaskTest extends TestCase
         $entity = new BackupTask();
         $entity->setPeriodicity(BackupTaskPeriodicity::DAY)
             ->setPeriodicityNumber(1)
-            ->setNextIteration(new DateTimeImmutable());
+            ->setNextIteration(new \DateTimeImmutable());
 
         $nextIteration = $entity->calculateNextIteration();
 

@@ -55,7 +55,7 @@ final class UserController extends AbstractController
             return $this->redirectToSettings();
         }
 
-        return $this->renderForm('user/settings.html.twig', [
+        return $this->render('user/settings.html.twig', [
             'form' => $form,
         ]);
     }
@@ -87,7 +87,7 @@ final class UserController extends AbstractController
             return $this->redirectToSettings();
         }
 
-        return $this->renderForm('user/enable_2fa.html.twig', [
+        return $this->render('user/enable_2fa.html.twig', [
             'form' => $form,
             'qr_code' => $this->totpAuthenticator->getQRContent($user),
         ]);
@@ -115,7 +115,7 @@ final class UserController extends AbstractController
             return $this->redirectToSettings();
         }
 
-        return $this->renderForm('user/disable_2fa.html.twig', [
+        return $this->render('user/disable_2fa.html.twig', [
             'form' => $form,
         ]);
     }
