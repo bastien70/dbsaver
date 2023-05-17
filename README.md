@@ -68,7 +68,7 @@ Requires [Make](https://www.gnu.org/software/make/manual/make.html) to be instal
 
 1. `git clone https://github.com/bastien70/dbsaver.git`
 1. `cd dbsaver`
-1. `make build`
+1. `make install`
 1. To start the server: `make start` (to stop it: `make stop`)
 
 ## Configure the CRON job <a name="cron"></a>
