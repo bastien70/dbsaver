@@ -62,6 +62,15 @@ Requires [Symfony CLI](https://symfony.com/download) and [Task](https://taskfile
 1. If you want to run Docker containers (currently only for local emails with MailCatcher): `task docker-start` et `task docker-stop` (requires Docker and Docker Compose)
 1. To start the server: `task start` (to stop it: `task stop`)
 
+## Install using Make <a name="make-install"></a>
+
+Requires [Make](https://www.gnu.org/software/make/manual/make.html) to be installed.
+
+1. `git clone https://github.com/bastien70/dbsaver.git`
+1. `cd dbsaver`
+1. `make build`
+1. To start the server: `make start` (to stop it: `make stop`)
+
 ## Configure the CRON job <a name="cron"></a>
 
 Configure the CRON task allows you to activate the verification of backups to be made. **Set it up to run every day**.
