@@ -23,6 +23,7 @@ Backups can be saved **locally** or in **S3 cloud** (AWS, Scaleway, ...).
 1. [Prerequisites](#prerequisites)
 1. [Manual install](#manual-install)
 1. [Install using Task](#task-install)
+1. [Install using Make](#make-install)
 1. [Configure the CRON job](#cron)
 1. [Use the application](#use-app)
     1. [Login](#login)
