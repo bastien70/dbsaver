@@ -18,12 +18,7 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libxslt-dev \
     locales \
-    zip \
     jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl \
     nodejs
 
 # Clear cache
