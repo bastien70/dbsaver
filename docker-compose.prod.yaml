@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # PHP Service
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: ${APP_SLUG}_php
+    restart: unless-stopped
+    environment:
+      SERVICE_NAME: ${APP_SLUG}_php
+      SERVICE_TAGS: ${APP_ENV}
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app_network
+
+  # Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: ${APP_SLUG}_nginx
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app_network
+
+  # Mariadb Service
+  database:
+    image: mariadb:latest
+    container_name: ${APP_SLUG}_database
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      SERVICE_TAGS: ${APP_ENV}
+      SERVICE_NAME: ${APP_SLUG}_database
+    volumes:
+      - ./storage-db:/var/lib/mysql/
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app_network
+
+  # Minio Service
+  minio:
+    image: minio/minio
+    container_name: ${APP_SLUG}_minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+      - ./data/minio:/data
+    command: server /data --address ":9004" --console-address ":9001"
+    ports:
+      - "9004:9004"
+      - "9001:9001"
+    networks:
+      - app_network
+
+  # Minio Bucket Creation Service
+  createbuckets:
+    image: minio/mc
+    container_name: ${APP_SLUG}_createbuckets
+    restart: unless-stopped
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9004 minio minio123;
+      /usr/bin/mc mb myminio/somebucketname;
+      /usr/bin/mc policy set public myminio/somebucketname;
+      exit 0;
+      "
+    networks:
+      - app_network
+
+# Docker Networks
+networks:
+  app_network:
+    driver: bridge
