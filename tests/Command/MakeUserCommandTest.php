@@ -48,7 +48,7 @@ final class MakeUserCommandTest extends KernelTestCase
     /**
      * @return iterable<string, array<string>>
      */
-    public function provideInvalidCases(): iterable
+    public static function provideInvalidCases(): iterable
     {
         yield 'no_email' => ['', '', '', ''];
         yield 'invalid_email' => ['contact', '', '', ''];

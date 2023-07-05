@@ -20,7 +20,7 @@ final class LocaleHelperTest extends TestCase
     /**
      * @return iterable<string, array<string>>
      */
-    public function provideCases(): iterable
+    public static function provideCases(): iterable
     {
         yield 'english' => ['en', 'English'];
         yield 'french' => ['fr', 'Français'];
