@@ -14,7 +14,7 @@ tasks:
     composer:
         desc: Install PHP vendors
         cmds:
-            - symfony composer install
+            - symfony composer install --optimize-autoloader
         sources:
             - composer.lock
         generates:

@@ -74,7 +74,6 @@
         "zenstruck/foundry": "^1.33.0"
     },
     "config": {
-        "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"
         },
