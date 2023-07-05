@@ -34,7 +34,7 @@ abstract class AbstractCrudControllerTest extends AbstractControllerTest
 
     abstract protected function getControllerClass(): string;
 
-    protected function getCrudActionUrl(string $action, ?int $entityId = null): string
+    protected function getCrudActionUrl(string $action, int $entityId = null): string
     {
         $generator = $this->adminUrlGenerator->setController($this->getControllerClass())
             ->setAction($action);

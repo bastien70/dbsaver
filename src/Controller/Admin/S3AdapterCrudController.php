@@ -22,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -157,13 +158,13 @@ final class S3AdapterCrudController extends AbstractCrudController
             ->setColumns('col-md-4');
 
         yield ChoiceField::new('s3Provider', 'adapter.s3.field.provider')
-            ->setChoices(S3Provider::cases())
-            ->setFormTypeOption('choice_label', function (S3Provider $s3Provider) {
-                return $this->translator->trans($s3Provider->getText());
-            })
-            ->setFormTypeOption('choice_value', function (?S3Provider $s3Provider) {
-                return $s3Provider?->value;
-            })
+            ->setFormType(EnumType::class)
+            ->setFormTypeOptions([
+                'choice_value' => fn (?S3Provider $s3Provider): ?string => $s3Provider?->value,
+                'choice_label' => fn (S3Provider $s3Provider): string => $this->translator->trans($s3Provider->getText()),
+                'class' => S3Provider::class,
+                'choices' => S3Provider::cases(),
+            ])
             ->onlyOnForms()
             ->renderAsNativeWidget(false)
             ->setRequired(true)
@@ -186,13 +187,13 @@ final class S3AdapterCrudController extends AbstractCrudController
             ->setColumns('col-md-4');
 
         yield ChoiceField::new('storageClass', 'adapter.s3.field.storage_class')
-            ->setChoices(S3StorageClass::cases())
-            ->setFormTypeOption('choice_label', function (S3StorageClass $storageClass) {
-                return $storageClass->value;
-            })
-            ->setFormTypeOption('choice_value', function (?S3StorageClass $s3Provider) {
-                return $s3Provider?->value;
-            })
+            ->setFormType(EnumType::class)
+            ->setFormTypeOptions([
+                'choice_value' => fn (?S3StorageClass $storageClass): ?string => $storageClass?->value,
+                'choice_label' => fn (S3StorageClass $storageClass): string => $storageClass->value,
+                'class' => S3StorageClass::class,
+                'choices' => S3StorageClass::cases(),
+            ])
             ->setRequired(false)
             ->onlyOnForms();
 

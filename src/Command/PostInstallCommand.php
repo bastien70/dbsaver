@@ -46,7 +46,7 @@ final class PostInstallCommand extends AbstractDotEnvCommand
         $this->dotenvEditor = $this->getDotenvEditor($input);
         $this->onlyMissing = $input->getOption('only-missing');
 
-        $this->ask('DATABASE_URL', 'Database URL (eg. "mysql://root:root@127.0.0.1:3306/dbsaver?serverVersion=mariadb-10.6.2")', function ($dsn) {
+        $this->ask('DATABASE_URL', 'Database URL (eg. "mysql://root:root@127.0.0.1:3306/dbsaver?serverVersion=10.6.2-MariaDB")', function ($dsn) {
             $this->validateInput($dsn, [new Assert\NotBlank()]);
 
             return $dsn;

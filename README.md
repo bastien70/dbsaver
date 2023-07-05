@@ -45,7 +45,7 @@ Backups can be saved **locally** or in **S3 cloud** (AWS, Scaleway, ...).
 
 1. `git clone https://github.com/bastien70/dbsaver.git`
 1. `cd dbsaver`
-1. `composer install` (install dependencies)
+1. `composer install --optimize-autoloader` (install dependencies)
 1. `php bin/console app:post-install` (project configuration)
 1. `php bin/console app:regenerate-app-secret` (regenerate the secret key allowing to hash databases passwords)
 1. `php bin/console d:d:c` (create database)
@@ -136,7 +136,7 @@ Else run the following commands instead:
 
 ```bash
 git pull --rebase
-composer install
+composer install --optimize-autoloader
 php bin/console doctrine:migrations:migrate --no-interaction
 php bin/console app:post-install --only-missing
 ```
