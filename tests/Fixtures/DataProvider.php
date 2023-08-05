@@ -9,6 +9,7 @@ use App\Entity\Database;
 use App\Entity\Embed\Options;
 use App\Entity\Enum\BackupTaskPeriodicity;
 use App\Entity\Enum\S3Provider;
+use App\Entity\FtpAdapter;
 use App\Entity\LocalAdapter;
 use App\Entity\S3Adapter;
 use App\Factory\BackupFactory;
@@ -22,6 +23,28 @@ class DataProvider
         private readonly Encryptor $encryptor,
         private readonly EntityManagerInterface $manager
     ) {
+    }
+
+    public function getValidFtpAdapter(): FtpAdapter
+    {
+        return (new FtpAdapter())
+            ->setName('ftp')
+            ->setPrefix('/')
+            ->setFtpUsername('dbsaver')
+            ->setFtpPassword($this->encryptor->encrypt('dbsaver'))
+            ->setFtpHost('127.0.0.1')
+            ->setFtpPort(21);
+    }
+
+    public function getInvalidFtpAdapter(): FtpAdapter
+    {
+        return (new FtpAdapter())
+            ->setName('ftp')
+            ->setPrefix('/')
+            ->setFtpUsername('dbsaver')
+            ->setFtpPassword($this->encryptor->encrypt('badPassword'))
+            ->setFtpHost('127.0.0.1')
+            ->setFtpPort(21);
     }
 
     public function getValidS3Adapter(): S3Adapter
@@ -55,6 +78,38 @@ class DataProvider
         return (new LocalAdapter())
             ->setName('local')
             ->setPrefix('backups');
+    }
+
+    public function getBackupFromFtpAdapter(string $dbName = 'dbsaver_test'): Backup
+    {
+        $ftpAdapter = $this->getValidFtpAdapter();
+
+        $this->manager->persist($ftpAdapter);
+
+        $database = (new Database())
+            ->setHost('127.0.0.1')
+            ->setUser('root')
+            ->setPassword($this->encryptor->encrypt('root'))
+            ->setPort(3307)
+            ->setName($dbName)
+            ->setMaxBackups(5)
+            ->setAdapter($ftpAdapter)
+            ->setOwner(UserFactory::random()->object())
+            ->setOptions(
+                (new Options())
+                    ->setAddDropDatabase(true)
+                    ->setAddDropTable(true)
+            );
+
+        $this->setBackupTask($database);
+
+        $this->manager->persist($database);
+        $this->manager->flush();
+
+        return BackupFactory::new()
+            ->withDatabase($database)
+            ->create()
+            ->object();
     }
 
     public function getBackupFromS3Adapter(string $dbName = 'dbsaver_test'): Backup

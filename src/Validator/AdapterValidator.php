@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Validator;
 
 use App\Entity\AdapterConfig;
+use App\Entity\FtpAdapter;
 use App\Entity\S3Adapter;
 use App\Helper\FlysystemHelper;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
@@ -36,6 +37,10 @@ final class AdapterValidator extends ConstraintValidator
 
         if ($value instanceof S3Adapter && null !== $value->getS3PlainAccessSecret()) {
             $value->setS3AccessSecret($this->encryptor->encrypt($value->getS3PlainAccessSecret()));
+        }
+
+        if ($value instanceof FtpAdapter && null !== $value->getFtpPlainPassword()) {
+            $value->setFtpPassword($this->encryptor->encrypt($value->getFtpPlainPassword()));
         }
 
         if (!$this->flysystemHelper->isConnectionOk($value)) {

@@ -94,6 +94,24 @@ adapter:
                 endpoint: Veuillez remplir ce champs uniquement si vous avez sélectionné 'Autre' pour la région de S3
                 storage_class: Choisissez une classe de stockage parmi la liste proposée suivant votre fournisseur. Si vous avez choisi le fournisseur 'Autre', vous ne pourrez pas sélectionner une classe de stockage. Celle par défaut de votre fournisseur sera alors utilisée.
                 access_secret: Les clés secrètes seront cryptées et n'apparaîtront pas en clair. Elles seront décryptées uniquement lorsqu'elles seront nécessaires pour se connecter à l'espace de stockage.
+    ftp:
+        index:
+            title: Espaces de stockage FTP
+        new:
+            title: Nouvel espace de stockage FTP
+        edit:
+            title: Modifier les paramètres de l'espace de stockage FTP
+        field:
+            name: Nom
+            prefix: Destination
+            backups: Sauvegardes
+            host: Host
+            port: Port
+            username: Nom d'utilisateur
+            plainPassword: Mot de passe
+            ssl: SSL
+            help:
+                prefix: Veillez à ce que le dossier de destination existe.
 
 database:
     index:
@@ -165,6 +183,7 @@ menu:
         submenu:
             s3: S3
             local: Local
+            ftp: FTP
 
 security:
     login:

@@ -94,6 +94,24 @@ adapter:
                 endpoint: Please complete this field only if you have selected 'Other' for the S3 region
                 storage_class: Choose a storage class from the list provided by your provider. If you chose the 'Other' provider, you will not be able to select a storage class. Your supplier's default will then be used.
                 access_secret: Secret keys will be encrypted and aren't displayed unhashed. They will be decrypted only when they are needed to connect to the storage space.
+    ftp:
+        index:
+            title: FTP storage spaces
+        new:
+            title: New FTP storage space
+        edit:
+            title: Update FTP storage space parameters
+        field:
+            name: Name
+            prefix: Destination
+            backups: Backups
+            host: Host
+            port: Port
+            username: Username
+            plainPassword: Password
+            ssl: SSL
+            help:
+                prefix: Make sure the destination folder exists.
 
 database:
     index:
@@ -165,6 +183,7 @@ menu:
         submenu:
             s3: S3
             local: Local
+            ftp: FTP
 
 security:
     login:

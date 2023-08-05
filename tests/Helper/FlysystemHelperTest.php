@@ -45,6 +45,16 @@ class FlysystemHelperTest extends KernelTestCase
         self::assertFalse($this->flysystemHelper->isConnectionOk($this->dataProvider->getInvalidS3Adapter()));
     }
 
+    public function testFtpConnectionOk(): void
+    {
+        self::assertTrue($this->flysystemHelper->isConnectionOk($this->dataProvider->getValidFtpAdapter()));
+    }
+
+    public function testFtpConnectionNotOk(): void
+    {
+        self::assertFalse($this->flysystemHelper->isConnectionOk($this->dataProvider->getInvalidFtpAdapter()));
+    }
+
     public function testGetFlysystemAdapter(): void
     {
         self::assertInstanceOf(
@@ -56,11 +66,25 @@ class FlysystemHelperTest extends KernelTestCase
             Filesystem::class,
             $this->flysystemHelper->getFileSystem($this->dataProvider->getLocalS3Adapter())
         );
+
+        self::assertInstanceOf(
+            Filesystem::class,
+            $this->flysystemHelper->getFileSystem($this->dataProvider->getValidFtpAdapter())
+        );
     }
 
     public function testUploadDownloadRemoveValidS3Adapter(): void
     {
         $backup = $this->dataProvider->getBackupFromS3Adapter();
+        $this->flysystemHelper->upload($backup);
+        self::assertStringContainsString('CREATE TABLE `post`', $this->flysystemHelper->getContent($backup));
+        self::assertInstanceOf(Response::class, $this->flysystemHelper->download($backup));
+        $this->flysystemHelper->remove($backup);
+    }
+
+    public function testUploadDownloadRemoveValidFtpAdapter(): void
+    {
+        $backup = $this->dataProvider->getBackupFromFtpAdapter();
         $this->flysystemHelper->upload($backup);
         self::assertStringContainsString('CREATE TABLE `post`', $this->flysystemHelper->getContent($backup));
         self::assertInstanceOf(Response::class, $this->flysystemHelper->download($backup));

@@ -41,6 +41,13 @@ services:
             /usr/bin/mc policy set public myminio/somebucketname;
             exit 0;
             "
-
+    ftpserver:
+        environment:
+            - FTP_PASS=dbsaver
+            - FTP_USER=dbsaver
+        image: garethflowers/ftp-server
+        ports:
+            - '20-21:20-21/tcp'
+            - '40000-40009:40000-40009/tcp'
 volumes:
     db_data:
