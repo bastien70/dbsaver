@@ -111,7 +111,8 @@ adapter:
             plainPassword: Password
             ssl: SSL
             help:
-                prefix: Make sure the destination folder exists.
+                prefix: 'Make sure the destination folder exists (ex: storage/backups).'
+                plainPassword: "The password will be encrypted and will not appear in the clear. It will be decrypted only when needed to connect to the storage space."
 
 database:
     index:

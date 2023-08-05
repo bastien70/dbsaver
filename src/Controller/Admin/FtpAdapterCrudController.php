@@ -54,18 +54,19 @@ class FtpAdapterCrudController extends AbstractCrudController
             ->setHelp('adapter.ftp.field.help.prefix')
             ->setColumns('col-md-6');
         yield TextField::new('ftpHost', 'adapter.ftp.field.host')
-            ->setColumns(4);
+            ->setColumns(5);
         yield NumberField::new('ftpPort', 'adapter.ftp.field.port')
-            ->setColumns(4);
-        yield BooleanField::new('ftpSsl', 'adapter.ftp.field.ssl')
-            ->setColumns(4)
-            ->onlyOnForms();
+            ->setColumns(1);
         yield TextField::new('ftpUsername', 'adapter.ftp.field.username')
-            ->setColumns(6);
+            ->setColumns(3);
         yield TextField::new('ftpPlainPassword', 'adapter.ftp.field.plainPassword')
-            ->setColumns(6)
+            ->setColumns(3)
+            ->setHelp('adapter.ftp.field.help.plainPassword')
+            ->setRequired(Crud::PAGE_NEW === $pageName)
             ->onlyOnForms();
-
+        yield BooleanField::new('ftpSsl', 'adapter.ftp.field.ssl')
+            ->setColumns(12)
+            ->onlyOnForms();
         yield BadgeField::new('savesCount', 'adapter.ftp.field.backups')
             ->hideOnForm();
     }
