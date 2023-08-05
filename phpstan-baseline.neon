@@ -21,6 +21,11 @@ parameters:
 			path: tests/Fixtures/DataProvider.php
 
 		-
+			message: "#^Call to an undefined method App\\\\Entity\\\\AdapterConfig\\:\\:setFtpUsername\\(\\)\\.$#"
+			count: 2
+			path: tests/Fixtures/DataProvider.php
+
+		-
 			message: "#^Method App\\\\Tests\\\\Fixtures\\\\DataProvider\\:\\:getLocalS3Adapter\\(\\)\\ should return App\\\\Entity\\\\LocalAdapter but returns App\\\\Entity\\\\AdapterConfig.$#"
 			count: 1
 			path: tests/Fixtures/DataProvider.php
