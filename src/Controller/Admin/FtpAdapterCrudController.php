@@ -10,10 +10,13 @@ use App\Security\Voter\AdapterConfigVoter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 
 class FtpAdapterCrudController extends AbstractCrudController
 {
@@ -44,6 +47,16 @@ class FtpAdapterCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER);
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add(TextFilter::new('name', 'adapter.ftp.field.name'))
+            ->add(TextFilter::new('prefix', 'adapter.ftp.field.prefix'))
+            ->add(TextFilter::new('ftpHost', 'adapter.ftp.field.host'))
+            ->add(NumericFilter::new('ftpPort', 'adapter.ftp.field.port'))
+            ->add(TextFilter::new('ftpUsername', 'adapter.ftp.field.username'));
     }
 
     public function configureFields(string $pageName): iterable
