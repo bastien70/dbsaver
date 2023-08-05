@@ -46,6 +46,7 @@ services:
             - FTP_PASS=dbsaver
             - FTP_USER=dbsaver
         image: garethflowers/ftp-server
+        restart: always
         ports:
             - '20-21:20-21/tcp'
             - '40000-40009:40000-40009/tcp'
