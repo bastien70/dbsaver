@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Entity\Enum\S3Provider;
 use App\Entity\FtpAdapter;
-use App\Entity\S3Adapter;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;

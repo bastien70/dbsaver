@@ -6,8 +6,6 @@ namespace App\Tests\Entity;
 
 use App\Entity\Backup;
 use App\Entity\Database;
-use App\Entity\Enum\S3Provider;
-use App\Entity\Enum\S3StorageClass;
 use App\Entity\FtpAdapter;
 use PHPUnit\Framework\TestCase;
 
