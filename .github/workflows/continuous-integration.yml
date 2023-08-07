@@ -62,9 +62,9 @@ jobs:
 
       - name: Load data fixtures in another test database
         run: |
-          mysql -uroot -proot --port 3307 -e "DROP DATABASE IF EXISTS test_db";
-          mysql -uroot -proot --port 3307 -e "CREATE DATABASE test_db";
-          mysql -uroot -proot --port 3307 test_db < src/Faker/Provider/fixture.sql
+          mysql -uroot -proot --port=3307 -e "DROP DATABASE IF EXISTS test_db";
+          mysql -uroot -proot --port=3307 -e "CREATE DATABASE test_db";
+          mysql -uroot -proot --port=3307 test_db < src/Faker/Provider/fixture.sql
 
       - name: Run PHPUnit with deprecations disabled
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
