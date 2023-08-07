@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     'adapterConfig' => AdapterConfig::class,
     'local' => LocalAdapter::class,
     's3' => S3Adapter::class,
+    'ftp' => FtpAdapter::class,
 ])]
 #[ORM\Entity(repositoryClass: AdapterConfigRepository::class)]
 class AdapterConfig

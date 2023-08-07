@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use App\AdapterResolver\FtpAdapterResolver;
 use App\AdapterResolver\LocalAdapterResolver;
 use App\AdapterResolver\S3AdapterResolver;
 use App\Entity\AdapterConfig;
 use App\Entity\Backup;
+use App\Entity\FtpAdapter;
 use App\Entity\LocalAdapter;
 use App\Entity\S3Adapter;
 use League\Flysystem\Filesystem;
@@ -89,6 +91,7 @@ final class FlysystemHelper
         return match (true) {
             $adapterConfig instanceof LocalAdapter => (new LocalAdapterResolver($adapterConfig, $this->projectDir))->download($backup),
             $adapterConfig instanceof S3Adapter => (new S3AdapterResolver($adapterConfig, $this->encryptor))->download($backup),
+            $adapterConfig instanceof FtpAdapter => (new FtpAdapterResolver($adapterConfig, $this->encryptor))->download($backup),
             default => throw new \RuntimeException('Adapter not supported'),
         };
     }
@@ -98,6 +101,7 @@ final class FlysystemHelper
         return match (true) {
             $adapterConfig instanceof S3Adapter => (new S3AdapterResolver($adapterConfig, $this->encryptor))->getAdapter(),
             $adapterConfig instanceof LocalAdapter => (new LocalAdapterResolver($adapterConfig, $this->projectDir))->getAdapter(),
+            $adapterConfig instanceof FtpAdapter => (new FtpAdapterResolver($adapterConfig, $this->encryptor))->getAdapter(),
             default => throw new \RuntimeException('Adapter not supported'),
         };
     }
