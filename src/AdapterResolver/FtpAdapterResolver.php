@@ -16,7 +16,7 @@ use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class FtpAdapterResolver implements AdapterResolverInterface
+final class FtpAdapterResolver implements AdapterResolverInterface
 {
     public function __construct(
         private readonly FtpAdapter $adapterConfig,
