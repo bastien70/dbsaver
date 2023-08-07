@@ -34,6 +34,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Load data fixtures in another test database
+        run: |
+          mysql --host=mariadb -uroot -proot --port=3307 -e "DROP DATABASE IF EXISTS test_db";
+          mysql --host=mariadb -uroot -proot --port=3307 -e "CREATE DATABASE test_db";
+          mysql --host=mariadb -uroot -proot --port=3307 test_db < src/Faker/Provider/fixture.sql
+
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -59,12 +65,6 @@ jobs:
           bin/console doctrine:schema:create --env=test
           bin/console doctrine:schema:validate --env=test
           bin/console app:fixtures:load --env=test
-
-      - name: Load data fixtures in another test database
-        run: |
-          mysql -uroot -proot --port=3307 -e "DROP DATABASE IF EXISTS test_db";
-          mysql -uroot -proot --port=3307 -e "CREATE DATABASE test_db";
-          mysql -uroot -proot --port=3307 test_db < src/Faker/Provider/fixture.sql
 
       - name: Run PHPUnit with deprecations disabled
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
