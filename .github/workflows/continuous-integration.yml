@@ -45,9 +45,9 @@ jobs:
 
       - name: Wait for MySQL to be ready
         run: |
-          while ! mysqladmin ping -h 127.0.0.1 -u root --password=root
+          while ! mysqladmin ping -h 127.0.0.1 -P 3007 -u root --password=root
           do
-            echo "==> Waiting for MySQL to be ready" && sleep 1
+            echo "==> Waiting for MySQL to be ready" && sleep 3
           done
 
       - name: Load Doctrine fixtures
