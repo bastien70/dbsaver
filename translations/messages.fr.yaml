@@ -112,7 +112,7 @@ adapter:
             ssl: SSL
             passive: Passif
             help:
-                prefix: 'Veillez à ce que le dossier de destination existe (ex: storage/backups).'
+                prefix: 'Veillez à ce que le dossier de destination existe (ex : storage/backups).'
                 plain_password: Le mot de passe sera crypté et n'apparaîtra pas en clair. Il sera décrypté uniquement lorsqu'il sera nécessaire pour se connecter à l'espace de stockage.
 
 database:
