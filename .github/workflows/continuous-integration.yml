@@ -40,14 +40,8 @@ jobs:
         with:
           composer-options: "--ignore-platform-reqs"
 
-      -   name: Start mariadb
-          run: docker-compose -f docker-compose.test.yaml up -d mariadb
-
-      - name: Start minio
-        run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets
-
-      - name: Start ftpserver
-        run: docker-compose -f docker-compose.test.yaml up -d minio ftpserver
+      - name: Start docker services
+        run: docker-compose -f docker-compose.test.yaml up -d mariadb minio createbuckets ftpserver
 
       - name: Load Doctrine fixtures
         run: |
@@ -62,14 +56,8 @@ jobs:
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
-      - name: Stop minio
-        run: docker-compose -f docker-compose.test.yaml stop minio
-
-      - name: Stop mariadb
-        run: docker-compose -f docker-compose.test.yaml stop mariadb
-
-      - name: Stop ftpserver
-        run: docker-compose -f docker-compose.test.yaml stop ftpserver
+      - name: Stop docker services
+        run: docker-compose -f docker-compose.test.yaml stop mariadb minio createbuckets ftpserver
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v3
