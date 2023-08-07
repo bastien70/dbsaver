@@ -40,15 +40,14 @@ jobs:
         with:
           composer-options: "--ignore-platform-reqs"
 
-      - name: Start docker services
-        run: docker-compose -f docker-compose.test.yaml up -d
+      -   name: Start mariadb
+          run: docker-compose -f docker-compose.test.yaml up -d mariadb
 
-      - name: Wait for MySQL to be ready
-        run: |
-          while ! mysqladmin ping -h 127.0.0.1 -P 3007 -u root --password=root
-          do
-            echo "==> Waiting for MySQL to be ready" && sleep 3
-          done
+      - name: Start minio
+        run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets
+
+      - name: Start ftpserver
+        run: docker-compose -f docker-compose.test.yaml up -d ftpserver
 
       - name: Load Doctrine fixtures
         run: |
@@ -63,8 +62,14 @@ jobs:
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
-      - name: Stop docker services
-        run: docker-compose -f docker-compose.test.yaml stop
+      - name: Stop minio
+        run: docker-compose -f docker-compose.test.yaml stop createbuckets minio
+
+      - name: Stop mariadb
+        run: docker-compose -f docker-compose.test.yaml stop mariadb
+
+      - name: Stop ftpserver
+        run: docker-compose -f docker-compose.test.yaml stop ftpserver
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v3
