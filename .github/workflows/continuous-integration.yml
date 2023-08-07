@@ -15,6 +15,15 @@ jobs:
     env:
       SYMFONY_DEPRECATIONS_HELPER: disabled
 
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3307:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     strategy:
       matrix:
         php-version:
@@ -40,9 +49,6 @@ jobs:
         with:
           composer-options: "--ignore-platform-reqs"
 
-      -   name: Start mariadb
-          run: docker-compose -f docker-compose.test.yaml up -d mariadb
-
       - name: Start other Docker services
         run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets ftpserver
 
@@ -61,9 +67,6 @@ jobs:
 
       - name: Stop other Docker services
         run: docker-compose -f docker-compose.test.yaml stop createbuckets minio ftpserver
-
-      - name: Stop mariadb
-        run: docker-compose -f docker-compose.test.yaml stop mariadb
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v3
