@@ -49,7 +49,7 @@ jobs:
         with:
           composer-options: "--ignore-platform-reqs"
 
-      - name: Start other Docker services
+      - name: Start Docker services
         run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets ftpserver
 
       - name: Load Doctrine fixtures
@@ -60,12 +60,18 @@ jobs:
           bin/console doctrine:schema:validate --env=test
           bin/console app:fixtures:load --env=test
 
+      - name: Load data fixtures in another test database
+        run: |
+          mysql -uroot -proot -e "DROP DATABASE IF EXISTS test_db";
+          mysql -uroot -proot -e "CREATE DATABASE test_db";
+          mysql -uroot -proot test_db < src/Faker/Provider/fixture.sql
+
       - name: Run PHPUnit with deprecations disabled
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
-      - name: Stop other Docker services
+      - name: Stop Docker services
         run: docker-compose -f docker-compose.test.yaml stop createbuckets minio ftpserver
 
       - name: Upload to Codecov
