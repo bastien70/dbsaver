@@ -30,6 +30,9 @@ class FtpAdapter extends AdapterConfig
     #[ORM\Column]
     private ?bool $ftpSsl = false;
 
+    #[ORM\Column]
+    private ?bool $ftpPassive = true;
+
     public function __toString(): string
     {
         return sprintf('FTP (%s)', $this->getName());
@@ -103,6 +106,18 @@ class FtpAdapter extends AdapterConfig
     public function setFtpSsl(bool $ftpSsl): static
     {
         $this->ftpSsl = $ftpSsl;
+
+        return $this;
+    }
+
+    public function isFtpPassive(): ?bool
+    {
+        return $this->ftpPassive;
+    }
+
+    public function setFtpPassive(bool $ftpPassive): static
+    {
+        $this->ftpPassive = $ftpPassive;
 
         return $this;
     }

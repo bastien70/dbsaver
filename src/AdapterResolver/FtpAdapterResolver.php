@@ -34,6 +34,7 @@ final class FtpAdapterResolver implements AdapterResolverInterface
                 'port' => $this->adapterConfig->getFtpPort(),
                 'username' => $this->adapterConfig->getFtpUsername(),
                 'password' => $this->encryptor->decrypt($this->adapterConfig->getFtpPassword()),
+                'passive' => $this->adapterConfig->isFtpPassive(),
             ]),
             new FtpConnectionProvider(),
             new NoopCommandConnectivityChecker(),

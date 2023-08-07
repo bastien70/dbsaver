@@ -78,7 +78,10 @@ final class FtpAdapterCrudController extends AbstractCrudController
             ->setRequired(Crud::PAGE_NEW === $pageName)
             ->onlyOnForms();
         yield BooleanField::new('ftpSsl', 'adapter.ftp.field.ssl')
-            ->setColumns(12)
+            ->setColumns(6)
+            ->onlyOnForms();
+        yield BooleanField::new('ftpPassive', 'adapter.ftp.field.passive')
+            ->setColumns(6)
             ->onlyOnForms();
         yield BadgeField::new('savesCount', 'adapter.ftp.field.backups')
             ->hideOnForm();
