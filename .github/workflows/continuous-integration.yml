@@ -43,6 +43,13 @@ jobs:
       - name: Start docker services
         run: docker-compose -f docker-compose.test.yaml up -d
 
+      - name: Wait for MySQL to be ready
+        run: |
+          while ! mysqladmin ping -h 127.0.0.1 -u root --password=root
+          do
+            echo "==> Waiting for MySQL to be ready" && sleep 1
+          done
+
       - name: Load Doctrine fixtures
         run: |
           bin/console doctrine:database:create --if-not-exists --env=test
