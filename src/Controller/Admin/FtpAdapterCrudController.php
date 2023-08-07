@@ -18,7 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 
-class FtpAdapterCrudController extends AbstractCrudController
+final class FtpAdapterCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
