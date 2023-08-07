@@ -65,7 +65,7 @@ final class DashboardController extends AbstractDashboardController
 
         $request->getSession()->set('_locale', $locale);
         $redirectUrl = $request->headers->get('referer');
-        if (empty($redirectUrl) || str_contains($redirectUrl, '/switch-locale')) {
+        if (empty($redirectUrl) || str_contains($redirectUrl, 'admin_switch_locale')) {
             $redirectUrl = $this->generateUrl('admin');
         }
 
