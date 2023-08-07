@@ -72,9 +72,9 @@ final class FtpAdapterCrudController extends AbstractCrudController
             ->setColumns(1);
         yield TextField::new('ftpUsername', 'adapter.ftp.field.username')
             ->setColumns(3);
-        yield TextField::new('ftpPlainPassword', 'adapter.ftp.field.plainPassword')
+        yield TextField::new('ftpPlainPassword', 'adapter.ftp.field.plain_password')
             ->setColumns(3)
-            ->setHelp('adapter.ftp.field.help.plainPassword')
+            ->setHelp('adapter.ftp.field.help.plain_password')
             ->setRequired(Crud::PAGE_NEW === $pageName)
             ->onlyOnForms();
         yield BooleanField::new('ftpSsl', 'adapter.ftp.field.ssl')

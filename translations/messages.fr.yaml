@@ -108,11 +108,11 @@ adapter:
             host: Host
             port: Port
             username: Nom d'utilisateur
-            plainPassword: Mot de passe
+            plain_password: Mot de passe
             ssl: SSL
             help:
                 prefix: 'Veillez à ce que le dossier de destination existe (ex: storage/backups).'
-                plainPassword: "Le mot de passe sera crypté et n'apparaîtra pas en clair. Il sera décrypté uniquement lorsqu'il sera nécessaire pour se connecter à l'espace de stockage."
+                plain_password: "Le mot de passe sera crypté et n'apparaîtra pas en clair. Il sera décrypté uniquement lorsqu'il sera nécessaire pour se connecter à l'espace de stockage."
 
 database:
     index:
