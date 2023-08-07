@@ -6,7 +6,7 @@ namespace App\Tests\Controller\Admin;
 
 use App\Controller\Admin\FtpAdapterCrudController;
 
-class FtpAdapterCrudControllerTest extends AbstractCrudControllerTest
+final class FtpAdapterCrudControllerTest extends AbstractCrudControllerTest
 {
     protected function getControllerClass(): string
     {
