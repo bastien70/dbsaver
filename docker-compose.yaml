@@ -1,31 +1,25 @@
-version: '3.8'
+version: '3'
 
 services:
-    # Mariadb Service
-    database:
-        image: mariadb:latest
-        container_name: ${APP_SLUG}_database
-        restart: unless-stopped
-        ports:
-            - "3306:3306"
-        environment:
-            MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_USER: ${DB_USERNAME}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
-            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-            SERVICE_TAGS: ${APP_ENV}
-            SERVICE_NAME: ${APP_SLUG}_database
-        volumes:
-            - ./storage-db:/var/lib/mysql/
-            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-        networks:
-            - app_network
+    mailer:
+        image: schickling/mailcatcher
+        ports: [1025, 1080]
 
-    # Minio Service
+    mariadb:
+        image: mariadb:10.6
+        ports:
+            - '3307:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: test_db
+        volumes:
+            - ./src/Faker/Provider/fixture.sql:/docker-entrypoint-initdb.d/fixture.sql
+            - db_data:/var/lib/mysql
+        labels:
+            com.symfony.server.service-prefix: 'DATABASE'
+
     minio:
         image: minio/minio
-        container_name: ${APP_SLUG}_minio
-        restart: unless-stopped
         environment:
             MINIO_ROOT_USER: minio
             MINIO_ROOT_PASSWORD: minio123
@@ -33,16 +27,11 @@ services:
             - ./data/minio:/data
         command: server /data --address ":9004" --console-address ":9001"
         ports:
-            - "9004:9004"
-            - "9001:9001"
-        networks:
-            - app_network
+            - 9004:9004
+            - 9001:9001
 
-    # Minio Bucket Creation Service
     createbuckets:
         image: minio/mc
-        container_name: ${APP_SLUG}_createbuckets
-        restart: unless-stopped
         depends_on:
             - minio
         entrypoint: >
@@ -52,10 +41,14 @@ services:
             /usr/bin/mc policy set public myminio/somebucketname;
             exit 0;
             "
-        networks:
-            - app_network
-
-# Docker Networks
-networks:
-    app_network:
-        driver: bridge
+    ftpserver:
+        environment:
+            - FTP_PASS=dbsaver
+            - FTP_USER=dbsaver
+        image: garethflowers/ftp-server
+        restart: always
+        ports:
+            - '20-21:20-21/tcp'
+            - '40000-40009:40000-40009/tcp'
+volumes:
+    db_data:

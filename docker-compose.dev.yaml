@@ -98,19 +98,6 @@ services:
         networks:
             - app_network
 
-    # Mailhog
-    mailhog:
-        image: mailhog/mailhog
-        restart: unless-stopped
-        container_name: ${APP_SLUG}_mailhog
-        environment:
-            SERVICE_TAGS: ${APP_ENV}
-        ports:
-            - '1025:1025'
-            - '8025:8025'
-        networks:
-            - app_network
-
 # Docker Networks
 networks:
     app_network:
