@@ -23,7 +23,6 @@ Backups can be saved **locally** or in **S3 cloud** (AWS, Scaleway, ...).
 1. [Prerequisites](#prerequisites)
 1. [Manual install](#manual-install)
 1. [Install using Task](#task-install)
-1. [Install using Make](#make-install)
 1. [Install using Docker](#docker-install)
 1. [Configure the CRON job](#cron)
 1. [Use the application](#use-app)
@@ -63,15 +62,6 @@ Requires [Symfony CLI](https://symfony.com/download) and [Task](https://taskfile
 1. `task install`
 1. If you want to run Docker containers (currently only for local emails with MailCatcher): `task docker-start` et `task docker-stop` (requires Docker and Docker Compose)
 1. To start the server: `task start` (to stop it: `task stop`)
-
-## Install using Make <a name="make-install"></a>
-
-Requires [Make](https://www.gnu.org/software/make/manual/make.html) to be installed.
-
-1. `git clone https://github.com/bastien70/dbsaver.git`
-1. `cd dbsaver`
-1. `make install`
-1. To start the server: `make start` (to stop it: `make stop`)
 
 ## Install using Docker <a name="docker-install"></a>
 
