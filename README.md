@@ -70,8 +70,7 @@ Requires [Docker](https://docs.docker.com/) to be installed.
 1. `git clone https://github.com/bastien70/dbsaver.git`
 1. `chown 1000:1000 /path/ -R` (Make sure permission are well-defined for 1000:1000)
 1. `cd dbsaver`
-1. `cp .env.exemple .env`
-1. `docker compose up -d`
+1. `docker compose -f docker-compose.prod.yaml up -d`
 1. `docker compose exec php bash`
 1. `composer install` (install dependencies)
 1. `php bin/console app:regenerate-app-secret ` (regenerate the secret key allowing to hash databases passwords)'

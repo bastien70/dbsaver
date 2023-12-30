@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y \
     libxslt-dev \
     locales \
     jpegoptim optipng pngquant gifsicle \
+    git \
+    zip
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
