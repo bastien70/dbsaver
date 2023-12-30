@@ -44,7 +44,7 @@ final class PostInstallCommandTest extends KernelTestCase
     /**
      * @return iterable<string, array<string>>
      */
-    public function provideInvalidCases(): iterable
+    public static function provideInvalidCases(): iterable
     {
         yield 'no_database_url' => ['', '', '', '', ''];
         yield 'no_mailer_dsn' => ['test', '', '', '', ''];

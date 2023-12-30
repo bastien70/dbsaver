@@ -40,6 +40,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -306,13 +307,13 @@ final class DatabaseCrudController extends AbstractCrudController
                 ->setFormTypeOption('attr', ['min' => 1, 'step' => 1])
                 ->setColumns(4);
             yield ChoiceField::new('backupTask.periodicity', 'database.field.backup_task.periodicity')
-                ->setChoices(BackupTaskPeriodicity::cases())
-                ->setFormTypeOption('choice_label', function (?BackupTaskPeriodicity $periodicity) {
-                    return $this->translator->trans($periodicity?->formLabel());
-                })
-                ->setFormTypeOption('choice_value', function (?BackupTaskPeriodicity $periodicity) {
-                    return $periodicity?->value;
-                })
+                ->setFormType(EnumType::class)
+                ->setFormTypeOptions([
+                    'choice_value' => fn (?BackupTaskPeriodicity $periodicity): ?string => $periodicity?->value,
+                    'choice_label' => fn (BackupTaskPeriodicity $periodicity): string => $periodicity->formLabel(),
+                    'class' => BackupTaskPeriodicity::class,
+                    'choices' => BackupTaskPeriodicity::cases(),
+                ])
                 ->setColumns(4);
             yield DateField::new('backupTask.startFrom', 'database.field.backup_task.start_from')
                 ->setFormTypeOption('attr', ['min' => (new \DateTime('tomorrow'))->format('Y-m-d')])

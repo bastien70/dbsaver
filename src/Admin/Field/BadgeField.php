@@ -17,7 +17,7 @@ class BadgeField implements FieldInterface
     public const BADGE_FONT_SIZE = 'badge_font_size';
     public const BADGE_TEXT_CLASS = 'badge_text_class';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, string $label = null): self
     {
         return (new self())
             ->setProperty($propertyName)
@@ -40,7 +40,7 @@ class BadgeField implements FieldInterface
         return $this;
     }
 
-    public function setTextClass(?string $class = null): self
+    public function setTextClass(string $class = null): self
     {
         $this->setCustomOption(self::BADGE_TEXT_CLASS, $class);
 
@@ -51,7 +51,7 @@ class BadgeField implements FieldInterface
      * Hex color.
      * Example : #0277bd.
      */
-    public function setBackgroundColor(?string $backgroundColor = null): self
+    public function setBackgroundColor(string $backgroundColor = null): self
     {
         $this->setCustomOption(self::BADGE_BACKGROUND_COLOR, $backgroundColor);
 
@@ -65,7 +65,7 @@ class BadgeField implements FieldInterface
         return $this;
     }
 
-    public function setFontSize(?string $fontSize = null): self
+    public function setFontSize(string $fontSize = null): self
     {
         $this->setCustomOption(self::BADGE_FONT_SIZE, $fontSize);
 

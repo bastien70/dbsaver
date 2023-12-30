@@ -35,7 +35,7 @@ class BackupServiceTest extends KernelTestCase
 
     public function testGetDatabasesToBackup(): void
     {
-        self::assertCount(4, $this->databaseRepository->getDatabasesToBackup());
+        self::assertCount(5, $this->databaseRepository->getDatabasesToBackup());
 
         $user = UserFactory::createOne(['email' => 'usertestbackup@test.com']);
         $localAdapter = LocalAdapterFactory::createOne();
@@ -43,11 +43,11 @@ class BackupServiceTest extends KernelTestCase
         $database = DatabaseFactory::new()->withOwner($user)->withAdapter($localAdapter)->create()->object();
         \assert($database instanceof Database);
 
-        self::assertCount(5, $this->databaseRepository->getDatabasesToBackup());
+        self::assertCount(6, $this->databaseRepository->getDatabasesToBackup());
 
         $database->getBackupTask()->setNextIteration(new \DateTime('+1 day'));
         $this->manager->flush();
-        self::assertCount(4, $this->databaseRepository->getDatabasesToBackup());
+        self::assertCount(5, $this->databaseRepository->getDatabasesToBackup());
     }
 
     public function testImportBackupWithLocalAdapter(): void
@@ -61,6 +61,13 @@ class BackupServiceTest extends KernelTestCase
     {
         self::expectNotToPerformAssertions();
         $backup = $this->dataProvider->getBackupFromS3Adapter('test_db');
+        $this->backupService->import($backup);
+    }
+
+    public function testImportBackupWithFtpAdapter(): void
+    {
+        self::expectNotToPerformAssertions();
+        $backup = $this->dataProvider->getBackupFromFtpAdapter('test_db');
         $this->backupService->import($backup);
     }
 }

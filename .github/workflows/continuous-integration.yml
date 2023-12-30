@@ -43,8 +43,8 @@ jobs:
       -   name: Start mariadb
           run: docker-compose -f docker-compose.test.yaml up -d mariadb
 
-      - name: Start minio
-        run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets
+      - name: Start other Docker services
+        run: docker-compose -f docker-compose.test.yaml up -d minio createbuckets ftpserver
 
       - name: Load Doctrine fixtures
         run: |
@@ -59,8 +59,8 @@ jobs:
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
-      - name: Stop minio
-        run: docker-compose -f docker-compose.test.yaml stop minio
+      - name: Stop other Docker services
+        run: docker-compose -f docker-compose.test.yaml stop createbuckets minio ftpserver
 
       - name: Stop mariadb
         run: docker-compose -f docker-compose.test.yaml stop mariadb

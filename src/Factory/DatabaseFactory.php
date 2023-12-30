@@ -11,7 +11,9 @@ use App\Entity\Enum\BackupTaskPeriodicity;
 use App\Entity\User;
 use App\Repository\DatabaseRepository;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
-use Zenstruck\Foundry\AnonymousFactory;
+
+use function Zenstruck\Foundry\anonymous;
+
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -76,13 +78,13 @@ final class DatabaseFactory extends ModelFactory
             'name' => 'dbsaver_test',
             'maxBackups' => self::faker()->numberBetween(5, 20),
             'status' => Database::STATUS_OK,
-            'backupTask' => AnonymousFactory::new(BackupTask::class)->create([
+            'backupTask' => anonymous(BackupTask::class)->create([
                 'periodicity' => BackupTaskPeriodicity::WEEK,
                 'periodicityNumber' => 1,
                 'startFrom' => new \DateTime('-1 day'),
                 'nextIteration' => new \DateTime('-1 day'),
             ]),
-            'options' => AnonymousFactory::new(Options::class)->create([
+            'options' => anonymous(Options::class)->create([
                 'addDropTable' => true,
                 'addDropDatabase' => true,
             ]),

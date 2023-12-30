@@ -20,23 +20,23 @@ final class DashboardControllerTest extends AbstractControllerTest
 
     public function testSwitchLocale(): void
     {
-        self::$client->request('GET', '/switch-locale/en');
+        self::$client->request('GET', '/?routeName=admin_switch_locale&routeParams[locale]=en');
         self::assertResponseRedirects('/login');
 
         $this->loginAsUser();
-        self::$client->request('GET', '/switch-locale/fr');
+        self::$client->request('GET', '/?routeName=admin_switch_locale&routeParams[locale]=fr');
         self::assertResponseRedirects('/');
         $crawler = self::$client->followRedirect();
         self::assertStringContainsString('Bienvenue', $crawler->filter('h1')->text());
         self::assertStringNotContainsString('Welcome', $crawler->filter('h1')->text());
 
-        self::$client->request('GET', '/switch-locale/en');
+        self::$client->request('GET', '/?routeName=admin_switch_locale&routeParams[locale]=en');
         self::assertResponseRedirects('http://localhost/');
         $crawler = self::$client->followRedirect();
         self::assertStringContainsString('Welcome', $crawler->filter('h1')->text());
         self::assertStringNotContainsString('Bienvenue', $crawler->filter('h1')->text());
 
-        self::$client->request('GET', '/switch-locale/it');
+        self::$client->request('GET', '/?routeName=admin_switch_locale&routeParams[locale]=it');
         self::assertResponseStatusCodeSame(400);
     }
 }

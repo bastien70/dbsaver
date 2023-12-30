@@ -13,7 +13,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Ifsnop\Mysqldump\Mysqldump;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
@@ -120,6 +123,8 @@ class BackupService
         $mysqlDatabase = $database->getName();
         $mysqlPort = $database->getPort();
 
+        $config = new Configuration();
+        $config->setSchemaManagerFactory(new DefaultSchemaManagerFactory());
         $conn = DriverManager::getConnection([
             'dbname' => $mysqlDatabase,
             'user' => $mysqlUser,
@@ -127,7 +132,7 @@ class BackupService
             'host' => $mysqlHost,
             'driver' => 'mysqli',
             'port' => $mysqlPort,
-        ]);
+        ], $config, new EventManager());
 
         $query = '';
         $temp = tmpfile();

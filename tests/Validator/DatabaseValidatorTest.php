@@ -122,7 +122,7 @@ final class DatabaseValidatorTest extends TestCase
     /**
      * @return iterable<string, array<string|null>>
      */
-    public function provideEmptyValidCases(): iterable
+    public static function provideEmptyValidCases(): iterable
     {
         yield 'empty_everything' => [null, null, null, null, null];
         yield 'empty_host' => [null, 'test', 'test', 'test', 'test'];

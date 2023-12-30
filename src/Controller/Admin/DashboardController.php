@@ -6,10 +6,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Backup;
 use App\Entity\Database;
+use App\Entity\FtpAdapter;
 use App\Entity\LocalAdapter;
 use App\Entity\S3Adapter;
 use App\Entity\User;
 use App\Helper\LocaleHelper;
+use App\Repository\FtpAdapterRepository;
 use App\Repository\LocalAdapterRepository;
 use App\Repository\S3AdapterRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,6 +36,7 @@ final class DashboardController extends AbstractDashboardController
         private readonly EntityManagerInterface $em,
         private readonly LocalAdapterRepository $localAdapterRepository,
         private readonly S3AdapterRepository $s3AdapterRepository,
+        private readonly FtpAdapterRepository $ftpAdapterRepository,
     ) {
     }
 
@@ -62,7 +65,7 @@ final class DashboardController extends AbstractDashboardController
 
         $request->getSession()->set('_locale', $locale);
         $redirectUrl = $request->headers->get('referer');
-        if (empty($redirectUrl) || str_contains($redirectUrl, '/switch-locale')) {
+        if (empty($redirectUrl) || str_contains($redirectUrl, 'admin_switch_locale')) {
             $redirectUrl = $this->generateUrl('admin');
         }
 
@@ -77,6 +80,8 @@ final class DashboardController extends AbstractDashboardController
                 ->setBadge($this->s3AdapterRepository->count([])),
             MenuItem::linkToCrud('menu.adapters.submenu.local', null, LocalAdapter::class)
                 ->setBadge($this->localAdapterRepository->count([])),
+            MenuItem::linkToCrud('menu.adapters.submenu.ftp', null, FtpAdapter::class)
+                ->setBadge($this->ftpAdapterRepository->count([])),
         ]);
         yield MenuItem::linkToCrud('menu.databases', 'fas fa-database', Database::class);
         yield MenuItem::linkToCrud('menu.backups', 'fas fa-shield-alt', Backup::class);
