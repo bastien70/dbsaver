@@ -30,6 +30,16 @@ tasks:
         cmds:
             - symfony server:stop
 
+    docker-install:
+        desc: Install project with Docker
+        cmds:
+            - cp .env.example .env
+            - docker compose up -d
+            - docker compose exec php bash -c "composer install"
+            - docker compose exec php bash -c "php bin/console app:regenerate-app-secret"
+            - docker compose exec php bash -c "php bin/console d:m:m -n"
+            - docker compose exec php bash -c "php bin/console app:make-user"
+
     docker-start:
         desc: Start Docker images
         cmds:

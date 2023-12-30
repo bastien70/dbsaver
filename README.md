@@ -23,6 +23,7 @@ Backups can be saved **locally** or in **S3 cloud** (AWS, Scaleway, ...).
 1. [Prerequisites](#prerequisites)
 1. [Manual install](#manual-install)
 1. [Install using Task](#task-install)
+1. [Install using Docker](#docker-install)
 1. [Configure the CRON job](#cron)
 1. [Use the application](#use-app)
     1. [Login](#login)
@@ -61,6 +62,20 @@ Requires [Symfony CLI](https://symfony.com/download) and [Task](https://taskfile
 1. `task install`
 1. If you want to run Docker containers (currently only for local emails with MailCatcher): `task docker-start` et `task docker-stop` (requires Docker and Docker Compose)
 1. To start the server: `task start` (to stop it: `task stop`)
+
+## Install using Docker <a name="docker-install"></a>
+
+Requires [Docker](https://docs.docker.com/) to be installed.
+
+1. `git clone https://github.com/bastien70/dbsaver.git`
+1. `chown 1000:1000 /path/ -R` (Make sure permission are well-defined for 1000:1000)
+1. `cd dbsaver`
+1. `docker compose -f docker-compose.prod.yaml up -d`
+1. `docker compose exec php bash`
+1. `composer install` (install dependencies)
+1. `php bin/console app:regenerate-app-secret ` (regenerate the secret key allowing to hash databases passwords)'
+1. `php bin/console d:m:m -n ` (migrate tables)
+1. `php bin/console app:make-user ` (create your account)
 
 ## Configure the CRON job <a name="cron"></a>
 
